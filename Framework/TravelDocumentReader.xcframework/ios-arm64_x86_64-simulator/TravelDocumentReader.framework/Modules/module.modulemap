@@ -1,0 +1,4 @@
+framework module TravelDocumentReader {
+  header "TravelDocumentReader-Swift.h"
+  requires objc
+}

@@ -1,0 +1,3122 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.8.1 (swiftlang-5.8.0.124.5 clang-1403.0.22.11.100)
+// swift-module-flags: -target x86_64-apple-ios14.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name TravelDocumentReader
+// swift-module-flags-ignorable: -enable-bare-slash-regex
+import CommonCrypto
+import CoreNFC
+import CryptoKit
+import CryptoTokenKit
+import Foundation
+import OSLog
+import OpenSSL
+import Swift
+import _Concurrency
+import _StringProcessing
+public enum DER {
+}
+extension TravelDocumentReader.DER {
+  @usableFromInline
+  @frozen internal struct ParserNode {
+    @usableFromInline
+    internal var identifier: TravelDocumentReader.ASN1Identifier
+    @usableFromInline
+    internal var depth: Swift.Int
+    @usableFromInline
+    internal var isConstructed: Swift.Bool
+    @usableFromInline
+    internal var encodedBytes: Swift.ArraySlice<Swift.UInt8>
+    @usableFromInline
+    internal var dataBytes: Swift.ArraySlice<Swift.UInt8>?
+    @inlinable internal init(identifier: TravelDocumentReader.ASN1Identifier, depth: Swift.Int, isConstructed: Swift.Bool, encodedBytes: Swift.ArraySlice<Swift.UInt8>, dataBytes: Swift.ArraySlice<Swift.UInt8>? = nil) {
+            self.identifier = identifier
+            self.depth = depth
+            self.isConstructed = isConstructed
+            self.encodedBytes = encodedBytes
+            self.dataBytes = dataBytes
+        }
+  }
+}
+extension TravelDocumentReader.DER.ParserNode : Swift.Hashable {
+  @usableFromInline
+  internal func hash(into hasher: inout Swift.Hasher)
+  @usableFromInline
+  internal static func == (a: TravelDocumentReader.DER.ParserNode, b: TravelDocumentReader.DER.ParserNode) -> Swift.Bool
+  @usableFromInline
+  internal var hashValue: Swift.Int {
+    @usableFromInline
+    get
+  }
+}
+extension TravelDocumentReader.DER.ParserNode : Swift.Sendable {
+}
+extension TravelDocumentReader.DER.ParserNode : Swift.CustomStringConvertible {
+  @inlinable internal var description: Swift.String {
+    get {
+        return "DER.ParserNode(identifier: \(self.identifier), depth: \(self.depth), dataBytes: \(self.dataBytes?.count ?? 0))"
+    }
+  }
+}
+extension TravelDocumentReader.DER {
+  @inlinable public static func sequence<T>(_ node: TravelDocumentReader.ASN1Node, identifier: TravelDocumentReader.ASN1Identifier, _ builder: (inout TravelDocumentReader.ASN1NodeCollection.Iterator) throws -> T) throws -> T {
+        guard node.identifier == identifier, case .constructed(let nodes) = node.content else {
+            throw ASN1Error.unexpectedFieldType(node.identifier)
+        }
+
+        var iterator = nodes.makeIterator()
+
+        let result = try builder(&iterator)
+
+        guard iterator.next() == nil else {
+            throw ASN1Error.invalidASN1Object(reason: "Unconsumed sequence nodes")
+        }
+
+        return result
+    }
+  @inlinable public static func sequence<T>(of: T.Type = T.self, identifier: TravelDocumentReader.ASN1Identifier, rootNode: TravelDocumentReader.ASN1Node) throws -> [T] where T : TravelDocumentReader.DERParseable {
+        guard rootNode.identifier == identifier, case .constructed(let nodes) = rootNode.content else {
+            throw ASN1Error.unexpectedFieldType(rootNode.identifier)
+        }
+
+        return try nodes.map { try T(derEncoded: $0) }
+    }
+  @inlinable public static func sequence<T>(of: T.Type = T.self, identifier: TravelDocumentReader.ASN1Identifier, nodes: inout TravelDocumentReader.ASN1NodeCollection.Iterator) throws -> [T] where T : TravelDocumentReader.DERParseable {
+        guard let node = nodes.next() else {
+            // Not present, throw.
+            throw ASN1Error.invalidASN1Object(reason: "No sequence node available for \(T.self) and identifier \(identifier)")
+        }
+
+        return try sequence(of: T.self, identifier: identifier, rootNode: node)
+    }
+  @inlinable public static func set<T>(_ node: TravelDocumentReader.ASN1Node, identifier: TravelDocumentReader.ASN1Identifier, _ builder: (inout TravelDocumentReader.ASN1NodeCollection.Iterator) throws -> T) throws -> T {
+        // Shhhh these two are secretly the same with identifier.
+        return try sequence(node, identifier: identifier, builder)
+    }
+  @inlinable public static func set<T>(of: T.Type = T.self, identifier: TravelDocumentReader.ASN1Identifier, nodes: inout TravelDocumentReader.ASN1NodeCollection.Iterator) throws -> [T] where T : TravelDocumentReader.DERParseable {
+        guard let node = nodes.next() else {
+            // Not present, throw.
+            throw ASN1Error.invalidASN1Object(reason: "No set node available for \(T.self) and identifier \(identifier)")
+        }
+
+        return try Self.set(of: T.self, identifier: identifier, rootNode: node)
+    }
+  @inlinable public static func set<T>(of: T.Type = T.self, identifier: TravelDocumentReader.ASN1Identifier, rootNode: TravelDocumentReader.ASN1Node) throws -> [T] where T : TravelDocumentReader.DERParseable {
+        guard rootNode.identifier == identifier, case .constructed(let nodes) = rootNode.content else {
+            throw ASN1Error.unexpectedFieldType(rootNode.identifier)
+        }
+        
+        guard nodes.isOrderedAccordingToSetOfSemantics() else {
+            throw ASN1Error.invalidASN1Object(reason: "SET OF fields are not lexicographically ordered")
+        }
+
+        return try nodes.map { try T(derEncoded: $0) }
+    }
+}
+extension TravelDocumentReader.DER {
+  @inlinable public static func optionalExplicitlyTagged<T>(_ nodes: inout TravelDocumentReader.ASN1NodeCollection.Iterator, tagNumber: Swift.UInt, tagClass: TravelDocumentReader.ASN1Identifier.TagClass, _ builder: (TravelDocumentReader.ASN1Node) throws -> T) throws -> T? {
+        var localNodesCopy = nodes
+        guard let node = localNodesCopy.next() else {
+            // Node not present, return nil.
+            return nil
+        }
+
+        let expectedNodeID = ASN1Identifier(tagWithNumber: tagNumber, tagClass: tagClass)
+//        assert(expectedNodeID.constructed)
+        guard node.identifier == expectedNodeID else {
+            // Node is a mismatch, with the wrong tag. Our optional isn't present.
+            return nil
+        }
+
+        // We have the right optional, so let's consume it.
+        nodes = localNodesCopy
+
+        // We expect a single child.
+        guard case .constructed(let nodes) = node.content else {
+            // This error is an internal parser error: the tag above is always constructed.
+            preconditionFailure("Explicit tags are always constructed")
+        }
+
+        var nodeIterator = nodes.makeIterator()
+        guard let child = nodeIterator.next(), nodeIterator.next() == nil else {
+            throw ASN1Error.invalidASN1Object(reason: "Too many child nodes in optionally tagged node of \(T.self) with identifier \(expectedNodeID)")
+        }
+
+        return try builder(child)
+    }
+}
+extension TravelDocumentReader.DER {
+  @inlinable public static func optionalImplicitlyTagged<T>(_ nodes: inout TravelDocumentReader.ASN1NodeCollection.Iterator, tag: TravelDocumentReader.ASN1Identifier = T.defaultIdentifier) throws -> T? where T : TravelDocumentReader.DERImplicitlyTaggable {
+        var localNodesCopy = nodes
+        guard let node = localNodesCopy.next() else {
+            // Node not present, return nil.
+            return nil
+        }
+
+        guard node.identifier == tag else {
+            // Node is a mismatch, with the wrong tag. Our optional isn't present.
+            return nil
+        }
+
+        // We're good: pass the node on.
+        return try T(derEncoded: &nodes, withIdentifier: tag)
+    }
+  @inlinable public static func optionalImplicitlyTagged<Result>(_ nodes: inout TravelDocumentReader.ASN1NodeCollection.Iterator, tagNumber: Swift.UInt, tagClass: TravelDocumentReader.ASN1Identifier.TagClass, _ builder: (TravelDocumentReader.ASN1Node) throws -> Result) rethrows -> Result? {
+        var localNodesCopy = nodes
+        guard let node = localNodesCopy.next() else {
+            // Node not present, return nil.
+            return nil
+        }
+        
+        let expectedNodeID = ASN1Identifier(tagWithNumber: tagNumber, tagClass: tagClass)
+        guard node.identifier == expectedNodeID else {
+            // Node is a mismatch, with the wrong tag. Our optional isn't present.
+            return nil
+        }
+        
+        // We have the right optional, so let's consume it.
+        nodes = localNodesCopy
+        
+        // We're good: pass the node on.
+        return try builder(node)
+    }
+}
+extension TravelDocumentReader.DER {
+  @inlinable public static func decodeDefault<T>(_ nodes: inout TravelDocumentReader.ASN1NodeCollection.Iterator, identifier: TravelDocumentReader.ASN1Identifier, defaultValue: T, _ builder: (TravelDocumentReader.ASN1Node) throws -> T) throws -> T where T : Swift.Equatable, T : TravelDocumentReader.DERParseable {
+        // A weird trick here: we only want to consume the next node _if_ it has the right tag. To achieve that,
+        // we work on a copy.
+        var localNodesCopy = nodes
+        guard let node = localNodesCopy.next() else {
+            // Whoops, nothing here.
+            return defaultValue
+        }
+
+        guard node.identifier == identifier else {
+            // Node is a mismatch, with the wrong identifier. Our optional isn't present.
+            return defaultValue
+        }
+
+        // We have the right optional, so let's consume it.
+        nodes = localNodesCopy
+        let parsed = try builder(node)
+
+        // DER forbids encoding DEFAULT values at their default state.
+        // We can lift this in BER.
+        guard parsed != defaultValue else {
+            throw ASN1Error.invalidASN1Object(reason: "DEFAULT for \(T.self) with identifier \(identifier) present in DER but encoded at default value \(defaultValue)")
+        }
+
+        return parsed
+    }
+  @inlinable public static func decodeDefault<T>(_ nodes: inout TravelDocumentReader.ASN1NodeCollection.Iterator, identifier: TravelDocumentReader.ASN1Identifier, defaultValue: T) throws -> T where T : Swift.Equatable, T : TravelDocumentReader.DERParseable {
+        return try Self.decodeDefault(&nodes, identifier: identifier, defaultValue: defaultValue) { try T(derEncoded: $0) }
+    }
+  @inlinable public static func decodeDefault<T>(_ nodes: inout TravelDocumentReader.ASN1NodeCollection.Iterator, defaultValue: T) throws -> T where T : Swift.Equatable, T : TravelDocumentReader.DERImplicitlyTaggable {
+        return try Self.decodeDefault(&nodes, identifier: T.defaultIdentifier, defaultValue: defaultValue)
+    }
+  @inlinable public static func decodeDefaultExplicitlyTagged<T>(_ nodes: inout TravelDocumentReader.ASN1NodeCollection.Iterator, tagNumber: Swift.UInt, tagClass: TravelDocumentReader.ASN1Identifier.TagClass, defaultValue: T, _ builder: (TravelDocumentReader.ASN1Node) throws -> T) throws -> T where T : Swift.Equatable, T : TravelDocumentReader.DERParseable {
+        if let result = try optionalExplicitlyTagged(&nodes, tagNumber: tagNumber, tagClass: tagClass, builder) {
+            guard result != defaultValue else {
+                // DER forbids encoding DEFAULT values at their default state.
+                // We can lift this in BER.
+                throw ASN1Error.invalidASN1Object(reason: "DEFAULT for \(T.self) with tag number \(tagNumber) and class \(tagClass) present in DER but encoded at default value \(defaultValue)")
+            }
+
+            return result
+        } else {
+            return defaultValue
+        }
+    }
+  @inlinable public static func decodeDefaultExplicitlyTagged<T>(_ nodes: inout TravelDocumentReader.ASN1NodeCollection.Iterator, tagNumber: Swift.UInt, tagClass: TravelDocumentReader.ASN1Identifier.TagClass, defaultValue: T) throws -> T where T : Swift.Equatable, T : TravelDocumentReader.DERParseable {
+        return try Self.decodeDefaultExplicitlyTagged(
+            &nodes, tagNumber: tagNumber, tagClass: tagClass, defaultValue: defaultValue
+        ) {
+            try T(derEncoded: $0)
+        }
+    }
+}
+extension TravelDocumentReader.DER {
+  @inlinable public static func explicitlyTagged<T>(_ nodes: inout TravelDocumentReader.ASN1NodeCollection.Iterator, tagNumber: Swift.UInt, tagClass: TravelDocumentReader.ASN1Identifier.TagClass, _ builder: (TravelDocumentReader.ASN1Node) throws -> T) throws -> T {
+        guard let node = nodes.next() else {
+            // Node not present, throw.
+            throw ASN1Error.invalidASN1Object(reason: "Explicitly tagged node for \(T.self) with tag number \(tagNumber) and class \(tagClass) not present")
+        }
+
+        return try self.explicitlyTagged(node, tagNumber: tagNumber, tagClass: tagClass, builder)
+    }
+  @inlinable public static func explicitlyTagged<T>(_ node: TravelDocumentReader.ASN1Node, tagNumber: Swift.UInt, tagClass: TravelDocumentReader.ASN1Identifier.TagClass, _ builder: (TravelDocumentReader.ASN1Node) throws -> T) throws -> T {
+        let expectedNodeID = ASN1Identifier(tagWithNumber: tagNumber, tagClass: tagClass)
+        guard node.identifier == expectedNodeID else {
+            // Node is a mismatch, with the wrong tag.
+            throw ASN1Error.unexpectedFieldType(node.identifier)
+        }
+
+        // We expect a single child.
+        guard case .constructed(let nodes) = node.content else {
+            throw ASN1Error.invalidASN1Object(reason: "Explicit tag \(expectedNodeID) for \(T.self) is primitive")
+        }
+
+        var nodeIterator = nodes.makeIterator()
+        guard let child = nodeIterator.next(), nodeIterator.next() == nil else {
+            throw ASN1Error.invalidASN1Object(reason: "Invalid number of child nodes for explicit tag \(expectedNodeID) for \(T.self)")
+        }
+
+        return try builder(child)
+    }
+}
+extension TravelDocumentReader.DER {
+  @usableFromInline
+  @frozen internal struct ParseResult {
+    @usableFromInline
+    internal static let _maximumNodeDepth: Swift.Int
+    @usableFromInline
+    internal var nodes: Swift.ArraySlice<TravelDocumentReader.DER.ParserNode>
+    @inlinable internal init(_ nodes: Swift.ArraySlice<TravelDocumentReader.DER.ParserNode>) {
+            self.nodes = nodes
+        }
+    @inlinable internal static func parse(_ data: Swift.ArraySlice<Swift.UInt8>) throws -> TravelDocumentReader.DER.ParseResult {
+            var data = data
+            var nodes = [ParserNode]()
+            nodes.reserveCapacity(16)
+
+            try _parseNode(from: &data, depth: 1, into: &nodes)
+            guard data.count == 0 else {
+                throw ASN1Error.invalidASN1Object(reason: "Trailing unparsed data is present")
+            }
+            return ParseResult(nodes[...])
+        }
+    @inlinable internal static func _parseNode(from data: inout Swift.ArraySlice<Swift.UInt8>, depth: Swift.Int, into nodes: inout [TravelDocumentReader.DER.ParserNode]) throws {
+            guard depth <= ParseResult._maximumNodeDepth else {
+                // We defend ourselves against stack overflow by refusing to allocate more than 50 stack frames to
+                // the parsing.
+                throw ASN1Error.invalidASN1Object(reason: "Excessive stack depth was reached")
+            }
+
+            let originalData = data
+
+            guard let rawIdentifier = data.popFirst() else {
+                throw ASN1Error.truncatedASN1Field()
+            }
+
+            // Check whether the bottom 5 bits are set: if they are, this uses long-form encoding.
+            let constructed = (rawIdentifier & 0x20) != 0
+            let identifier: ASN1Identifier
+            if (rawIdentifier & 0x1f) == 0x1f {
+                let tagClass = ASN1Identifier.TagClass(topByteInWireFormat: rawIdentifier)
+
+                // Now we need to read a UInt from the array.
+                let tagNumber = try data.readUIntUsing8BitBytesASN1Discipline()
+
+                // We need a check here: this number needs to be greater than or equal to 0x1f, or it should have been encoded as short form.
+                guard tagNumber >= 0x1f else {
+                    throw ASN1Error.invalidASN1Object(reason: "ASN.1 tag incorrectly encoded in long form: \(tagNumber)")
+                }
+                identifier = ASN1Identifier(tagWithNumber: tagNumber, tagClass: tagClass)
+            } else {
+                identifier = ASN1Identifier(shortIdentifier: rawIdentifier)
+            }
+
+            guard let wideLength = try data._readASN1Length() else {
+                throw ASN1Error.truncatedASN1Field()
+            }
+
+            // UInt is sometimes too large for us!
+            guard let length = Int(exactly: wideLength) else {
+                throw ASN1Error.invalidASN1Object(reason: "Excessively large field: \(wideLength)")
+            }
+
+            var subData = data.prefix(length)
+            data = data.dropFirst(length)
+
+            guard subData.count == length else {
+                throw ASN1Error.truncatedASN1Field()
+            }
+
+            let encodedBytes = originalData[..<subData.endIndex]
+
+            if constructed {
+                nodes.append(
+                    ParserNode(
+                        identifier: identifier,
+                        depth: depth,
+                        isConstructed: true,
+                        encodedBytes: encodedBytes,
+                        dataBytes: nil
+                    )
+                )
+                while subData.count > 0 {
+                    try _parseNode(from: &subData, depth: depth + 1, into: &nodes)
+                }
+            } else {
+                nodes.append(
+                    ParserNode(
+                        identifier: identifier,
+                        depth: depth,
+                        isConstructed: false,
+                        encodedBytes: encodedBytes,
+                        dataBytes: subData
+                    )
+                )
+            }
+        }
+  }
+}
+extension TravelDocumentReader.DER.ParseResult : Swift.Hashable {
+  @usableFromInline
+  internal func hash(into hasher: inout Swift.Hasher)
+  @usableFromInline
+  internal static func == (a: TravelDocumentReader.DER.ParseResult, b: TravelDocumentReader.DER.ParseResult) -> Swift.Bool
+  @usableFromInline
+  internal var hashValue: Swift.Int {
+    @usableFromInline
+    get
+  }
+}
+extension TravelDocumentReader.DER {
+  @inlinable public static func parse(_ data: [Swift.UInt8]) throws -> TravelDocumentReader.ASN1Node {
+        return try parse(data[...])
+    }
+  @inlinable public static func parse(_ data: Swift.ArraySlice<Swift.UInt8>) throws -> TravelDocumentReader.ASN1Node {
+        var result = try ParseResult.parse(data)
+
+        // There will always be at least one node if the above didn't throw, so we can safely just removeFirst here.
+        let firstNode = result.nodes.removeFirst()
+
+        let rootNode: ASN1Node
+        if firstNode.isConstructed {
+            // We need to feed it the next set of nodes.
+            let nodeCollection = result.nodes.prefix { $0.depth > firstNode.depth }
+            result.nodes = result.nodes.dropFirst(nodeCollection.count)
+            rootNode = ASN1Node(
+                identifier: firstNode.identifier,
+                content: .constructed(.init(nodes: nodeCollection, depth: firstNode.depth)),
+                encodedBytes: firstNode.encodedBytes
+            )
+        } else {
+            rootNode = ASN1Node(
+                identifier: firstNode.identifier,
+                content: .primitive(firstNode.dataBytes!),
+                encodedBytes: firstNode.encodedBytes
+            )
+        }
+
+        precondition(result.nodes.count == 0, "ASN1ParseResult unexpectedly allowed multiple root nodes")
+
+        return rootNode
+    }
+}
+@frozen public struct ASN1NodeCollection {
+  @usableFromInline
+  internal var _nodes: Swift.ArraySlice<TravelDocumentReader.DER.ParserNode>
+  @usableFromInline
+  internal var _depth: Swift.Int
+  @inlinable internal init(nodes: Swift.ArraySlice<TravelDocumentReader.DER.ParserNode>, depth: Swift.Int) {
+        self._nodes = nodes
+        self._depth = depth
+
+        precondition(self._nodes.allSatisfy({ $0.depth > depth }))
+        if let firstDepth = self._nodes.first?.depth {
+            precondition(firstDepth == depth + 1)
+        }
+    }
+}
+extension TravelDocumentReader.ASN1NodeCollection : Swift.Hashable {
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (a: TravelDocumentReader.ASN1NodeCollection, b: TravelDocumentReader.ASN1NodeCollection) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension TravelDocumentReader.ASN1NodeCollection : Swift.Sendable {
+}
+extension TravelDocumentReader.ASN1NodeCollection : Swift.Sequence {
+  @frozen public struct Iterator : Swift.IteratorProtocol {
+    @usableFromInline
+    internal var _nodes: Swift.ArraySlice<TravelDocumentReader.DER.ParserNode>
+    @usableFromInline
+    internal var _depth: Swift.Int
+    @inlinable internal init(nodes: Swift.ArraySlice<TravelDocumentReader.DER.ParserNode>, depth: Swift.Int) {
+            self._nodes = nodes
+            self._depth = depth
+        }
+    @inlinable public mutating func next() -> TravelDocumentReader.ASN1Node? {
+            guard let nextNode = self._nodes.popFirst() else {
+                return nil
+            }
+
+            assert(nextNode.depth == self._depth + 1)
+            if nextNode.isConstructed {
+                // We need to feed it the next set of nodes.
+                let nodeCollection = self._nodes.prefix { $0.depth > nextNode.depth }
+                self._nodes = self._nodes.dropFirst(nodeCollection.count)
+                return ASN1Node(
+                    identifier: nextNode.identifier,
+                    content: .constructed(.init(nodes: nodeCollection, depth: nextNode.depth)),
+                    encodedBytes: nextNode.encodedBytes
+                )
+            } else {
+                // There must be data bytes here, even if they're empty.
+                return ASN1Node(
+                    identifier: nextNode.identifier,
+                    content: .primitive(nextNode.dataBytes!),
+                    encodedBytes: nextNode.encodedBytes
+                )
+            }
+        }
+    public typealias Element = TravelDocumentReader.ASN1Node
+  }
+  @inlinable public func makeIterator() -> TravelDocumentReader.ASN1NodeCollection.Iterator {
+        return Iterator(nodes: self._nodes, depth: self._depth)
+    }
+  public typealias Element = TravelDocumentReader.ASN1Node
+}
+@frozen public struct ASN1Node : Swift.Hashable, Swift.Sendable {
+  public var identifier: TravelDocumentReader.ASN1Identifier
+  public var content: TravelDocumentReader.ASN1Node.Content
+  public var encodedBytes: Swift.ArraySlice<Swift.UInt8>
+  @inlinable internal init(identifier: TravelDocumentReader.ASN1Identifier, content: TravelDocumentReader.ASN1Node.Content, encodedBytes: Swift.ArraySlice<Swift.UInt8>) {
+        self.identifier = identifier
+        self.content = content
+        self.encodedBytes = encodedBytes
+    }
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (a: TravelDocumentReader.ASN1Node, b: TravelDocumentReader.ASN1Node) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension TravelDocumentReader.ASN1Node {
+  @frozen public enum Content : Swift.Hashable, Swift.Sendable {
+    case constructed(TravelDocumentReader.ASN1NodeCollection)
+    case primitive(Swift.ArraySlice<Swift.UInt8>)
+    public func hash(into hasher: inout Swift.Hasher)
+    public static func == (a: TravelDocumentReader.ASN1Node.Content, b: TravelDocumentReader.ASN1Node.Content) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+}
+extension TravelDocumentReader.DER {
+  @frozen public struct Serializer : Swift.Sendable {
+    @usableFromInline
+    internal var _serializedBytes: [Swift.UInt8]
+    @inlinable public var serializedBytes: [Swift.UInt8] {
+      get {
+            self._serializedBytes
+        }
+    }
+    @inlinable public init() {
+            // We allocate a 1kB array because that should cover us most of the time.
+            self._serializedBytes = []
+            self._serializedBytes.reserveCapacity(1024)
+        }
+    @inlinable public mutating func appendPrimitiveNode(identifier: TravelDocumentReader.ASN1Identifier, _ contentWriter: (inout [Swift.UInt8]) throws -> Swift.Void) rethrows {
+            try self._appendNode(identifier: identifier, constructed: false) { try contentWriter(&$0._serializedBytes) }
+        }
+    @inlinable public mutating func appendConstructedNode(identifier: TravelDocumentReader.ASN1Identifier, _ contentWriter: (inout TravelDocumentReader.DER.Serializer) throws -> Swift.Void) rethrows {
+            try self._appendNode(identifier: identifier, constructed: true, contentWriter)
+        }
+    @inlinable public mutating func serialize<T>(_ node: T) throws where T : TravelDocumentReader.DERSerializable {
+            try node.serialize(into: &self)
+        }
+    @inlinable public mutating func serialize<T>(_ node: T, explicitlyTaggedWithTagNumber tagNumber: Swift.UInt, tagClass: TravelDocumentReader.ASN1Identifier.TagClass) throws where T : TravelDocumentReader.DERSerializable {
+            let identifier = ASN1Identifier(tagWithNumber: tagNumber, tagClass: tagClass)
+            return try self.serialize(node, explicitlyTaggedWithIdentifier: identifier)
+        }
+    @inlinable public mutating func serialize<T>(_ node: T, explicitlyTaggedWithIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws where T : TravelDocumentReader.DERSerializable {
+            try self.appendConstructedNode(identifier: identifier) { coder in
+                try coder.serialize(node)
+            }
+        }
+    @inlinable public mutating func serializeOptionalImplicitlyTagged<T>(_ node: T?) throws where T : TravelDocumentReader.DERSerializable {
+            if let node = node {
+                try self.serialize(node)
+            }
+        }
+    @inlinable public mutating func serializeOptionalImplicitlyTagged<T>(_ node: T?, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws where T : TravelDocumentReader.DERImplicitlyTaggable {
+            if let node = node {
+                try node.serialize(into: &self, withIdentifier: identifier)
+            }
+        }
+    @inlinable public mutating func serialize(explicitlyTaggedWithTagNumber tagNumber: Swift.UInt, tagClass: TravelDocumentReader.ASN1Identifier.TagClass, _ block: (inout TravelDocumentReader.DER.Serializer) throws -> Swift.Void) rethrows {
+            let identifier = ASN1Identifier(tagWithNumber: tagNumber, tagClass: tagClass)
+            try self.appendConstructedNode(identifier: identifier) { coder in
+                try block(&coder)
+            }
+        }
+    @inlinable public mutating func serializeSequenceOf<Elements>(_ elements: Elements, identifier: TravelDocumentReader.ASN1Identifier = .sequence) throws where Elements : Swift.Sequence, Elements.Element : TravelDocumentReader.DERSerializable {
+            try self.appendConstructedNode(identifier: identifier) { coder in
+                for element in elements {
+                    try coder.serialize(element)
+                }
+            }
+        }
+    @inlinable public mutating func serializeSetOf<Elements>(_ elements: Elements, identifier: TravelDocumentReader.ASN1Identifier = .set) throws where Elements : Swift.Sequence, Elements.Element : TravelDocumentReader.DERSerializable {
+            // We first serialize all elements into one intermediate Serializer and
+            // create ArraySlices of their binary DER representation.
+            var intermediateSerializer = DER.Serializer()
+            let serializedRanges = try elements.map { element in
+                let startIndex = intermediateSerializer.serializedBytes.endIndex
+                try intermediateSerializer.serialize(element)
+                let endIndex = intermediateSerializer.serializedBytes.endIndex
+                // It is important to first serialise all elements before we create `ArraySlice`s
+                // as we otherwise trigger CoW of `intermediateSerializer.serializedBytes`.
+                // We therefore just return a `Range` in the first iteration and
+                // get `ArraySlice`s during the sort and write operations on demand.
+                return startIndex..<endIndex
+            }
+            
+            let serializedBytes = intermediateSerializer.serializedBytes
+            // Afterwards we sort the binary representation of each element lexicographically
+            let sortedRanges = serializedRanges.sorted { lhs, rhs in
+                asn1SetElementLessThan(serializedBytes[lhs], serializedBytes[rhs])
+            }
+            // We then only need to create a constructed node and append the binary representation in their sorted order
+            self.appendConstructedNode(identifier: identifier) { serializer in
+                for range in sortedRanges {
+                    serializer.serializeRawBytes(serializedBytes[range])
+                }
+            }
+        }
+    @inlinable public mutating func serialize(_ node: TravelDocumentReader.ASN1Node) {
+            let identifier = node.identifier
+            let constructed: Bool
+
+            if case .constructed = node.content {
+                constructed = true
+            } else {
+                constructed = false
+            }
+
+            self._appendNode(identifier: identifier, constructed: constructed) { coder in
+                switch node.content {
+                case .constructed(let nodes):
+                    for node in nodes {
+                        coder.serialize(node)
+                    }
+                case .primitive(let baseData):
+                    coder.serializeRawBytes(baseData)
+                }
+            }
+        }
+    @inlinable public mutating func serializeRawBytes<Bytes>(_ bytes: Bytes) where Bytes : Swift.Sequence, Bytes.Element == Swift.UInt8 {
+            self._serializedBytes.append(contentsOf: bytes)
+        }
+    @inlinable internal mutating func _appendNode(identifier: TravelDocumentReader.ASN1Identifier, constructed: Swift.Bool, _ contentWriter: (inout TravelDocumentReader.DER.Serializer) throws -> Swift.Void) rethrows {
+            // This is a tricky game to play. We want to write the identifier and the length, but we don't know what the
+            // length is here. To get around that, we _assume_ the length will be one byte, and let the writer write their content.
+            // If it turns out to have been longer, we recalculate how many bytes we need and shuffle them in the buffer,
+            // before updating the length. Most of the time we'll be right: occasionally we'll be wrong and have to shuffle.
+            self._serializedBytes.writeIdentifier(identifier, constructed: constructed)
+
+            // Write a zero for the length.
+            self._serializedBytes.append(0)
+
+            // Save the indices and write.
+            let originalEndIndex = self._serializedBytes.endIndex
+            let lengthIndex = self._serializedBytes.index(before: originalEndIndex)
+
+            try contentWriter(&self)
+
+            let contentLength = self._serializedBytes.distance(from: originalEndIndex, to: self._serializedBytes.endIndex)
+            let lengthBytesNeeded = contentLength._bytesNeededToEncode
+            if lengthBytesNeeded == 1 {
+                // We can just set this at the top, and we're done!
+                assert(contentLength <= 0x7F)
+                self._serializedBytes[lengthIndex] = UInt8(contentLength)
+                return
+            }
+
+            // Whoops, we need more than one byte to represent the length. That's annoying!
+            // To sort this out we want to "move" the memory to the right.
+            self._serializedBytes._moveRange(offset: lengthBytesNeeded - 1, range: originalEndIndex..<self._serializedBytes.endIndex)
+
+            // Now we can write the length bytes back. We first write the number of length bytes
+            // we needed, setting the high bit. Then we write the bytes of the length.
+            self._serializedBytes[lengthIndex] = 0x80 | UInt8(lengthBytesNeeded - 1)
+            var writeIndex = lengthIndex
+
+            for shift in (0..<(lengthBytesNeeded - 1)).reversed() {
+                // Shift and mask the integer.
+                self._serializedBytes.formIndex(after: &writeIndex)
+                self._serializedBytes[writeIndex] = UInt8(truncatingIfNeeded: (contentLength >> (shift * 8)))
+            }
+
+            assert(writeIndex == self._serializedBytes.index(lengthIndex, offsetBy: lengthBytesNeeded - 1))
+        }
+  }
+}
+public protocol DERParseable {
+  init(derEncoded: TravelDocumentReader.ASN1Node) throws
+}
+extension TravelDocumentReader.DERParseable {
+  @inlinable public init(derEncoded sequenceNodeIterator: inout TravelDocumentReader.ASN1NodeCollection.Iterator) throws {
+        guard let node = sequenceNodeIterator.next() else {
+            throw ASN1Error.invalidASN1Object(reason: "Unable to decode \(Self.self), no ASN.1 nodes to decode")
+        }
+
+        self = try .init(derEncoded: node)
+    }
+  @inlinable public init(derEncoded: [Swift.UInt8]) throws {
+        self = try .init(derEncoded: DER.parse(derEncoded))
+    }
+  @inlinable public init(derEncoded: Swift.ArraySlice<Swift.UInt8>) throws {
+        self = try .init(derEncoded: DER.parse(derEncoded))
+    }
+}
+public protocol DERSerializable {
+  func serialize(into coder: inout TravelDocumentReader.DER.Serializer) throws
+}
+public protocol DERImplicitlyTaggable : TravelDocumentReader.DERParseable, TravelDocumentReader.DERSerializable {
+  static var defaultIdentifier: TravelDocumentReader.ASN1Identifier { get }
+  init(derEncoded: TravelDocumentReader.ASN1Node, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws
+  func serialize(into coder: inout TravelDocumentReader.DER.Serializer, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws
+}
+extension TravelDocumentReader.DERImplicitlyTaggable {
+  @inlinable public init(derEncoded sequenceNodeIterator: inout TravelDocumentReader.ASN1NodeCollection.Iterator, withIdentifier identifier: TravelDocumentReader.ASN1Identifier = Self.defaultIdentifier) throws {
+        guard let node = sequenceNodeIterator.next() else {
+            throw ASN1Error.invalidASN1Object(reason: "Unable to decode \(Self.self), no ASN.1 nodes to decode")
+        }
+
+        self = try .init(derEncoded: node, withIdentifier: identifier)
+    }
+  @inlinable public init(derEncoded: [Swift.UInt8], withIdentifier identifier: TravelDocumentReader.ASN1Identifier = Self.defaultIdentifier) throws {
+        self = try .init(derEncoded: DER.parse(derEncoded), withIdentifier: identifier)
+    }
+  @inlinable public init(derEncoded: Swift.ArraySlice<Swift.UInt8>, withIdentifier identifier: TravelDocumentReader.ASN1Identifier = Self.defaultIdentifier) throws {
+        self = try .init(derEncoded: DER.parse(derEncoded), withIdentifier: identifier)
+    }
+  @inlinable public init(derEncoded: TravelDocumentReader.ASN1Node) throws {
+        try self.init(derEncoded: derEncoded, withIdentifier: Self.defaultIdentifier)
+    }
+  @inlinable public func serialize(into coder: inout TravelDocumentReader.DER.Serializer) throws {
+        try self.serialize(into: &coder, withIdentifier: Self.defaultIdentifier)
+    }
+}
+extension Swift.ArraySlice where Element == Swift.UInt8 {
+  @inlinable internal mutating func _readASN1Length() throws -> Swift.UInt? {
+        guard let firstByte = self.popFirst() else {
+            return nil
+        }
+
+        switch firstByte {
+        case 0x80:
+            // Indefinite form. Unsupported.
+            throw ASN1Error.unsupportedFieldLength(reason: "Indefinite form of field length not supported in DER.")
+        case let val where val & 0x80 == 0x80:
+            // Top bit is set, this is the long form. The remaining 7 bits of this octet
+            // determine how long the length field is.
+            let fieldLength = Int(val & 0x7F)
+            guard self.count >= fieldLength else {
+                return nil
+            }
+
+            // We need to read the length bytes
+            let lengthBytes = self.prefix(fieldLength)
+            self = self.dropFirst(fieldLength)
+            let length = try UInt(bigEndianBytes: lengthBytes)
+
+            // DER requires that we enforce that the length field was encoded in the minimum number of octets necessary.
+            let requiredBits = UInt.bitWidth - length.leadingZeroBitCount
+            switch requiredBits {
+            case 0...7:
+                // For 0 to 7 bits, the long form is unacceptable and we require the short.
+                throw ASN1Error.unsupportedFieldLength(reason: "Field length encoded in long form, but DER requires \(length) to be encoded in short form")
+            case 8...:
+                // For 8 or more bits, fieldLength should be the minimum required.
+                let requiredBytes = (requiredBits + 7) / 8
+                if fieldLength > requiredBytes {
+                    throw ASN1Error.unsupportedFieldLength(reason: "Field length encoded in excessive number of bytes")
+                }
+            default:
+                // This is not reachable, but we'll error anyway.
+                throw ASN1Error.unsupportedFieldLength(reason: "Correctness error: computed required bits as \(requiredBits)")
+            }
+
+            return length
+        case let val:
+            // Short form, the length is only one 7-bit integer.
+            return UInt(val)
+        }
+    }
+}
+extension Swift.FixedWidthInteger {
+  @inlinable internal init<Bytes>(bigEndianBytes bytes: Bytes) throws where Bytes : Swift.Collection, Bytes.Element == Swift.UInt8 {
+        guard bytes.count <= (Self.bitWidth / 8) else {
+            throw ASN1Error.invalidASN1Object(reason: "Unable to treat \(bytes.count) bytes as a \(Self.self)")
+        }
+
+        self = 0
+        let shiftSizes = stride(from: 0, to: bytes.count * 8, by: 8).reversed()
+
+        var index = bytes.startIndex
+        for shift in shiftSizes {
+            self |= Self(truncatingIfNeeded: bytes[index]) << shift
+            bytes.formIndex(after: &index)
+        }
+    }
+}
+extension Swift.Array where Element == Swift.UInt8 {
+  @inlinable internal mutating func _moveRange(offset: Swift.Int, range: Swift.Range<Swift.Array<Element>.Index>) {
+        // We only bothered to implement this for positive offsets for now, the algorithm
+        // generalises.
+        precondition(offset > 0)
+
+        let distanceFromEndOfRangeToEndOfSelf = self.distance(from: range.endIndex, to: self.endIndex)
+        if distanceFromEndOfRangeToEndOfSelf < offset {
+            // We begin by writing some zeroes out to the size we need.
+            for _ in 0..<(offset - distanceFromEndOfRangeToEndOfSelf) {
+                self.append(0)
+            }
+        }
+
+        // Now we walk the range backwards, moving the elements.
+        for index in range.reversed() {
+            self[index + offset] = self[index]
+        }
+    }
+}
+extension Swift.Int {
+  @inlinable internal var _bytesNeededToEncode: Swift.Int {
+    get {
+        // ASN.1 lengths are in two forms. If we can store the length in 7 bits, we should:
+        // that requires only one byte. Otherwise, we need multiple bytes: work out how many,
+        // plus one for the length of the length bytes.
+        if self <= 0x7F {
+            return 1
+        } else {
+            // We need to work out how many bytes we need. There are many fancy bit-twiddling
+            // ways of doing this, but honestly we don't do this enough to need them, so we'll
+            // do it the easy way. This math is done on UInt because it makes the shift semantics clean.
+            // We save a branch here because we can never overflow this addition.
+            return UInt(self).neededBytes &+ 1
+        }
+    }
+  }
+}
+extension Swift.FixedWidthInteger {
+  @inlinable internal var neededBytes: Swift.Int {
+    get {
+        let neededBits = self.bitWidth - self.leadingZeroBitCount
+        return (neededBits + 7) / 8
+    }
+  }
+}
+extension TravelDocumentReader.ASN1NodeCollection {
+  @inlinable internal func isOrderedAccordingToSetOfSemantics() -> Swift.Bool {
+        var iterator = self.makeIterator()
+        guard let first = iterator.next() else {
+            return true
+        }
+        
+        var previousElement = first
+        while let nextElement = iterator.next() {
+            guard asn1SetElementLessThanOrEqual(previousElement.encodedBytes, nextElement.encodedBytes) else {
+                return false
+            }
+            previousElement = nextElement
+        }
+        
+        return true
+    }
+}
+@inlinable internal func asn1SetElementLessThan(_ lhs: Swift.ArraySlice<Swift.UInt8>, _ rhs: Swift.ArraySlice<Swift.UInt8>) -> Swift.Bool {
+    for (leftByte, rightByte) in zip(lhs, rhs) {
+        if leftByte < rightByte {
+            // true means left comes before right
+            return true
+        } else if rightByte < leftByte {
+            // Right comes after left
+            return false
+        }
+    }
+    
+    // We got to the end of the shorter element, so all current elements are equal.
+    // If lhs is shorter, it comes earlier, _unless_ all of rhs's trailing elements are zero.
+    let trailing = rhs.dropFirst(lhs.count)
+    if trailing.allSatisfy({ $0 == 0 }) {
+        // Must return false when the two elements are equal.
+        return false
+    }
+    return true
+}
+@inlinable internal func asn1SetElementLessThanOrEqual(_ lhs: Swift.ArraySlice<Swift.UInt8>, _ rhs: Swift.ArraySlice<Swift.UInt8>) -> Swift.Bool {
+    // https://github.com/apple/swift/blob/43c5824be892967993f4d0111206764eceeffb67/stdlib/public/core/Comparable.swift#L202
+    !asn1SetElementLessThan(rhs, lhs)
+}
+public class COMFile {
+  public var fileTags: [TravelDocumentReader.ElementaryFileTag] {
+    get
+  }
+  public init(data: Foundation.Data)
+  @objc deinit
+}
+public struct ChipAuthenticationPublicKeyInfo {
+  public let oid: TravelDocumentReader.ASN1ObjectIdentifier
+  public let chipAuthenticationPublicKey: TravelDocumentReader.ASN1Any
+  public let keyId: Swift.ArraySlice<Swift.UInt8>?
+}
+extension TravelDocumentReader.ChipAuthenticationPublicKeyInfo {
+  #if compiler(>=5.3) && $EffectfulProp
+  public var publicKey: Swift.OpaquePointer? {
+    get throws
+  }
+  #endif
+}
+extension TravelDocumentReader.ChipAuthenticationPublicKeyInfo : Swift.Hashable {
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (a: TravelDocumentReader.ChipAuthenticationPublicKeyInfo, b: TravelDocumentReader.ChipAuthenticationPublicKeyInfo) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension TravelDocumentReader.ChipAuthenticationPublicKeyInfo {
+  public static func check(requiredIdentifier oid: Swift.String) -> Swift.Bool
+}
+@frozen public struct ASN1UTF8String : TravelDocumentReader.DERImplicitlyTaggable, Swift.Hashable, Swift.Sendable, Swift.ExpressibleByStringLiteral {
+  @inlinable public static var defaultIdentifier: TravelDocumentReader.ASN1Identifier {
+    get {
+        .utf8String
+    }
+  }
+  public var bytes: Swift.ArraySlice<Swift.UInt8>
+  @inlinable public init(derEncoded node: TravelDocumentReader.ASN1Node, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws {
+        self.bytes = try ASN1OctetString(derEncoded: node, withIdentifier: identifier).bytes
+    }
+  @inlinable public init(contentBytes: Swift.ArraySlice<Swift.UInt8>) {
+        self.bytes = contentBytes
+    }
+  @inlinable public init(stringLiteral value: Swift.StringLiteralType) {
+        self.bytes = ArraySlice(value.utf8)
+    }
+  @inlinable public init(_ string: Swift.String) {
+        self.bytes = ArraySlice(string.utf8)
+    }
+  @inlinable public func serialize(into coder: inout TravelDocumentReader.DER.Serializer, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws {
+        let octet = ASN1OctetString(contentBytes: self.bytes)
+        try octet.serialize(into: &coder, withIdentifier: identifier)
+    }
+  @inlinable public func withUnsafeBytes<R>(_ body: (Swift.UnsafeRawBufferPointer) throws -> R) rethrows -> R {
+        return try self.bytes.withUnsafeBytes(body)
+    }
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (a: TravelDocumentReader.ASN1UTF8String, b: TravelDocumentReader.ASN1UTF8String) -> Swift.Bool
+  public typealias ExtendedGraphemeClusterLiteralType = Swift.StringLiteralType
+  public typealias StringLiteralType = Swift.StringLiteralType
+  public typealias UnicodeScalarLiteralType = Swift.StringLiteralType
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+@frozen public struct ASN1TeletexString : TravelDocumentReader.DERImplicitlyTaggable, Swift.Hashable, Swift.Sendable, Swift.ExpressibleByStringLiteral {
+  @inlinable public static var defaultIdentifier: TravelDocumentReader.ASN1Identifier {
+    get {
+        .teletexString
+    }
+  }
+  public var bytes: Swift.ArraySlice<Swift.UInt8>
+  @inlinable public init(derEncoded node: TravelDocumentReader.ASN1Node, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws {
+        self.bytes = try ASN1OctetString(derEncoded: node, withIdentifier: identifier).bytes
+    }
+  @inlinable public init(contentBytes: Swift.ArraySlice<Swift.UInt8>) {
+        self.bytes = contentBytes
+    }
+  @inlinable public init(stringLiteral value: Swift.StringLiteralType) {
+        self.bytes = ArraySlice(value.utf8)
+    }
+  @inlinable public func serialize(into coder: inout TravelDocumentReader.DER.Serializer, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws {
+        let octet = ASN1OctetString(contentBytes: self.bytes)
+        try octet.serialize(into: &coder, withIdentifier: identifier)
+    }
+  @inlinable public func withUnsafeBytes<R>(_ body: (Swift.UnsafeRawBufferPointer) throws -> R) rethrows -> R {
+        return try self.bytes.withUnsafeBytes(body)
+    }
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (a: TravelDocumentReader.ASN1TeletexString, b: TravelDocumentReader.ASN1TeletexString) -> Swift.Bool
+  public typealias ExtendedGraphemeClusterLiteralType = Swift.StringLiteralType
+  public typealias StringLiteralType = Swift.StringLiteralType
+  public typealias UnicodeScalarLiteralType = Swift.StringLiteralType
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+@frozen public struct ASN1PrintableString : TravelDocumentReader.DERImplicitlyTaggable, Swift.Hashable, Swift.Sendable, Swift.ExpressibleByStringLiteral {
+  @inlinable public static var defaultIdentifier: TravelDocumentReader.ASN1Identifier {
+    get {
+        .printableString
+    }
+  }
+  @_hasStorage public var bytes: Swift.ArraySlice<Swift.UInt8> {
+    get
+    set
+  }
+  @inlinable public init(derEncoded node: TravelDocumentReader.ASN1Node, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws {
+        self.bytes = try ASN1OctetString(derEncoded: node, withIdentifier: identifier).bytes
+        guard Self._isValid(self.bytes) else {
+            throw ASN1Error.invalidStringRepresentation(reason: "Invalid bytes for ASN1PrintableString")
+        }
+    }
+  @inlinable public init(contentBytes: Swift.ArraySlice<Swift.UInt8>) throws {
+        self.bytes = contentBytes
+        guard Self._isValid(self.bytes) else {
+            throw ASN1Error.invalidStringRepresentation(reason: "Invalid bytes for ASN1PrintableString")
+        }
+    }
+  @inlinable public init(stringLiteral value: Swift.StringLiteralType) {
+        self.bytes = ArraySlice(value.utf8)
+        precondition(Self._isValid(self.bytes))
+    }
+  @inlinable public init(_ string: Swift.String) throws {
+        self.bytes = ArraySlice(string.utf8)
+
+        guard Self._isValid(self.bytes) else {
+            throw ASN1Error.invalidStringRepresentation(reason: "Invalid bytes for ASN1PrintableString")
+        }
+    }
+  @inlinable public func serialize(into coder: inout TravelDocumentReader.DER.Serializer, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws {
+        let octet = ASN1OctetString(contentBytes: self.bytes)
+        try octet.serialize(into: &coder, withIdentifier: identifier)
+    }
+  @inlinable public func withUnsafeBytes<R>(_ body: (Swift.UnsafeRawBufferPointer) throws -> R) rethrows -> R {
+        return try self.bytes.withUnsafeBytes(body)
+    }
+  @inlinable internal static func _isValid(_ bytes: Swift.ArraySlice<Swift.UInt8>) -> Swift.Bool {
+        bytes.allSatisfy {
+            switch $0 {
+            case UInt8(ascii: "a")...UInt8(ascii: "z"),
+                UInt8(ascii: "A")...UInt8(ascii: "Z"),
+                UInt8(ascii: "0")...UInt8(ascii: "9"),
+                UInt8(ascii: "'"), UInt8(ascii: "("),
+                UInt8(ascii: ")"), UInt8(ascii: "+"),
+                UInt8(ascii: "-"), UInt8(ascii: "?"),
+                UInt8(ascii: ":"), UInt8(ascii: "/"),
+                UInt8(ascii: "="), UInt8(ascii: " "),
+                UInt8(ascii: ","), UInt8(ascii: "."):
+                return true
+            default:
+                return false
+            }
+        }
+    }
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (a: TravelDocumentReader.ASN1PrintableString, b: TravelDocumentReader.ASN1PrintableString) -> Swift.Bool
+  public typealias ExtendedGraphemeClusterLiteralType = Swift.StringLiteralType
+  public typealias StringLiteralType = Swift.StringLiteralType
+  public typealias UnicodeScalarLiteralType = Swift.StringLiteralType
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+@frozen public struct ASN1UniversalString : TravelDocumentReader.DERImplicitlyTaggable, Swift.Hashable, Swift.Sendable, Swift.ExpressibleByStringLiteral {
+  @inlinable public static var defaultIdentifier: TravelDocumentReader.ASN1Identifier {
+    get {
+        .universalString
+    }
+  }
+  public var bytes: Swift.ArraySlice<Swift.UInt8>
+  @inlinable public init(derEncoded node: TravelDocumentReader.ASN1Node, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws {
+        self.bytes = try ASN1OctetString(derEncoded: node, withIdentifier: identifier).bytes
+    }
+  @inlinable public init(contentBytes: Swift.ArraySlice<Swift.UInt8>) {
+        self.bytes = contentBytes
+    }
+  @inlinable public init(stringLiteral value: Swift.StringLiteralType) {
+        self.bytes = ArraySlice(value.utf8)
+    }
+  @inlinable public func serialize(into coder: inout TravelDocumentReader.DER.Serializer, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws {
+        let octet = ASN1OctetString(contentBytes: self.bytes)
+        try octet.serialize(into: &coder, withIdentifier: identifier)
+    }
+  @inlinable public func withUnsafeBytes<R>(_ body: (Swift.UnsafeRawBufferPointer) throws -> R) rethrows -> R {
+        return try self.bytes.withUnsafeBytes(body)
+    }
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (a: TravelDocumentReader.ASN1UniversalString, b: TravelDocumentReader.ASN1UniversalString) -> Swift.Bool
+  public typealias ExtendedGraphemeClusterLiteralType = Swift.StringLiteralType
+  public typealias StringLiteralType = Swift.StringLiteralType
+  public typealias UnicodeScalarLiteralType = Swift.StringLiteralType
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+@frozen public struct ASN1BMPString : TravelDocumentReader.DERImplicitlyTaggable, Swift.Hashable, Swift.Sendable, Swift.ExpressibleByStringLiteral {
+  @inlinable public static var defaultIdentifier: TravelDocumentReader.ASN1Identifier {
+    get {
+        .bmpString
+    }
+  }
+  public var bytes: Swift.ArraySlice<Swift.UInt8>
+  @inlinable public init(derEncoded node: TravelDocumentReader.ASN1Node, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws {
+        self.bytes = try ASN1OctetString(derEncoded: node, withIdentifier: identifier).bytes
+    }
+  @inlinable public init(contentBytes: Swift.ArraySlice<Swift.UInt8>) {
+        self.bytes = contentBytes
+    }
+  @inlinable public init(stringLiteral value: Swift.StringLiteralType) {
+        self.bytes = ArraySlice(value.utf8)
+    }
+  @inlinable public func serialize(into coder: inout TravelDocumentReader.DER.Serializer, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws {
+        let octet = ASN1OctetString(contentBytes: self.bytes)
+        try octet.serialize(into: &coder, withIdentifier: identifier)
+    }
+  @inlinable public func withUnsafeBytes<R>(_ body: (Swift.UnsafeRawBufferPointer) throws -> R) rethrows -> R {
+        return try self.bytes.withUnsafeBytes(body)
+    }
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (a: TravelDocumentReader.ASN1BMPString, b: TravelDocumentReader.ASN1BMPString) -> Swift.Bool
+  public typealias ExtendedGraphemeClusterLiteralType = Swift.StringLiteralType
+  public typealias StringLiteralType = Swift.StringLiteralType
+  public typealias UnicodeScalarLiteralType = Swift.StringLiteralType
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+@frozen public struct ASN1IA5String : TravelDocumentReader.DERImplicitlyTaggable, Swift.Hashable, Swift.Sendable, Swift.ExpressibleByStringLiteral {
+  @inlinable public static var defaultIdentifier: TravelDocumentReader.ASN1Identifier {
+    get {
+        .ia5String
+    }
+  }
+  @_hasStorage public var bytes: Swift.ArraySlice<Swift.UInt8> {
+    get
+    set
+  }
+  @inlinable public init(derEncoded node: TravelDocumentReader.ASN1Node, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws {
+        self.bytes = try ASN1OctetString(derEncoded: node, withIdentifier: identifier).bytes
+        guard Self._isValid(self.bytes) else {
+            throw ASN1Error.invalidStringRepresentation(reason: "Invalid bytes for ASN1IA5String")
+        }
+    }
+  @inlinable public init(contentBytes: Swift.ArraySlice<Swift.UInt8>) throws {
+        self.bytes = contentBytes
+        guard Self._isValid(self.bytes) else {
+            throw ASN1Error.invalidStringRepresentation(reason: "Invalid bytes for ASN1IA5String")
+        }
+    }
+  @inlinable public init(stringLiteral value: Swift.StringLiteralType) {
+        self.bytes = ArraySlice(value.utf8)
+        precondition(Self._isValid(self.bytes))
+    }
+  @inlinable public init(_ string: Swift.String) throws {
+        self.bytes = ArraySlice(string.utf8)
+
+        guard Self._isValid(self.bytes) else {
+            throw ASN1Error.invalidStringRepresentation(reason: "Invalid bytes for ASN1IA5String")
+        }
+    }
+  @inlinable public func serialize(into coder: inout TravelDocumentReader.DER.Serializer, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws {
+        let octet = ASN1OctetString(contentBytes: self.bytes)
+        try octet.serialize(into: &coder, withIdentifier: identifier)
+    }
+  @inlinable public func withUnsafeBytes<R>(_ body: (Swift.UnsafeRawBufferPointer) throws -> R) rethrows -> R {
+        return try self.bytes.withUnsafeBytes(body)
+    }
+  @inlinable internal static func _isValid(_ bytes: Swift.ArraySlice<Swift.UInt8>) -> Swift.Bool {
+        // Valid IA5Strings are ASCII characters.
+        bytes.allSatisfy { $0 < 128 }
+    }
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (a: TravelDocumentReader.ASN1IA5String, b: TravelDocumentReader.ASN1IA5String) -> Swift.Bool
+  public typealias ExtendedGraphemeClusterLiteralType = Swift.StringLiteralType
+  public typealias StringLiteralType = Swift.StringLiteralType
+  public typealias UnicodeScalarLiteralType = Swift.StringLiteralType
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension Swift.String {
+  public init(_ utf8String: TravelDocumentReader.ASN1UTF8String)
+  public init(_ printableString: TravelDocumentReader.ASN1PrintableString)
+  public init(_ ia5String: TravelDocumentReader.ASN1IA5String)
+}
+public struct ASN1Error : Swift.Error, Swift.Hashable, Swift.CustomStringConvertible {
+  public var code: TravelDocumentReader.ASN1Error.ErrorCode {
+    get
+  }
+  public var description: Swift.String {
+    get
+  }
+  @inline(never) public static func unexpectedFieldType(_ identifier: TravelDocumentReader.ASN1Identifier, file: Swift.String = #fileID, line: Swift.UInt = #line) -> TravelDocumentReader.ASN1Error
+  @inline(never) public static func invalidASN1Object(reason: Swift.String, file: Swift.String = #fileID, line: Swift.UInt = #line) -> TravelDocumentReader.ASN1Error
+  @inline(never) public static func invalidASN1IntegerEncoding(reason: Swift.String, file: Swift.String = #fileID, line: Swift.UInt = #line) -> TravelDocumentReader.ASN1Error
+  @inline(never) public static func truncatedASN1Field(file: Swift.String = #fileID, line: Swift.UInt = #line) -> TravelDocumentReader.ASN1Error
+  @inline(never) public static func unsupportedFieldLength(reason: Swift.String, file: Swift.String = #fileID, line: Swift.UInt = #line) -> TravelDocumentReader.ASN1Error
+  @inline(never) public static func invalidPEMDocument(reason: Swift.String, file: Swift.String = #fileID, line: Swift.UInt = #line) -> TravelDocumentReader.ASN1Error
+  @inline(never) public static func invalidStringRepresentation(reason: Swift.String, file: Swift.String = #fileID, line: Swift.UInt = #line) -> TravelDocumentReader.ASN1Error
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (a: TravelDocumentReader.ASN1Error, b: TravelDocumentReader.ASN1Error) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension TravelDocumentReader.ASN1Error {
+  public struct ErrorCode : Swift.Hashable, Swift.Sendable, Swift.CustomStringConvertible {
+    public static let unexpectedFieldType: TravelDocumentReader.ASN1Error.ErrorCode
+    public static let invalidASN1Object: TravelDocumentReader.ASN1Error.ErrorCode
+    public static let invalidASN1IntegerEncoding: TravelDocumentReader.ASN1Error.ErrorCode
+    public static let truncatedASN1Field: TravelDocumentReader.ASN1Error.ErrorCode
+    public static let unsupportedFieldLength: TravelDocumentReader.ASN1Error.ErrorCode
+    public static let invalidPEMDocument: TravelDocumentReader.ASN1Error.ErrorCode
+    public static let invalidStringRepresentation: TravelDocumentReader.ASN1Error.ErrorCode
+    public var description: Swift.String {
+      get
+    }
+    public func hash(into hasher: inout Swift.Hasher)
+    public static func == (a: TravelDocumentReader.ASN1Error.ErrorCode, b: TravelDocumentReader.ASN1Error.ErrorCode) -> Swift.Bool
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+}
+public enum ChipAccessControl : Swift.Int {
+  case bac, pace
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+public struct SubjectPublicKeyInfo {
+  public let algorithm: TravelDocumentReader.AlgorithmIdentifier
+  public let subjectPublicKey: TravelDocumentReader.ASN1BitString
+}
+extension TravelDocumentReader.SubjectPublicKeyInfo : Swift.Hashable {
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (a: TravelDocumentReader.SubjectPublicKeyInfo, b: TravelDocumentReader.SubjectPublicKeyInfo) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension TravelDocumentReader.SubjectPublicKeyInfo : TravelDocumentReader.DERImplicitlyTaggable {
+  public func serialize(into coder: inout TravelDocumentReader.DER.Serializer, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws
+  public init(derEncoded: TravelDocumentReader.ASN1Node, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws
+  public static var defaultIdentifier: TravelDocumentReader.ASN1Identifier {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers public class FaceImageInfo {
+  @objc public func getImageData() -> Foundation.Data
+  @objc deinit
+}
+public struct AlgorithmIdentifier {
+  public let algorithm: TravelDocumentReader.ASN1ObjectIdentifier
+  public let parameters: TravelDocumentReader.ASN1Any?
+}
+extension TravelDocumentReader.AlgorithmIdentifier : Swift.Hashable {
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (a: TravelDocumentReader.AlgorithmIdentifier, b: TravelDocumentReader.AlgorithmIdentifier) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension TravelDocumentReader.AlgorithmIdentifier : TravelDocumentReader.DERImplicitlyTaggable {
+  public func serialize(into coder: inout TravelDocumentReader.DER.Serializer, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws
+  public init(derEncoded: TravelDocumentReader.ASN1Node, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws
+  public static var defaultIdentifier: TravelDocumentReader.ASN1Identifier {
+    get
+  }
+}
+@frozen public struct ASN1BitString : TravelDocumentReader.DERImplicitlyTaggable {
+  @inlinable public static var defaultIdentifier: TravelDocumentReader.ASN1Identifier {
+    get {
+        .bitString
+    }
+  }
+  @_hasStorage public var bytes: Swift.ArraySlice<Swift.UInt8> {
+    get
+    set
+  }
+  @_hasStorage public var paddingBits: Swift.Int {
+    get
+    set
+  }
+  @inlinable public init(derEncoded node: TravelDocumentReader.ASN1Node, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws {
+        guard node.identifier == identifier else {
+            throw ASN1Error.unexpectedFieldType(node.identifier)
+        }
+
+        guard case .primitive(let content) = node.content else {
+            preconditionFailure("ASN.1 parser generated primitive node with constructed content")
+        }
+
+        // The initial octet explains how many of the bits in the _final_ octet are not part of the bitstring.
+        guard let paddingBits = content.first, (0..<8).contains(paddingBits) else {
+            throw ASN1Error.invalidASN1Object(reason: "Unable to determine a valid number of padding bits for ASN1BitString")
+        }
+
+        self.paddingBits = Int(paddingBits)
+        self.bytes = content.dropFirst()
+
+        try self._validate()
+    }
+  @inlinable public init(bytes: Swift.ArraySlice<Swift.UInt8>, paddingBits: Swift.Int = 0) {
+        self.bytes = bytes
+        self.paddingBits = paddingBits
+        try! self._validate()
+    }
+  @inlinable public func serialize(into coder: inout TravelDocumentReader.DER.Serializer, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws {
+        coder.appendPrimitiveNode(identifier: identifier) { bytes in
+            bytes.append(UInt8(truncatingIfNeeded: self.paddingBits))
+            bytes.append(contentsOf: self.bytes)
+        }
+    }
+  @inlinable internal func _validate() throws {
+        guard let finalByte = self.bytes.last else {
+            if self.paddingBits != 0 {
+                // If there are no bytes, there must be no padding bits.
+                throw ASN1Error.invalidASN1Object(reason: "Invalid number of padding bits for ASN1BitString: \(self.paddingBits)")
+            }
+
+            return
+        }
+
+        // Oooh, bit twiddling.
+        //
+        // All joking aside, this sets the bottom `self.paddingBits` to 1.
+        let mask = ~(UInt8.max << self.paddingBits)
+        if (finalByte & mask) != 0 {
+            throw ASN1Error.invalidASN1Object(reason: "Invalid padding bits in ASN1BitString: \(self.paddingBits) of padding, \(finalByte) final byte")
+        }
+    }
+}
+extension TravelDocumentReader.ASN1BitString : Swift.Hashable {
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (a: TravelDocumentReader.ASN1BitString, b: TravelDocumentReader.ASN1BitString) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension TravelDocumentReader.ASN1BitString : Swift.Sendable {
+}
+extension TravelDocumentReader.ASN1BitString {
+  @inlinable public func withUnsafeBytes<R>(_ body: (Swift.UnsafeRawBufferPointer) throws -> R) rethrows -> R {
+        return try self.bytes.withUnsafeBytes(body)
+    }
+}
+@usableFromInline
+internal enum TimeUtilities {
+  @inlinable internal static func generalizedTimeFromBytes(_ bytes: Swift.ArraySlice<Swift.UInt8>) throws -> TravelDocumentReader.GeneralizedTime {
+        var bytes = bytes
+
+        // First, there must always be a calendar date. No separators, 4
+        // digits for the year, 2 digits for the month, 2 digits for the day.
+        guard let rawYear = bytes._readFourDigitDecimalInteger(),
+              let rawMonth = bytes._readTwoDigitDecimalInteger(),
+              let rawDay = bytes._readTwoDigitDecimalInteger() else {
+            throw ASN1Error.invalidASN1Object(reason: "Unable to load year, month, and day for GeneralizedTime")
+        }
+
+        // Next there must be a _time_. Per DER rules, this time must always go
+        // to at least seconds, there are no separators, there is no time-zone (but there must be a 'Z'),
+        // and there may be fractional seconds but they must not have trailing zeros.
+        guard let rawHour = bytes._readTwoDigitDecimalInteger(),
+              let rawMinutes = bytes._readTwoDigitDecimalInteger(),
+              let rawSeconds = bytes._readTwoDigitDecimalInteger() else {
+            throw ASN1Error.invalidASN1Object(reason: "Unable to load hour, minutes, and seconds for GeneralizedTime")
+        }
+
+        // There may be some fractional seconds.
+        var fractionalSeconds: Double = 0
+        if bytes.first == UInt8(ascii: ".") {
+            fractionalSeconds = try bytes._readFractionalSeconds()
+        }
+
+        // The next character _must_ be Z, or the encoding is invalid.
+        guard bytes.popFirst() == UInt8(ascii: "Z") else {
+            throw ASN1Error.invalidASN1Object(reason: "Invalid time zone in GeneralizedTime")
+        }
+
+        // Great! There better not be anything left.
+        guard bytes.count == 0 else {
+            throw ASN1Error.invalidASN1Object(reason: "Trailing bytes in GeneralizedTime")
+        }
+
+        return try GeneralizedTime(year: rawYear,
+                                   month: rawMonth,
+                                   day: rawDay,
+                                   hours: rawHour,
+                                   minutes: rawMinutes,
+                                   seconds: rawSeconds,
+                                   fractionalSeconds: fractionalSeconds)
+    }
+  @inlinable internal static func utcTimeFromBytes(_ bytes: Swift.ArraySlice<Swift.UInt8>) throws -> TravelDocumentReader.UTCTime {
+        var bytes = bytes
+
+        // First, there must always be a calendar date. No separators, 2
+        // digits for the year, 2 digits for the month, 2 digits for the day.
+        guard let rawYear = bytes._readTwoDigitDecimalInteger(),
+              let rawMonth = bytes._readTwoDigitDecimalInteger(),
+              let rawDay = bytes._readTwoDigitDecimalInteger() else {
+            throw ASN1Error.invalidASN1Object(reason: "Unable to load year, month, and day for UTCTime")
+        }
+
+        // Next there must be a _time_. Per DER rules, this time must always go
+        // to at least seconds, there are no separators, there is no time-zone (but there must be a 'Z').
+        guard let rawHour = bytes._readTwoDigitDecimalInteger(),
+              let rawMinutes = bytes._readTwoDigitDecimalInteger(),
+              let rawSeconds = bytes._readTwoDigitDecimalInteger() else {
+            throw ASN1Error.invalidASN1Object(reason: "Unable to load hour, minutes, and seconds for UTCTime")
+        }
+
+        // The next character _must_ be Z, or the encoding is invalid.
+        guard bytes.popFirst() == UInt8(ascii: "Z") else {
+            throw ASN1Error.invalidASN1Object(reason: "Invalid time zone in UTCTime")
+        }
+
+        // Great! There better not be anything left.
+        guard bytes.count == 0 else {
+            throw ASN1Error.invalidASN1Object(reason: "Trailing bytes in UTCTime")
+        }
+
+        let actualYear = rawYear < 50 ? rawYear &+ 2000 : rawYear &+ 1900
+
+        return try UTCTime(year: actualYear,
+                           month: rawMonth,
+                           day: rawDay,
+                           hours: rawHour,
+                           minutes: rawMinutes,
+                           seconds: rawSeconds)
+    }
+  @inlinable internal static func daysInMonth(_ month: Swift.Int, ofYear year: Swift.Int) -> Swift.Int? {
+        switch month {
+        case 1:
+            return 31
+        case 2:
+            // This one has a dependency on the year!
+            // A leap year occurs in any year divisible by 4, except when that year is divisible by 100,
+            // unless the year is divisible by 400.
+            let isLeapYear = (year % 4 == 0) && ((year % 100 != 0) || (year % 400 == 0))
+            return isLeapYear ? 29 : 28
+        case 3:
+            return 31
+        case 4:
+            return 30
+        case 5:
+            return 31
+        case 6:
+            return 30
+        case 7:
+            return 31
+        case 8:
+            return 31
+        case 9:
+            return 30
+        case 10:
+            return 31
+        case 11:
+            return 30
+        case 12:
+            return 31
+        default:
+            return nil
+        }
+    }
+}
+extension Swift.ArraySlice where Element == Swift.UInt8 {
+  @inlinable internal mutating func _readFourDigitDecimalInteger() -> Swift.Int? {
+        guard let first = self._readTwoDigitDecimalInteger(),
+              let second = self._readTwoDigitDecimalInteger() else {
+            return nil
+        }
+
+        // Unchecked math is still safe here: we're in Int32 space, and this number cannot
+        // get any larger than 9999.
+        return (first &* 100) &+ second
+    }
+  @inlinable internal mutating func _readTwoDigitDecimalInteger() -> Swift.Int? {
+        guard let firstASCII = self.popFirst(),
+              let secondASCII = self.popFirst() else {
+            return nil
+        }
+
+        guard let first = Int(fromDecimalASCII: firstASCII),
+              let second = Int(fromDecimalASCII: secondASCII) else {
+            return nil
+        }
+
+        // Unchecked math is safe here: we're in Int32 space at the very least, and this number cannot
+        // possibly be smaller than zero or larger than 99.
+        return (first &* 10) &+ (second)
+    }
+  @inlinable internal mutating func _readFractionalSeconds() throws -> Swift.Double {
+        precondition(self.popFirst() == UInt8(ascii: "."))
+
+        var numerator = 0
+        var denominator = 1
+
+        while let nextASCII = self.first, let next = Int(fromDecimalASCII: nextASCII)  {
+            self = self.dropFirst()
+
+            let (newNumerator, multiplyOverflow) = numerator.multipliedReportingOverflow(by: 10)
+            let (newDenominator, secondMultiplyOverflow) = denominator.multipliedReportingOverflow(by: 10)
+            let (newNumeratorWithAdded, addingOverflow) = newNumerator.addingReportingOverflow(next)
+
+            // If the new denominator overflows, we just cap to the old value.
+            if !secondMultiplyOverflow {
+                denominator = newDenominator
+            }
+
+            // If the numerator overflows, we don't support the result.
+            if multiplyOverflow || addingOverflow {
+                throw ASN1Error.invalidASN1Object(reason: "Numerator overflow when calculating fractional seconds")
+            }
+
+            numerator = newNumeratorWithAdded
+        }
+
+        // Ok, we're either at the end or the next character is a Z. One final check: there may not have
+        // been any trailing zeros here. This means the number may not be 0 mod 10.
+        if numerator % 10 == 0 {
+            throw ASN1Error.invalidASN1Object(reason: "Trailing zeros in fractional seconds")
+        }
+
+        return Double(numerator) / Double(denominator)
+    }
+}
+extension Swift.Array where Element == Swift.UInt8 {
+  @inlinable internal mutating func append(_ generalizedTime: TravelDocumentReader.GeneralizedTime) {
+        self._appendFourDigitDecimal(generalizedTime.year)
+        self._appendTwoDigitDecimal(generalizedTime.month)
+        self._appendTwoDigitDecimal(generalizedTime.day)
+        self._appendTwoDigitDecimal(generalizedTime.hours)
+        self._appendTwoDigitDecimal(generalizedTime.minutes)
+        self._appendTwoDigitDecimal(generalizedTime.seconds)
+
+        // Ok, tricky moment here. Is the fractional part non-zero? If it is, we need to write it out as well.
+        if generalizedTime.fractionalSeconds != 0 {
+            let stringified = String(generalizedTime.fractionalSeconds)
+            assert(stringified.starts(with: "0."))
+
+            self.append(contentsOf: stringified.utf8.dropFirst(1))
+            // Remove any trailing zeros from self, they are forbidden.
+            while self.last == 0 {
+                self = self.dropLast()
+            }
+        }
+
+        self.append(UInt8(ascii: "Z"))
+    }
+  @inlinable internal mutating func append(_ utcTime: TravelDocumentReader.UTCTime) {
+        precondition((1950..<2050).contains(utcTime.year))
+        if utcTime.year >= 2000 {
+            self._appendTwoDigitDecimal(utcTime.year &- 2000)
+        } else {
+            self._appendTwoDigitDecimal(utcTime.year &- 1900)
+        }
+        self._appendTwoDigitDecimal(utcTime.month)
+        self._appendTwoDigitDecimal(utcTime.day)
+        self._appendTwoDigitDecimal(utcTime.hours)
+        self._appendTwoDigitDecimal(utcTime.minutes)
+        self._appendTwoDigitDecimal(utcTime.seconds)
+        self.append(UInt8(ascii: "Z"))
+    }
+  @inlinable internal mutating func _appendFourDigitDecimal(_ number: Swift.Int) {
+        assert(number >= 0 && number <= 9999)
+
+        // Each digit can be isolated by dividing by the place and then taking the result modulo 10.
+        // This is annoyingly division heavy. There may be a better algorithm floating around.
+        // Unchecked math is fine, there cannot be an overflow here.
+        let asciiZero = UInt8(ascii: "0")
+        self.append(UInt8(truncatingIfNeeded: (number / 1000) % 10) &+ asciiZero)
+        self.append(UInt8(truncatingIfNeeded: (number / 100) % 10) &+ asciiZero)
+        self.append(UInt8(truncatingIfNeeded: (number / 10) % 10) &+ asciiZero)
+        self.append(UInt8(truncatingIfNeeded: number % 10) &+ asciiZero)
+    }
+  @inlinable internal mutating func _appendTwoDigitDecimal(_ number: Swift.Int) {
+        assert(number >= 0 && number <= 99)
+
+        // Each digit can be isolated by dividing by the place and then taking the result modulo 10.
+        // This is annoyingly division heavy. There may be a better algorithm floating around.
+        // Unchecked math is fine, there cannot be an overflow here.
+        let asciiZero = UInt8(ascii: "0")
+        self.append(UInt8(truncatingIfNeeded: (number / 10) % 10) &+ asciiZero)
+        self.append(UInt8(truncatingIfNeeded: number % 10) &+ asciiZero)
+    }
+}
+extension Swift.Int {
+  @inlinable internal init?(fromDecimalASCII ascii: Swift.UInt8) {
+        let asciiZero = UInt8(ascii: "0")
+        let zeroToNine = 0...9
+
+        // These are all coming from UInt8space, the subtraction cannot overflow.
+        let converted = Int(ascii) &- Int(asciiZero)
+
+        guard zeroToNine.contains(converted) else {
+            return nil
+        }
+
+        self = converted
+    }
+}
+public struct ChipAuthenticationInfo {
+  public let oid: TravelDocumentReader.ASN1ObjectIdentifier
+  public let version: Swift.ArraySlice<Swift.UInt8>
+  public let keyId: Swift.ArraySlice<Swift.UInt8>?
+}
+extension TravelDocumentReader.ChipAuthenticationInfo : Swift.Hashable {
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (a: TravelDocumentReader.ChipAuthenticationInfo, b: TravelDocumentReader.ChipAuthenticationInfo) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension TravelDocumentReader.ChipAuthenticationInfo {
+  public static func check(requiredIdentifier oid: Swift.String) -> Swift.Bool
+}
+extension TravelDocumentReader.ChipAuthenticationInfo {
+  #if compiler(>=5.3) && $EffectfulProp
+  public var cipherAlgorithm: TravelDocumentReader.CipherAlgorithm {
+    get throws
+  }
+  #endif
+  #if compiler(>=5.3) && $EffectfulProp
+  public var keyLength: Swift.Int {
+    get throws
+  }
+  #endif
+}
+@frozen public struct GeneralizedTime : TravelDocumentReader.DERImplicitlyTaggable, Swift.Hashable, Swift.Sendable {
+  @inlinable public static var defaultIdentifier: TravelDocumentReader.ASN1Identifier {
+    get {
+        .generalizedTime
+    }
+  }
+  @inlinable public var year: Swift.Int {
+    get {
+            return self._year
+        }
+    set {
+            self._year = newValue
+            try! self._validate()
+        }
+  }
+  @inlinable public var month: Swift.Int {
+    get {
+            return self._month
+        }
+    set {
+            self._month = newValue
+            try! self._validate()
+        }
+  }
+  @inlinable public var day: Swift.Int {
+    get {
+            return self._day
+        }
+    set {
+            self._day = newValue
+            try! self._validate()
+        }
+  }
+  @inlinable public var hours: Swift.Int {
+    get {
+            return self._hours
+        }
+    set {
+            self._hours = newValue
+            try! self._validate()
+        }
+  }
+  @inlinable public var minutes: Swift.Int {
+    get {
+            return self._minutes
+        }
+    set {
+            self._minutes = newValue
+            try! self._validate()
+        }
+  }
+  @inlinable public var seconds: Swift.Int {
+    get {
+            return self._seconds
+        }
+    set {
+            self._seconds = newValue
+            try! self._validate()
+        }
+  }
+  @inlinable public var fractionalSeconds: Swift.Double {
+    get {
+            return self._fractionalSeconds
+        }
+    set {
+            self._fractionalSeconds = newValue
+            try! self._validate()
+        }
+  }
+  @usableFromInline
+  internal var _year: Swift.Int
+  @usableFromInline
+  internal var _month: Swift.Int
+  @usableFromInline
+  internal var _day: Swift.Int
+  @usableFromInline
+  internal var _hours: Swift.Int
+  @usableFromInline
+  internal var _minutes: Swift.Int
+  @usableFromInline
+  internal var _seconds: Swift.Int
+  @usableFromInline
+  internal var _fractionalSeconds: Swift.Double
+  @inlinable public init(year: Swift.Int, month: Swift.Int, day: Swift.Int, hours: Swift.Int, minutes: Swift.Int, seconds: Swift.Int, fractionalSeconds: Swift.Double) throws {
+        self._year = year
+        self._month = month
+        self._day = day
+        self._hours = hours
+        self._minutes = minutes
+        self._seconds = seconds
+        self._fractionalSeconds = fractionalSeconds
+
+        try self._validate()
+    }
+  @inlinable public init(derEncoded node: TravelDocumentReader.ASN1Node, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws {
+        guard node.identifier == identifier else {
+            throw ASN1Error.unexpectedFieldType(node.identifier)
+        }
+
+        guard case .primitive(let content) = node.content else {
+            preconditionFailure("ASN.1 parser generated primitive node with constructed content")
+        }
+
+        self = try TimeUtilities.generalizedTimeFromBytes(content)
+    }
+  @inlinable public func serialize(into coder: inout TravelDocumentReader.DER.Serializer, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws {
+        coder.appendPrimitiveNode(identifier: identifier) { bytes in
+            bytes.append(self)
+        }
+    }
+  @inlinable internal func _validate() throws {
+        // Validate that the structure is well-formed.
+        guard self._year >= 0 && self._year <= 9999 else {
+            throw ASN1Error.invalidASN1Object(reason: "Invalid year for GeneralizedTime \(self._year)")
+        }
+
+        // This also validates the month.
+        guard let daysInMonth = TimeUtilities.daysInMonth(self._month, ofYear: self._year) else {
+            throw ASN1Error.invalidASN1Object(reason: "Invalid month \(self._month) of year \(self.year) for GeneralizedTime")
+        }
+
+        guard self._day >= 1 && self._day <= daysInMonth else {
+            throw ASN1Error.invalidASN1Object(reason: "Invalid day \(self._day) of month \(self._month) for GeneralizedTime")
+        }
+
+        guard self._hours >= 0 && self._hours < 24 else {
+            throw ASN1Error.invalidASN1Object(reason: "Invalid hour for GeneralizedTime \(self._hours)")
+        }
+
+        guard self._minutes >= 0 && self._minutes < 60 else {
+            throw ASN1Error.invalidASN1Object(reason: "Invalid minute for GeneralizedTime \(self._minutes)")
+        }
+
+        // We allow leap seconds here, but don't validate it.
+        // This exposes us to potential confusion if we naively implement
+        // comparison here. We should consider whether this needs to be transformable
+        // to `Date` or similar.
+        guard self._seconds >= 0 && self._seconds <= 61 else {
+            throw ASN1Error.invalidASN1Object(reason: "Invalid seconds for Generalized \(self._seconds)")
+        }
+
+        // Fractional seconds may not be negative and may not be 1 or more.
+        guard self._fractionalSeconds >= 0 && self._fractionalSeconds < 1 else {
+            throw ASN1Error.invalidASN1Object(reason: "Invalid fractional seconds for GeneralizedTime \(self._fractionalSeconds)")
+        }
+    }
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (a: TravelDocumentReader.GeneralizedTime, b: TravelDocumentReader.GeneralizedTime) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public enum EstablishmentMethod {
+  case im, gm, cam
+  public static func == (a: TravelDocumentReader.EstablishmentMethod, b: TravelDocumentReader.EstablishmentMethod) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension Swift.ArraySlice : TravelDocumentReader.DERSerializable where Element == Swift.UInt8 {
+}
+extension Swift.ArraySlice : TravelDocumentReader.DERParseable where Element == Swift.UInt8 {
+}
+extension Swift.ArraySlice : TravelDocumentReader.DERImplicitlyTaggable where Element == Swift.UInt8 {
+}
+extension Swift.ArraySlice : TravelDocumentReader.ASN1IntegerRepresentable where Element == Swift.UInt8 {
+  @inlinable public static var isSigned: Swift.Bool {
+    get {
+        return false
+    }
+  }
+  @inlinable public init(derIntegerBytes: Swift.ArraySlice<Swift.UInt8>) throws {
+        self = derIntegerBytes
+    }
+  @inlinable public func withBigEndianIntegerBytes<ReturnType>(_ body: (Swift.ArraySlice<Swift.UInt8>) throws -> ReturnType) rethrows -> ReturnType {
+        return try body(self)
+    }
+  public typealias IntegerBytes = Swift.ArraySlice<Swift.UInt8>
+}
+public struct BACKey : TravelDocumentReader.AccessKey {
+  public var chipAccessControl: TravelDocumentReader.ChipAccessControl {
+    get
+  }
+  public var key: Foundation.Data {
+    get
+  }
+  public init(documentNumber: Swift.String, dateOfBirth: Swift.String, dateOfExpiry: Swift.String)
+}
+@frozen public struct ASN1Identifier {
+  public var tagNumber: Swift.UInt
+  public var tagClass: TravelDocumentReader.ASN1Identifier.TagClass
+  @inlinable internal var _shortForm: Swift.UInt8? {
+    get {
+        // An ASN.1 identifier can be encoded in short form iff the tag number is strictly
+        // less than 0x1f.
+        guard self.tagNumber < 0x1f else { return nil }
+
+        var baseNumber = UInt8(truncatingIfNeeded: self.tagNumber)
+        baseNumber |= self.tagClass._topByteFlags
+        return baseNumber
+    }
+  }
+  @frozen public enum TagClass : Swift.Hashable, Swift.Sendable {
+    case universal
+    case application
+    case contextSpecific
+    case `private`
+    @inlinable internal init(topByteInWireFormat topByte: Swift.UInt8) {
+            switch topByte >> 6 {
+            case 0x00:
+                self = .universal
+            case 0x01:
+                self = .application
+            case 0x02:
+                self = .contextSpecific
+            case 0x03:
+                self = .private
+            default:
+                fatalError("Unreachable")
+            }
+        }
+    @inlinable internal var _topByteFlags: Swift.UInt8 {
+      get {
+            switch self {
+            case .universal:
+                return 0x00
+            case .application:
+                return 0x01 << 6
+            case .contextSpecific:
+                return 0x02 << 6
+            case .private:
+                return 0x03 << 6
+            }
+        }
+    }
+    public static func == (a: TravelDocumentReader.ASN1Identifier.TagClass, b: TravelDocumentReader.ASN1Identifier.TagClass) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  @inlinable internal init(shortIdentifier: Swift.UInt8) {
+        precondition(shortIdentifier & 0x1F != 0x1F)
+        self.tagClass = TagClass(topByteInWireFormat: shortIdentifier)
+        self.tagNumber = UInt(shortIdentifier & 0x1f)
+    }
+  @inlinable public init(tagWithNumber number: Swift.UInt, tagClass: TravelDocumentReader.ASN1Identifier.TagClass) {
+        self.tagNumber = number
+        self.tagClass = tagClass
+    }
+}
+extension TravelDocumentReader.ASN1Identifier {
+  public static let objectIdentifier: TravelDocumentReader.ASN1Identifier
+  public static let bitString: TravelDocumentReader.ASN1Identifier
+  public static let octetString: TravelDocumentReader.ASN1Identifier
+  public static let integer: TravelDocumentReader.ASN1Identifier
+  public static let sequence: TravelDocumentReader.ASN1Identifier
+  public static let set: TravelDocumentReader.ASN1Identifier
+  public static let null: TravelDocumentReader.ASN1Identifier
+  public static let boolean: TravelDocumentReader.ASN1Identifier
+  public static let enumerated: TravelDocumentReader.ASN1Identifier
+  public static let utf8String: TravelDocumentReader.ASN1Identifier
+  public static let numericString: TravelDocumentReader.ASN1Identifier
+  public static let printableString: TravelDocumentReader.ASN1Identifier
+  public static let teletexString: TravelDocumentReader.ASN1Identifier
+  public static let videotexString: TravelDocumentReader.ASN1Identifier
+  public static let ia5String: TravelDocumentReader.ASN1Identifier
+  public static let graphicString: TravelDocumentReader.ASN1Identifier
+  public static let visibleString: TravelDocumentReader.ASN1Identifier
+  public static let generalString: TravelDocumentReader.ASN1Identifier
+  public static let universalString: TravelDocumentReader.ASN1Identifier
+  public static let bmpString: TravelDocumentReader.ASN1Identifier
+  public static let generalizedTime: TravelDocumentReader.ASN1Identifier
+  public static let utcTime: TravelDocumentReader.ASN1Identifier
+}
+extension TravelDocumentReader.ASN1Identifier : Swift.Hashable {
+  public static func == (a: TravelDocumentReader.ASN1Identifier, b: TravelDocumentReader.ASN1Identifier) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension TravelDocumentReader.ASN1Identifier : Swift.Sendable {
+}
+extension TravelDocumentReader.ASN1Identifier : Swift.CustomStringConvertible {
+  @inlinable public var description: Swift.String {
+    get {
+        return "ASN1Identifier(tagNumber: \(self.tagNumber), tagClass: \(self.tagClass))"
+    }
+  }
+}
+extension Swift.Array where Element == Swift.UInt8 {
+  @inlinable internal mutating func writeIdentifier(_ identifier: TravelDocumentReader.ASN1Identifier, constructed: Swift.Bool) {
+        if var shortForm = identifier._shortForm {
+            if constructed {
+                shortForm |= 0x20
+            }
+            self.append(shortForm)
+        } else {
+            // Long-form encoded. The top byte is 0x1f plus the various flags.
+            var topByte = UInt8(0x1f)
+            if constructed {
+                topByte |= 0x20
+            }
+            topByte |= identifier.tagClass._topByteFlags
+            self.append(topByte)
+
+            // Then we encode this in base128, just like an OID subidentifier.
+            // TODO: Adjust the ASN1Identifier to use UInt for its storage.
+            self.writeUsing7BitBytesASN1Discipline(unsignedInteger: UInt(identifier.tagNumber))
+        }
+    }
+}
+public struct PACEKey : TravelDocumentReader.AccessKey {
+  public var chipAccessControl: TravelDocumentReader.ChipAccessControl {
+    get
+  }
+  public var key: Foundation.Data {
+    get
+  }
+  public init(documentNumber: Swift.String, dateOfBirth: Swift.String, dateOfExpiry: Swift.String)
+}
+public protocol PassportServiceDelegate : AnyObject {
+  func passportService(_ service: TravelDocumentReader.PassportService, willRead file: TravelDocumentReader.ElementaryFile)
+  func passportService(_ service: TravelDocumentReader.PassportService, didFailReading file: TravelDocumentReader.ElementaryFile, withError error: any Swift.Error)
+  func passportService(_ service: TravelDocumentReader.PassportService, didRead file: TravelDocumentReader.ElementaryFile, withValue value: Foundation.Data)
+  func passportService(_ service: TravelDocumentReader.PassportService, willRead files: [TravelDocumentReader.ElementaryFile], withTotalLengthOf length: Swift.UInt64)
+  func passportService(_ service: TravelDocumentReader.PassportService, didRead bytes: Swift.UInt64, totalBytesRead: Swift.UInt64, totalBytesExpectedToRead: Swift.UInt64)
+  func passportService(_ service: TravelDocumentReader.PassportService, didRead files: [TravelDocumentReader.ElementaryFile])
+}
+@available(iOS 13, macOS 10.15, *)
+public enum CertificateType {
+  case documentSigningCertificate
+  case issuerSigningCertificate
+  public static func == (a: TravelDocumentReader.CertificateType, b: TravelDocumentReader.CertificateType) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+@available(iOS 13, macOS 10.15, *)
+public enum CertificateItem : Swift.String {
+  case fingerprint
+  case issuerName
+  case subjectName
+  case serialNumber
+  case signatureAlgorithm
+  case publicKeyAlgorithm
+  case notBefore
+  case notAfter
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+@available(iOS 13, macOS 10.15, *)
+public class X509Wrapper {
+  final public let cert: Swift.OpaquePointer
+  public init?(with cert: Swift.OpaquePointer?)
+  public func getItemsAsDict() -> [TravelDocumentReader.CertificateItem : Swift.String]
+  public func certToPEM() -> Swift.String
+  public func getFingerprint() -> Swift.String?
+  public func getNotBeforeDate() -> Swift.String?
+  public func getNotAfterDate() -> Swift.String?
+  public func getSerialNumber() -> Swift.String?
+  public func getSignatureAlgorithm() -> Swift.String?
+  public func getPublicKeyAlgorithm() -> Swift.String?
+  public func getIssuerName() -> Swift.String?
+  public func getSubjectName() -> Swift.String?
+  @objc deinit
+}
+public enum SecurityInfo : TravelDocumentReader.DERImplicitlyTaggable {
+  case pace(TravelDocumentReader.PACEInfo)
+  case chipAuthentication(TravelDocumentReader.ChipAuthenticationInfo)
+  case chipAuthenticationPublicKey(TravelDocumentReader.ChipAuthenticationPublicKeyInfo)
+  case unsupported
+  public func serialize(into coder: inout TravelDocumentReader.DER.Serializer, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws
+  public init(derEncoded: TravelDocumentReader.ASN1Node, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws
+  public static var defaultIdentifier: TravelDocumentReader.ASN1Identifier {
+    get
+  }
+}
+extension TravelDocumentReader.SecurityInfo : Swift.Hashable {
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (lhs: TravelDocumentReader.SecurityInfo, rhs: TravelDocumentReader.SecurityInfo) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+@objc @_inheritsConvenienceInitializers public class PassportReaderSession : ObjectiveC.NSObject {
+  @objc override dynamic public init()
+  convenience public init(delegate: any TravelDocumentReader.PassportReaderSessionDelegate)
+  @objc deinit
+}
+extension TravelDocumentReader.PassportReaderSession {
+  public var isReady: Swift.Bool {
+    get
+  }
+  public var alertMessage: Swift.String {
+    get
+    set
+  }
+}
+extension TravelDocumentReader.PassportReaderSession {
+  public func begin(alertMessage: Swift.String)
+  public func invalidate(errorMessage message: Swift.String? = nil)
+}
+extension TravelDocumentReader.PassportReaderSession : CoreNFC.NFCTagReaderSessionDelegate {
+  public func tagReaderSessionDidBecomeActive(_ session: CoreNFC.NFCTagReaderSession)
+  public func tagReaderSession(_ session: CoreNFC.NFCTagReaderSession, didInvalidateWithError error: any Swift.Error)
+  public func tagReaderSession(_ session: CoreNFC.NFCTagReaderSession, didDetect tags: [CoreNFC.NFCTag])
+}
+public class DG2File {
+  @objc public var faceImageInfos: Foundation.NSArray
+  @objc public init(data: Foundation.Data)
+  @objc deinit
+}
+public class DG1File {
+  public var mrz: Swift.String? {
+    get
+  }
+  public var documentCode: Swift.String? {
+    get
+  }
+  public var issuingState: Swift.String? {
+    get
+  }
+  public var primaryIdentifier: Swift.String? {
+    get
+  }
+  public var secondayIdentifier: Swift.String? {
+    get
+  }
+  public var documentNumber: Swift.String? {
+    get
+  }
+  public var nationality: Swift.String? {
+    get
+  }
+  public var dateOfBirth: Swift.String? {
+    get
+  }
+  public var gender: Swift.String? {
+    get
+  }
+  public var dateOfExpiry: Swift.String? {
+    get
+  }
+  public init(data: Foundation.Data)
+  @objc deinit
+}
+public class PassportService {
+  weak public var delegate: (any TravelDocumentReader.PassportServiceDelegate)?
+  public init(tag: any CoreNFC.NFCISO7816Tag)
+  #if compiler(>=5.3) && $AsyncAwait
+  public func readCardAccess() async -> TravelDocumentReader.CardAccessFile?
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  public func doBAC(withAccessKey accessKey: any TravelDocumentReader.AccessKey) async
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  public func doPACE(withAccessKey accessKey: any TravelDocumentReader.AccessKey, paceInfo: TravelDocumentReader.PACEInfo) async throws
+  #endif
+  @objc deinit
+}
+extension TravelDocumentReader.PassportService {
+  #if compiler(>=5.3) && $AsyncAwait
+  public func doChipAuthentication(dg14: TravelDocumentReader.DG14File) async throws
+  #endif
+}
+extension TravelDocumentReader.PassportService {
+  #if compiler(>=5.3) && $AsyncAwait
+  public func read(file: TravelDocumentReader.ElementaryFile) async throws -> Foundation.Data
+  #endif
+  #if compiler(>=5.3) && $AsyncAwait
+  public func read(files: [TravelDocumentReader.ElementaryFile]) async -> [Foundation.Data]
+  #endif
+}
+public enum PassportServiceError : Swift.Error {
+  case paceError(_: Swift.String? = nil), tagEerror(_: Swift.String), chipAuthenticationNotSupported, paceNotSupported, fileSystemNotInitialized, readError(_: Swift.String)
+}
+public struct DG14File {
+  public let securityInfos: Swift.Set<TravelDocumentReader.SecurityInfo>
+  public init(data: Foundation.Data)
+}
+extension TravelDocumentReader.DG14File : TravelDocumentReader.DERImplicitlyTaggable {
+  public func serialize(into coder: inout TravelDocumentReader.DER.Serializer, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws
+  public init(derEncoded: TravelDocumentReader.ASN1Node, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws
+  public static var defaultIdentifier: TravelDocumentReader.ASN1Identifier {
+    get
+  }
+}
+@frozen public struct ASN1Any : TravelDocumentReader.DERParseable, TravelDocumentReader.DERSerializable, Swift.Hashable, Swift.Sendable {
+  @usableFromInline
+  internal var _serializedBytes: Swift.ArraySlice<Swift.UInt8>
+  @inlinable public init<ASN1Type>(erasing: ASN1Type) throws where ASN1Type : TravelDocumentReader.DERSerializable {
+        var serializer = DER.Serializer()
+        try erasing.serialize(into: &serializer)
+        self._serializedBytes = ArraySlice(serializer._serializedBytes)
+    }
+  @inlinable public init<ASN1Type>(erasing: ASN1Type, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws where ASN1Type : TravelDocumentReader.DERImplicitlyTaggable {
+        var serializer = DER.Serializer()
+        try erasing.serialize(into: &serializer, withIdentifier: identifier)
+        self._serializedBytes = ArraySlice(serializer._serializedBytes)
+    }
+  @inlinable public init(derEncoded rootNode: TravelDocumentReader.ASN1Node) {
+        // This is a bit sad: we just re-serialize this data. In an ideal world
+        // we'd update the parse representation so that all nodes can point at their
+        // complete backing storage, but for now this is better.
+        var serializer = DER.Serializer()
+        serializer.serialize(rootNode)
+        self._serializedBytes = ArraySlice(serializer._serializedBytes)
+    }
+  @inlinable public func serialize(into coder: inout TravelDocumentReader.DER.Serializer) throws {
+        // Dangerous to just reach in there like this, but it's the right way to serialize this.
+        coder.serializeRawBytes(self._serializedBytes)
+    }
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (a: TravelDocumentReader.ASN1Any, b: TravelDocumentReader.ASN1Any) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension TravelDocumentReader.ASN1Any : Swift.CustomStringConvertible {
+  @inlinable public var description: Swift.String {
+    get {
+        "ASN1Any(\(self._serializedBytes))"
+    }
+  }
+}
+extension TravelDocumentReader.DERParseable {
+  @inlinable public init(asn1Any: TravelDocumentReader.ASN1Any) throws {
+        try self.init(derEncoded: asn1Any._serializedBytes)
+    }
+}
+extension TravelDocumentReader.DERImplicitlyTaggable {
+  @inlinable public init(asn1Any: TravelDocumentReader.ASN1Any, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws {
+        try self.init(derEncoded: asn1Any._serializedBytes, withIdentifier: identifier)
+    }
+}
+public protocol PEMSerializable : TravelDocumentReader.DERSerializable {
+  static var defaultPEMDiscriminator: Swift.String { get }
+  func serializeAsPEM(discriminator: Swift.String) throws -> TravelDocumentReader.PEMDocument
+}
+public protocol PEMParseable : TravelDocumentReader.DERParseable {
+  static var defaultPEMDiscriminator: Swift.String { get }
+  init(pemDocument: TravelDocumentReader.PEMDocument) throws
+}
+public typealias PEMRepresentable = TravelDocumentReader.PEMParseable & TravelDocumentReader.PEMSerializable
+extension TravelDocumentReader.PEMParseable {
+  @inlinable public init(pemEncoded pemString: Swift.String) throws {
+        try self.init(pemDocument: try PEMDocument(pemString: pemString))
+    }
+  @inlinable public init(pemDocument: TravelDocumentReader.PEMDocument) throws {
+        guard pemDocument.discriminator == Self.defaultPEMDiscriminator else {
+            throw ASN1Error.invalidPEMDocument(reason: "PEMDocument has incorrect discriminator \(pemDocument.discriminator). Expected \(Self.defaultPEMDiscriminator) instead")
+        }
+            
+        try self.init(derEncoded: pemDocument.derBytes)
+    }
+}
+extension TravelDocumentReader.PEMSerializable {
+  @inlinable public func serializeAsPEM(discriminator: Swift.String) throws -> TravelDocumentReader.PEMDocument {
+        var serializer = DER.Serializer()
+        try serializer.serialize(self)
+        
+        return PEMDocument(type: discriminator, derBytes: serializer.serializedBytes)
+    }
+  @inlinable public func serializeAsPEM() throws -> TravelDocumentReader.PEMDocument {
+        try self.serializeAsPEM(discriminator: Self.defaultPEMDiscriminator)
+    }
+}
+public struct PEMDocument : Swift.Hashable, Swift.Sendable {
+  @available(*, deprecated, renamed: "discriminator")
+  public var type: Swift.String {
+    get
+    set
+  }
+  public var discriminator: Swift.String
+  public var derBytes: [Swift.UInt8]
+  public init(pemString: Swift.String) throws
+  public init(type: Swift.String, derBytes: [Swift.UInt8])
+  public var pemString: Swift.String {
+    get
+  }
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (a: TravelDocumentReader.PEMDocument, b: TravelDocumentReader.PEMDocument) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+@available(iOS 13, macOS 10.15, *)
+public enum OpenSSLError : Swift.Error {
+  case UnableToGetX509CertificateFromPKCS7(Swift.String)
+  case UnableToVerifyX509CertificateForSOD(Swift.String)
+  case VerifyAndReturnSODEncapsulatedData(Swift.String)
+  case UnableToReadECPublicKey(Swift.String)
+  case UnableToExtractSignedDataFromPKCS7(Swift.String)
+  case VerifySignedAttributes(Swift.String)
+  case UnableToParseASN1(Swift.String)
+  case UnableToDecryptRSASignature(Swift.String)
+}
+@_hasMissingDesignatedInitializers @available(iOS 13, macOS 10.15, *)
+public class OpenSSLUtils {
+  public static func getOpenSSLError() -> Swift.String
+  @available(iOS 13, macOS 10.15, *)
+  public static func getPublicKeyData(from key: Swift.OpaquePointer) -> Foundation.Data?
+  @available(iOS 13, macOS 10.15, *)
+  public static func decodePublicKeyFromBytes(pubKeyData: Foundation.Data, params: Swift.OpaquePointer) -> Swift.OpaquePointer?
+  public static func computeSharedSecret(privateKeyPair: Swift.OpaquePointer, publicKey: Swift.OpaquePointer) -> [Swift.UInt8]
+  @objc deinit
+}
+public struct PACEInfo {
+  public let ´protocol´: TravelDocumentReader.ASN1ObjectIdentifier
+  public let version: Swift.ArraySlice<Swift.UInt8>
+  public let parameterId: Swift.ArraySlice<Swift.UInt8>?
+}
+public enum PACEInfoError : Swift.Error {
+  case invalidObjectIdentifier(objectIdentifier: Swift.String)
+}
+extension TravelDocumentReader.PACEInfo : Swift.Hashable {
+  public static func == (a: TravelDocumentReader.PACEInfo, b: TravelDocumentReader.PACEInfo) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension TravelDocumentReader.PACEInfo {
+  public static let PARAM_ID_GFP_1024_160: Swift.UInt8
+  public static let PARAM_ID_GFP_2048_224: Swift.UInt8
+  public static let PARAM_ID_GFP_2048_256: Swift.UInt8
+  public static let PARAM_ID_ECP_NIST_P192_R1: Swift.UInt8
+  public static let PARAM_ID_ECP_BRAINPOOL_P192_R1: Swift.UInt8
+  public static let PARAM_ID_ECP_NIST_P224_R1: Swift.UInt8
+  public static let PARAM_ID_ECP_BRAINPOOL_P224_R1: Swift.UInt8
+  public static let PARAM_ID_ECP_NIST_P256_R1: Swift.UInt8
+  public static let PARAM_ID_ECP_BRAINPOOL_P256_R1: Swift.UInt8
+  public static let PARAM_ID_ECP_BRAINPOOL_P320_R1: Swift.UInt8
+  public static let PARAM_ID_ECP_NIST_P384_R1: Swift.UInt8
+  public static let PARAM_ID_ECP_BRAINPOOL_P384_R1: Swift.UInt8
+  public static let PARAM_ID_ECP_BRAINPOOL_P512_R1: Swift.UInt8
+  public static let PARAM_ID_ECP_NIST_P521_R1: Swift.UInt8
+  public static func check(requiredIdentifier oid: Swift.String) -> Swift.Bool
+}
+extension TravelDocumentReader.PACEInfo {
+  #if compiler(>=5.3) && $EffectfulProp
+  public var establishmentMethod: TravelDocumentReader.EstablishmentMethod {
+    get throws
+  }
+  #endif
+  #if compiler(>=5.3) && $EffectfulProp
+  public var keyAgreementAlgorithm: TravelDocumentReader.KeyAgreementAlgorithm {
+    get throws
+  }
+  #endif
+  #if compiler(>=5.3) && $EffectfulProp
+  public var cipherAlgorithm: TravelDocumentReader.CipherAlgorithm {
+    get throws
+  }
+  #endif
+  #if compiler(>=5.3) && $EffectfulProp
+  public var digestAlgorithm: TravelDocumentReader.DigestAlgorithm {
+    get throws
+  }
+  #endif
+  #if compiler(>=5.3) && $EffectfulProp
+  public var keyLength: Swift.Int {
+    get throws
+  }
+  #endif
+  public var parameterSpec: Swift.Int32 {
+    get
+  }
+}
+@frozen public struct ASN1ObjectIdentifier : TravelDocumentReader.DERImplicitlyTaggable {
+  @inlinable public static var defaultIdentifier: TravelDocumentReader.ASN1Identifier {
+    get {
+        .objectIdentifier
+    }
+  }
+  @usableFromInline
+  internal var _oidComponents: [Swift.UInt]
+  @inlinable public init(derEncoded node: TravelDocumentReader.ASN1Node, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws {
+        guard node.identifier == identifier else {
+            throw ASN1Error.unexpectedFieldType(node.identifier)
+        }
+
+        guard case .primitive(var content) = node.content else {
+            preconditionFailure("ASN.1 parser generated primitive node with constructed content")
+        }
+
+        // We have to parse the content. From the spec:
+        //
+        // > Each subidentifier is represented as a series of (one or more) octets. Bit 8 of each octet indicates whether it
+        // > is the last in the series: bit 8 of the last octet is zero, bit 8 of each preceding octet is one. Bits 7 to 1 of
+        // > the octets in the series collectively encode the subidentifier. Conceptually, these groups of bits are concatenated
+        // > to form an unsigned binary number whose most significant bit is bit 7 of the first octet and whose least significant
+        // > bit is bit 1 of the last octet. The subidentifier shall be encoded in the fewest possible octets[...].
+        // >
+        // > The number of subidentifiers (N) shall be one less than the number of object identifier components in the object identifier
+        // > value being encoded.
+        // >
+        // > The numerical value of the first subidentifier is derived from the values of the first _two_ object identifier components
+        // > in the object identifier value being encoded, using the formula:
+        // >
+        // >  (X*40) + Y
+        // >
+        // > where X is the value of the first object identifier component and Y is the value of the second object identifier component.
+        //
+        // Yeah, this is a bit bananas, but basically there are only 3 first OID components (0, 1, 2) and there are no more than 39 children
+        // of nodes 0 or 1. In my view this is too clever by half, but the ITU.T didn't ask for my opinion when they were coming up with this
+        // scheme, likely because I was in middle school at the time.
+        var subcomponents = [UInt]()
+        while content.count > 0 {
+            subcomponents.append(try content.readUIntUsing8BitBytesASN1Discipline())
+        }
+
+        // Now we need to expand the subcomponents out. This means we need to undo the step above. We can do this by
+        // taking the quotient and remainder when dividing by 40.
+        var oidComponents = [UInt]()
+        oidComponents.reserveCapacity(subcomponents.count + 1)
+
+        // We'd like to work on the slice here.
+        var subcomponentSlice = subcomponents[...]
+        guard let firstEncodedSubcomponent = subcomponentSlice.popFirst() else {
+            throw ASN1Error.invalidASN1Object(reason: "Zero components in OID")
+        }
+
+        let (firstSubcomponent, secondSubcomponent) = firstEncodedSubcomponent.quotientAndRemainder(dividingBy: 40)
+        oidComponents.append(firstSubcomponent)
+        oidComponents.append(secondSubcomponent)
+        oidComponents.append(contentsOf: subcomponentSlice)
+
+        self._oidComponents = oidComponents
+    }
+  @inlinable public func serialize(into coder: inout TravelDocumentReader.DER.Serializer, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws {
+        coder.appendPrimitiveNode(identifier: identifier) { bytes in
+            var components = self._oidComponents[...]
+            guard let firstComponent = components.popFirst(), let secondComponent = components.popFirst() else {
+                preconditionFailure("Invalid number of OID components: must be at least two!")
+            }
+
+            let serializedFirstComponent = (firstComponent * 40) + secondComponent
+            ASN1ObjectIdentifier._writeOIDSubidentifier(serializedFirstComponent, into: &bytes)
+
+            while let component = components.popFirst() {
+                ASN1ObjectIdentifier._writeOIDSubidentifier(component, into: &bytes)
+            }
+        }
+    }
+  @inlinable internal static func _writeOIDSubidentifier(_ identifier: Swift.UInt, into array: inout [Swift.UInt8]) {
+        array.writeUsing7BitBytesASN1Discipline(unsignedInteger: identifier)
+    }
+}
+extension TravelDocumentReader.ASN1ObjectIdentifier : Swift.Hashable {
+  public static func == (a: TravelDocumentReader.ASN1ObjectIdentifier, b: TravelDocumentReader.ASN1ObjectIdentifier) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension TravelDocumentReader.ASN1ObjectIdentifier : Swift.Sendable {
+}
+extension TravelDocumentReader.ASN1ObjectIdentifier : Swift.ExpressibleByArrayLiteral {
+  @inlinable public init(arrayLiteral elements: Swift.UInt...) {
+        self._oidComponents = elements
+    }
+  public typealias ArrayLiteralElement = Swift.UInt
+}
+extension TravelDocumentReader.ASN1ObjectIdentifier : Swift.CustomStringConvertible {
+  @inlinable public var description: Swift.String {
+    get {
+        self._oidComponents.map { String($0) }.joined(separator: ".")
+    }
+  }
+}
+extension TravelDocumentReader.ASN1ObjectIdentifier {
+  public enum NamedCurves {
+    public static let secp256r1: TravelDocumentReader.ASN1ObjectIdentifier
+    public static let secp384r1: TravelDocumentReader.ASN1ObjectIdentifier
+    public static let secp521r1: TravelDocumentReader.ASN1ObjectIdentifier
+  }
+  public enum AlgorithmIdentifier {
+    public static let idEcPublicKey: TravelDocumentReader.ASN1ObjectIdentifier
+    public static let sha256WithRSAEncryption: TravelDocumentReader.ASN1ObjectIdentifier
+    public static let sha384WithRSAEncryption: TravelDocumentReader.ASN1ObjectIdentifier
+    public static let sha512WithRSAEncryption: TravelDocumentReader.ASN1ObjectIdentifier
+    public static let rsaPSS: TravelDocumentReader.ASN1ObjectIdentifier
+    public static let rsaEncryption: TravelDocumentReader.ASN1ObjectIdentifier
+  }
+  public enum NameAttributes {
+    public static let name: TravelDocumentReader.ASN1ObjectIdentifier
+    public static let surname: TravelDocumentReader.ASN1ObjectIdentifier
+    public static let givenName: TravelDocumentReader.ASN1ObjectIdentifier
+    public static let initials: TravelDocumentReader.ASN1ObjectIdentifier
+    public static let generationQualifier: TravelDocumentReader.ASN1ObjectIdentifier
+    public static let commonName: TravelDocumentReader.ASN1ObjectIdentifier
+    public static let localityName: TravelDocumentReader.ASN1ObjectIdentifier
+    public static let stateOrProvinceName: TravelDocumentReader.ASN1ObjectIdentifier
+    public static let organizationName: TravelDocumentReader.ASN1ObjectIdentifier
+    public static let organizationalUnitName: TravelDocumentReader.ASN1ObjectIdentifier
+    public static let title: TravelDocumentReader.ASN1ObjectIdentifier
+    public static let dnQualifier: TravelDocumentReader.ASN1ObjectIdentifier
+    public static let countryName: TravelDocumentReader.ASN1ObjectIdentifier
+    public static let serialNumber: TravelDocumentReader.ASN1ObjectIdentifier
+    public static let pseudonym: TravelDocumentReader.ASN1ObjectIdentifier
+    public static let domainComponent: TravelDocumentReader.ASN1ObjectIdentifier
+    public static let emailAddress: TravelDocumentReader.ASN1ObjectIdentifier
+  }
+  public enum OCSP {
+    public static let basicResponse: TravelDocumentReader.ASN1ObjectIdentifier
+  }
+}
+extension Swift.ArraySlice where Element == Swift.UInt8 {
+  @inlinable internal mutating func readUIntUsing8BitBytesASN1Discipline() throws -> Swift.UInt {
+        // In principle OID subidentifiers and long tags can be too large to fit into a UInt. We are choosing to not care about that
+        // because for us it shouldn't matter.
+        guard let subidentifierEndIndex = self.firstIndex(where: { $0 & 0x80 == 0x00 }) else {
+            throw ASN1Error.invalidASN1Object(reason: "Invalid encoding for OID subidentifier")
+        }
+
+        let oidSlice = self[self.startIndex ... subidentifierEndIndex]
+
+        guard let firstByte = oidSlice.first, firstByte != 0x80 else {
+            // If the first byte is 0x80 then we have a leading 0 byte. All numbers encoded this way
+            // need to be encoded in the minimal number of bytes, so we need to reject this.
+            throw ASN1Error.invalidASN1Object(reason: "OID subidentifier encoded with leading 0 byte")
+        }
+
+        self = self[self.index(after: subidentifierEndIndex)...]
+
+        // We need to compact the bits. These are 7-bit integers, which is really awkward.
+        return try UInt(sevenBitBigEndianBytes: oidSlice)
+    }
+}
+extension Swift.UInt {
+  @inlinable internal init<Bytes>(sevenBitBigEndianBytes bytes: Bytes) throws where Bytes : Swift.Collection, Bytes.Element == Swift.UInt8 {
+        // We need to know how many bytes we _need_ to store this "int". As a base optimization we refuse to parse
+        // anything larger than 9 bytes wide, even though conceptually we could fit a few more bits.
+        guard ((bytes.count * 7) + 7) / 8 <= MemoryLayout<UInt>.size else {
+            throw ASN1Error.invalidASN1Object(reason: "Unable to store OID subidentifier")
+        }
+
+        self = 0
+        let shiftSizes = stride(from: 0, to: bytes.count * 7, by: 7).reversed()
+
+        var index = bytes.startIndex
+        for shift in shiftSizes {
+            self |= UInt(bytes[index] & 0x7F) << shift
+            bytes.formIndex(after: &index)
+        }
+    }
+}
+extension Swift.Array where Element == Swift.UInt8 {
+  @inlinable internal mutating func writeUsing7BitBytesASN1Discipline(unsignedInteger identifier: Swift.UInt) {
+        // An OID subidentifier or long-form tag is written as an integer over 7-bit bytes, where the last byte has the top bit unset.
+        // The first thing we need is to know how many bits we need to write
+        let bitsToWrite = UInt.bitWidth - identifier.leadingZeroBitCount
+        let bytesToWrite = (bitsToWrite + 6) / 7
+
+        guard bytesToWrite > 0 else {
+            // Just a zero.
+            self.append(0)
+            return
+        }
+
+        for byteNumber in (1..<bytesToWrite).reversed() {
+            let shift = byteNumber * 7
+            let byte = UInt8((identifier >> shift) & 0x7f) | 0x80
+            self.append(byte)
+        }
+
+        // Last byte to append here, we must unset the top bit.
+        let byte = UInt8((identifier & 0x7F))
+        self.append(byte)
+    }
+}
+public class DG11File {
+  public var nameOfHolder: Swift.String? {
+    get
+  }
+  public var otherNames: [Swift.String]! {
+    get
+  }
+  public var personalNumber: Swift.String? {
+    get
+  }
+  public var fullDateOfBirth: Swift.String? {
+    get
+  }
+  public var placeOfBirth: [Swift.String]? {
+    get
+  }
+  public var permanentAddress: [Swift.String]? {
+    get
+  }
+  public var telephone: Swift.String? {
+    get
+  }
+  public var profession: Swift.String? {
+    get
+  }
+  public var title: Swift.String? {
+    get
+  }
+  public var personalSummary: Swift.String? {
+    get
+  }
+  public var proofOfCitizenship: Foundation.Data? {
+    get
+  }
+  public var otherValueTDNumbers: [Swift.String]? {
+    get
+  }
+  public var custodyInformation: Swift.String? {
+    get
+  }
+  public init(data: Foundation.Data)
+  @objc deinit
+}
+public enum KeyAgreementAlgorithm : Swift.String {
+  case dh, ecdh
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum CipherAlgorithm : Swift.String {
+  case desede, tripleDes, aes, aes128, aes192, aes256
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum DigestAlgorithm : Swift.String {
+  case sha1, sha256, sha384, sha512
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum ElementaryFile : Swift.UInt16 {
+  case cardAccess, sod, com, dg1, dg2, dg3, dg4, dg5, dg6, dg7, dg8, dg9, dg10, dg11, dg12, dg13, dg14, dg15, dg16
+  public init?(rawValue: Swift.UInt16)
+  public typealias RawValue = Swift.UInt16
+  public var rawValue: Swift.UInt16 {
+    get
+  }
+}
+public enum ElementaryFileTag : Swift.UInt8 {
+  case sod, com, dg1, dg2, dg3, dg4, dg5, dg6, dg7, dg8, dg9, dg10, dg11, dg12, dg13, dg14, dg15, dg16, unknown
+  public init?(rawValue: Swift.UInt8)
+  public typealias RawValue = Swift.UInt8
+  public var rawValue: Swift.UInt8 {
+    get
+  }
+}
+public protocol AccessKey {
+  var chipAccessControl: TravelDocumentReader.ChipAccessControl { get }
+  var key: Foundation.Data { get }
+}
+public enum ReadBinaryError : Swift.Error {
+  case invalidAPDU
+  case invalidExpectedLength
+  public static func == (a: TravelDocumentReader.ReadBinaryError, b: TravelDocumentReader.ReadBinaryError) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public protocol PassportReaderSessionDelegate : AnyObject {
+  func passportReaderSessionDidBecomeActive(_ session: TravelDocumentReader.PassportReaderSession)
+  func passportReaderSession(_ session: TravelDocumentReader.PassportReaderSession, didConnectTo tag: any CoreNFC.NFCISO7816Tag)
+  func passportReaderSession(_ session: TravelDocumentReader.PassportReaderSession, didFailToConnectWithError error: any Swift.Error)
+  func passportReaderSession(_ session: TravelDocumentReader.PassportReaderSession, didInvalidateWithError error: any Swift.Error)
+}
+public struct CardAccessFile {
+  public let securityInfos: Swift.Set<TravelDocumentReader.SecurityInfo>
+}
+extension TravelDocumentReader.CardAccessFile {
+  public var isPACESupported: Swift.Bool {
+    get
+  }
+  #if compiler(>=5.3) && $EffectfulProp
+  public var paceInfo: TravelDocumentReader.PACEInfo {
+    get throws
+  }
+  #endif
+}
+extension TravelDocumentReader.CardAccessFile : TravelDocumentReader.DERImplicitlyTaggable {
+  public func serialize(into coder: inout TravelDocumentReader.DER.Serializer, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws
+  public init(derEncoded: TravelDocumentReader.ASN1Node, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws
+  public static var defaultIdentifier: TravelDocumentReader.ASN1Identifier {
+    get
+  }
+}
+extension Swift.Bool : TravelDocumentReader.DERImplicitlyTaggable {
+  @inlinable public static var defaultIdentifier: TravelDocumentReader.ASN1Identifier {
+    get {
+        .boolean
+    }
+  }
+  @inlinable public init(derEncoded node: TravelDocumentReader.ASN1Node, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws {
+        guard node.identifier == identifier else {
+            throw ASN1Error.unexpectedFieldType(node.identifier)
+        }
+
+        guard case .primitive(let bytes) = node.content, bytes.count == 1 else {
+            throw ASN1Error.invalidASN1Object(reason: "Invalid content for ASN1Bool")
+        }
+
+        switch bytes[bytes.startIndex] {
+        case 0:
+            // Boolean false
+            self = false
+        case 0xff:
+            // Boolean true in DER
+            self = true
+        case let byte:
+            // If we come to support BER then these values are all "true" as well.
+            throw ASN1Error.invalidASN1Object(reason: "Invalid byte for ASN1Bool: \(byte)")
+        }
+    }
+  @inlinable public func serialize(into coder: inout TravelDocumentReader.DER.Serializer, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws {
+        coder.appendPrimitiveNode(identifier: identifier) { bytes in
+            if self {
+                bytes.append(0xff)
+            } else {
+                bytes.append(0)
+            }
+        }
+    }
+}
+public enum SecurityInfoError : Swift.Error {
+  case invalidAlgorithm, invalidKeyLength
+  public static func == (a: TravelDocumentReader.SecurityInfoError, b: TravelDocumentReader.SecurityInfoError) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+@frozen public struct ASN1OctetString : TravelDocumentReader.DERImplicitlyTaggable {
+  @inlinable public static var defaultIdentifier: TravelDocumentReader.ASN1Identifier {
+    get {
+        .octetString
+    }
+  }
+  public var bytes: Swift.ArraySlice<Swift.UInt8>
+  @inlinable public init(derEncoded node: TravelDocumentReader.ASN1Node, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws {
+        guard node.identifier == identifier else {
+            throw ASN1Error.unexpectedFieldType(node.identifier)
+        }
+
+        guard case .primitive(let content) = node.content else {
+            preconditionFailure("ASN.1 parser generated primitive node with constructed content")
+        }
+
+        self.bytes = content
+    }
+  @inlinable public init(contentBytes: Swift.ArraySlice<Swift.UInt8>) {
+        self.bytes = contentBytes
+    }
+  @inlinable public func serialize(into coder: inout TravelDocumentReader.DER.Serializer, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws {
+        coder.appendPrimitiveNode(identifier: identifier) { bytes in
+            bytes.append(contentsOf: self.bytes)
+        }
+    }
+}
+extension TravelDocumentReader.ASN1OctetString : Swift.Hashable {
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (a: TravelDocumentReader.ASN1OctetString, b: TravelDocumentReader.ASN1OctetString) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension TravelDocumentReader.ASN1OctetString : Swift.Sendable {
+}
+extension TravelDocumentReader.ASN1OctetString {
+  @inlinable public func withUnsafeBytes<R>(_ body: (Swift.UnsafeRawBufferPointer) throws -> R) rethrows -> R {
+        return try self.bytes.withUnsafeBytes(body)
+    }
+}
+@frozen public struct ASN1Null : TravelDocumentReader.DERImplicitlyTaggable, Swift.Hashable, Swift.Sendable {
+  @inlinable public static var defaultIdentifier: TravelDocumentReader.ASN1Identifier {
+    get {
+        .null
+    }
+  }
+  @inlinable public init() { }
+  @inlinable public init(derEncoded node: TravelDocumentReader.ASN1Node, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws {
+        guard node.identifier == identifier, case .primitive(let content) = node.content else {
+            throw ASN1Error.unexpectedFieldType(node.identifier)
+        }
+
+        guard content.count == 0 else {
+            throw ASN1Error.invalidASN1Object(reason: "ASN1Null must be empty, received \(content.count) bytes")
+        }
+    }
+  @inlinable public func serialize(into coder: inout TravelDocumentReader.DER.Serializer, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) {
+        coder.appendPrimitiveNode(identifier: identifier, { _ in })
+    }
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (a: TravelDocumentReader.ASN1Null, b: TravelDocumentReader.ASN1Null) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public protocol ASN1IntegerRepresentable : TravelDocumentReader.DERImplicitlyTaggable {
+  associatedtype IntegerBytes : Swift.RandomAccessCollection where Self.IntegerBytes.Element == Swift.UInt8
+  static var isSigned: Swift.Bool { get }
+  init(derIntegerBytes: Swift.ArraySlice<Swift.UInt8>) throws
+  func withBigEndianIntegerBytes<ReturnType>(_ body: (Self.IntegerBytes) throws -> ReturnType) rethrows -> ReturnType
+}
+extension TravelDocumentReader.ASN1IntegerRepresentable {
+  @inlinable public static var defaultIdentifier: TravelDocumentReader.ASN1Identifier {
+    get {
+        .integer
+    }
+  }
+  @inlinable public init(derEncoded node: TravelDocumentReader.ASN1Node, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws {
+        guard node.identifier == identifier else {
+            throw ASN1Error.unexpectedFieldType(node.identifier)
+        }
+
+        guard case .primitive(var dataBytes) = node.content else {
+            preconditionFailure("ASN.1 parser generated primitive node with constructed content")
+        }
+
+        // Zero bytes of integer is not an acceptable encoding.
+        guard dataBytes.count > 0 else {
+            throw ASN1Error.invalidASN1IntegerEncoding(reason: "INTEGER encoded with zero bytes")
+        }
+
+        // 8.3.2 If the contents octets of an integer value encoding consist of more than one octet, then the bits of the first octet and bit 8 of the second octet:
+        //
+        // a) shall not all be ones; and
+        // b) shall not all be zero.
+        //
+        // NOTE – These rules ensure that an integer value is always encoded in the smallest possible number of octets.
+        if let first = dataBytes.first, let second = dataBytes.dropFirst().first {
+            if (first == 0xFF) && second._topBitSet ||
+                (first == 0x00) && !second._topBitSet {
+                throw ASN1Error.invalidASN1IntegerEncoding(reason: "INTEGER not encoded in fewest number of octets")
+            }
+        }
+
+        // If the type we're trying to decode is unsigned, and the top byte is zero, we should strip it.
+        // If the top bit is set, however, this is an invalid conversion: the number needs to be positive!
+        if !Self.isSigned, let first = dataBytes.first {
+            if first == 0x00 {
+                dataBytes = dataBytes.dropFirst()
+            } else if first & 0x80 == 0x80 {
+                throw ASN1Error.invalidASN1IntegerEncoding(reason: "INTEGER encoded with top bit set!")
+            }
+        }
+
+        self = try Self(derIntegerBytes: dataBytes)
+    }
+  @inlinable public func serialize(into coder: inout TravelDocumentReader.DER.Serializer, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws {
+        coder.appendPrimitiveNode(identifier: identifier) { bytes in
+            self.withBigEndianIntegerBytes { integerBytes in
+                // If the number of bytes is 0, we're encoding a zero. That actually _does_ require one byte.
+                if integerBytes.count == 0 {
+                    bytes.append(0)
+                    return
+                }
+
+                // If self is unsigned and the first byte has the top bit set, we need to prepend a 0 byte.
+                if !Self.isSigned, let topByte = integerBytes.first, topByte._topBitSet {
+                    bytes.append(0)
+                    bytes.append(contentsOf: integerBytes)
+                } else {
+                    // Either self is signed, or the top bit isn't set. Either way, trim to make sure the representation is minimal.
+                    bytes.append(contentsOf: integerBytes._trimLeadingExcessBytes())
+                }
+            }
+        }
+    }
+}
+extension TravelDocumentReader.ASN1IntegerRepresentable where Self : Swift.FixedWidthInteger {
+  @inlinable public init(derIntegerBytes bytes: Swift.ArraySlice<Swift.UInt8>) throws {
+        // Defer to the FixedWidthInteger constructor.
+        // There's a wrinkle here: if this is a signed integer, and the top bit of the data bytes was set,
+        // then we need to 1-extend the bytes. This is because ASN.1 tries to delete redundant bytes that
+        // are all 1.
+        self = try Self(bigEndianBytes: bytes)
+
+        if Self.isSigned, let first = bytes.first, first._topBitSet {
+            for shift in stride(from: self.bitWidth - self.leadingZeroBitCount, to: self.bitWidth, by: 8) {
+                self |= 0xFF << shift
+            }
+        }
+    }
+  @inlinable public func withBigEndianIntegerBytes<ReturnType>(_ body: (TravelDocumentReader.IntegerBytesCollection<Self>) throws -> ReturnType) rethrows -> ReturnType where Self : Swift.Sendable {
+        return try body(IntegerBytesCollection(self))
+    }
+}
+@frozen public struct IntegerBytesCollection<Integer> where Integer : Swift.FixedWidthInteger, Integer : Swift.Sendable {
+  @usableFromInline
+  internal var integer: Integer
+  @inlinable public init(_ integer: Integer) {
+        self.integer = integer
+    }
+}
+extension TravelDocumentReader.IntegerBytesCollection : Swift.Hashable {
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (a: TravelDocumentReader.IntegerBytesCollection<Integer>, b: TravelDocumentReader.IntegerBytesCollection<Integer>) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension TravelDocumentReader.IntegerBytesCollection : Swift.Sendable {
+}
+extension TravelDocumentReader.IntegerBytesCollection : Swift.RandomAccessCollection {
+  @frozen public struct Index {
+    @usableFromInline
+    internal var _byteNumber: Swift.Int
+    @inlinable internal init(byteNumber: Swift.Int) {
+            self._byteNumber = byteNumber
+        }
+    @inlinable internal var _shift: Integer {
+      get {
+            // As byte number 0 is the end index, the byte number is one byte too large for the shift.
+            return Integer((self._byteNumber - 1) * 8)
+        }
+    }
+  }
+  @inlinable public var startIndex: TravelDocumentReader.IntegerBytesCollection<Integer>.Index {
+    get {
+        return Index(byteNumber: Int(self.integer.neededBytes))
+    }
+  }
+  @inlinable public var endIndex: TravelDocumentReader.IntegerBytesCollection<Integer>.Index {
+    get {
+        return Index(byteNumber: 0)
+    }
+  }
+  @inlinable public var count: Swift.Int {
+    get {
+        return Int(self.integer.neededBytes)
+    }
+  }
+  @inlinable public subscript(index: TravelDocumentReader.IntegerBytesCollection<Integer>.Index) -> Swift.UInt8 {
+    get {
+        // We perform the bitwise operations in magnitude space.
+        let shifted = Integer.Magnitude(truncatingIfNeeded: self.integer) >> index._shift
+        let masked = shifted & 0xFF
+        return UInt8(masked)
+    }
+  }
+  public typealias Element = Swift.UInt8
+  public typealias Indices = Swift.Range<TravelDocumentReader.IntegerBytesCollection<Integer>.Index>
+  public typealias Iterator = Swift.IndexingIterator<TravelDocumentReader.IntegerBytesCollection<Integer>>
+  public typealias SubSequence = Swift.Slice<TravelDocumentReader.IntegerBytesCollection<Integer>>
+}
+extension TravelDocumentReader.IntegerBytesCollection.Index : Swift.Hashable {
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension TravelDocumentReader.IntegerBytesCollection.Index : Swift.Sendable {
+}
+extension TravelDocumentReader.IntegerBytesCollection.Index : Swift.Comparable {
+  @inlinable public static func < (lhs: TravelDocumentReader.IntegerBytesCollection<Integer>.Index, rhs: TravelDocumentReader.IntegerBytesCollection<Integer>.Index) -> Swift.Bool {
+        return lhs._byteNumber > rhs._byteNumber
+    }
+  @inlinable public static func > (lhs: TravelDocumentReader.IntegerBytesCollection<Integer>.Index, rhs: TravelDocumentReader.IntegerBytesCollection<Integer>.Index) -> Swift.Bool {
+        return lhs._byteNumber < rhs._byteNumber
+    }
+  @inlinable public static func <= (lhs: TravelDocumentReader.IntegerBytesCollection<Integer>.Index, rhs: TravelDocumentReader.IntegerBytesCollection<Integer>.Index) -> Swift.Bool {
+        return lhs._byteNumber >= rhs._byteNumber
+    }
+  @inlinable public static func >= (lhs: TravelDocumentReader.IntegerBytesCollection<Integer>.Index, rhs: TravelDocumentReader.IntegerBytesCollection<Integer>.Index) -> Swift.Bool {
+        return lhs._byteNumber <= rhs._byteNumber
+    }
+}
+extension TravelDocumentReader.IntegerBytesCollection.Index : Swift.Strideable {
+  @inlinable public func advanced(by n: Swift.Int) -> TravelDocumentReader.IntegerBytesCollection<Integer>.Index {
+        return IntegerBytesCollection.Index(byteNumber: self._byteNumber - n)
+    }
+  @inlinable public func distance(to other: TravelDocumentReader.IntegerBytesCollection<Integer>.Index) -> Swift.Int {
+        // Remember that early indices have high byte numbers and later indices have low ones.
+        return self._byteNumber - other._byteNumber
+    }
+  public typealias Stride = Swift.Int
+}
+extension Swift.Int8 : TravelDocumentReader.ASN1IntegerRepresentable {
+  public typealias IntegerBytes = TravelDocumentReader.IntegerBytesCollection<Swift.Int8>
+}
+extension Swift.UInt8 : TravelDocumentReader.ASN1IntegerRepresentable {
+  public typealias IntegerBytes = TravelDocumentReader.IntegerBytesCollection<Swift.UInt8>
+}
+extension Swift.Int16 : TravelDocumentReader.ASN1IntegerRepresentable {
+  public typealias IntegerBytes = TravelDocumentReader.IntegerBytesCollection<Swift.Int16>
+}
+extension Swift.UInt16 : TravelDocumentReader.ASN1IntegerRepresentable {
+  public typealias IntegerBytes = TravelDocumentReader.IntegerBytesCollection<Swift.UInt16>
+}
+extension Swift.Int32 : TravelDocumentReader.ASN1IntegerRepresentable {
+  public typealias IntegerBytes = TravelDocumentReader.IntegerBytesCollection<Swift.Int32>
+}
+extension Swift.UInt32 : TravelDocumentReader.ASN1IntegerRepresentable {
+  public typealias IntegerBytes = TravelDocumentReader.IntegerBytesCollection<Swift.UInt32>
+}
+extension Swift.Int64 : TravelDocumentReader.ASN1IntegerRepresentable {
+  public typealias IntegerBytes = TravelDocumentReader.IntegerBytesCollection<Swift.Int64>
+}
+extension Swift.UInt64 : TravelDocumentReader.ASN1IntegerRepresentable {
+  public typealias IntegerBytes = TravelDocumentReader.IntegerBytesCollection<Swift.UInt64>
+}
+extension Swift.Int : TravelDocumentReader.ASN1IntegerRepresentable {
+  public typealias IntegerBytes = TravelDocumentReader.IntegerBytesCollection<Swift.Int>
+}
+extension Swift.UInt : TravelDocumentReader.ASN1IntegerRepresentable {
+  public typealias IntegerBytes = TravelDocumentReader.IntegerBytesCollection<Swift.UInt>
+}
+extension Swift.RandomAccessCollection where Self.Element == Swift.UInt8 {
+  @inlinable internal func _trimLeadingExcessBytes() -> Self.SubSequence {
+        var slice = self[...]
+        guard let first = slice.first else {
+            // Easy case, empty.
+            return slice
+        }
+
+        let wholeByte: UInt8
+
+        switch first {
+        case 0:
+            wholeByte = 0
+        case 0xFF:
+            wholeByte = 0xFF
+        default:
+            // We're already fine, this is maximally compact. We need the whole thing.
+            return slice
+        }
+
+        // We never trim this to less than one byte, as that's always the smallest representation.
+        while slice.count > 1 {
+            // If the first byte is equal to our original first byte, and the top bit
+            // of the next byte is also equal to that, then we need to drop the byte and
+            // go again.
+            if slice.first != wholeByte {
+                break
+            }
+
+            guard let second = slice.dropFirst().first else {
+                preconditionFailure("Loop condition violated: must be at least two bytes left")
+            }
+
+            if second & 0x80 != wholeByte & 0x80 {
+                // Different top bit, we need the leading byte.
+                break
+            }
+
+            // Both the first byte and the top bit of the next are all zero or all 1, drop the leading
+            // byte.
+            slice = slice.dropFirst()
+        }
+
+        return slice
+    }
+}
+extension Swift.UInt8 {
+  @inlinable internal var _topBitSet: Swift.Bool {
+    get {
+        return (self & 0x80) != 0
+    }
+  }
+}
+@frozen public struct UTCTime : TravelDocumentReader.DERImplicitlyTaggable, Swift.Hashable, Swift.Sendable {
+  @inlinable public static var defaultIdentifier: TravelDocumentReader.ASN1Identifier {
+    get {
+        .utcTime
+    }
+  }
+  @inlinable public var year: Swift.Int {
+    get {
+            return self._year
+        }
+    set {
+            self._year = newValue
+            try! self._validate()
+        }
+  }
+  @inlinable public var month: Swift.Int {
+    get {
+            return self._month
+        }
+    set {
+            self._month = newValue
+            try! self._validate()
+        }
+  }
+  @inlinable public var day: Swift.Int {
+    get {
+            return self._day
+        }
+    set {
+            self._day = newValue
+            try! self._validate()
+        }
+  }
+  @inlinable public var hours: Swift.Int {
+    get {
+            return self._hours
+        }
+    set {
+            self._hours = newValue
+            try! self._validate()
+        }
+  }
+  @inlinable public var minutes: Swift.Int {
+    get {
+            return self._minutes
+        }
+    set {
+            self._minutes = newValue
+            try! self._validate()
+        }
+  }
+  @inlinable public var seconds: Swift.Int {
+    get {
+            return self._seconds
+        }
+    set {
+            self._seconds = newValue
+            try! self._validate()
+        }
+  }
+  @usableFromInline
+  internal var _year: Swift.Int
+  @usableFromInline
+  internal var _month: Swift.Int
+  @usableFromInline
+  internal var _day: Swift.Int
+  @usableFromInline
+  internal var _hours: Swift.Int
+  @usableFromInline
+  internal var _minutes: Swift.Int
+  @usableFromInline
+  internal var _seconds: Swift.Int
+  @inlinable public init(year: Swift.Int, month: Swift.Int, day: Swift.Int, hours: Swift.Int, minutes: Swift.Int, seconds: Swift.Int) throws {
+        self._year = year
+        self._month = month
+        self._day = day
+        self._hours = hours
+        self._minutes = minutes
+        self._seconds = seconds
+
+        try self._validate()
+    }
+  @inlinable public init(derEncoded node: TravelDocumentReader.ASN1Node, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws {
+        guard node.identifier == identifier else {
+            throw ASN1Error.unexpectedFieldType(node.identifier)
+        }
+
+        guard case .primitive(let content) = node.content else {
+            preconditionFailure("ASN.1 parser generated primitive node with constructed content")
+        }
+
+        self = try TimeUtilities.utcTimeFromBytes(content)
+    }
+  @inlinable public func serialize(into coder: inout TravelDocumentReader.DER.Serializer, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws {
+        coder.appendPrimitiveNode(identifier: identifier) { bytes in
+            bytes.append(self)
+        }
+    }
+  @inlinable internal func _validate() throws {
+        // Validate that the structure is well-formed.
+        // UTCTime can only hold years between 1950 and 2049.
+        guard self._year >= 1950 && self._year < 2050 else {
+            throw ASN1Error.invalidASN1Object(reason: "Invalid year for UTCTime \(self._year)")
+        }
+
+        // This also validates the month.
+        guard let daysInMonth = TimeUtilities.daysInMonth(self._month, ofYear: self._year) else {
+            throw ASN1Error.invalidASN1Object(reason: "Invalid month \(self._month) of year \(self.year) for UTCTime")
+        }
+
+        guard self._day >= 1 && self._day <= daysInMonth else {
+            throw ASN1Error.invalidASN1Object(reason: "Invalid day \(self._day) of month \(self._month) for UTCTime")
+        }
+
+        guard self._hours >= 0 && self._hours < 24 else {
+            throw ASN1Error.invalidASN1Object(reason: "Invalid hour for UTCTime \(self._hours)")
+        }
+
+        guard self._minutes >= 0 && self._minutes < 60 else {
+            throw ASN1Error.invalidASN1Object(reason: "Invalid minute for UTCTime \(self._minutes)")
+        }
+
+        // We allow leap seconds here, but don't validate it.
+        // This exposes us to potential confusion if we naively implement
+        // comparison here. We should consider whether this needs to be transformable
+        // to `Date` or similar.
+        guard self._seconds >= 0 && self._seconds <= 61 else {
+            throw ASN1Error.invalidASN1Object(reason: "Invalid seconds for UTCTime \(self._seconds)")
+        }
+    }
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (a: TravelDocumentReader.UTCTime, b: TravelDocumentReader.UTCTime) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension TravelDocumentReader.DER.ParseResult : Swift.Sendable {}
+extension TravelDocumentReader.ASN1NodeCollection.Iterator : Swift.Sendable {}
+extension TravelDocumentReader.ChipAccessControl : Swift.Equatable {}
+extension TravelDocumentReader.ChipAccessControl : Swift.Hashable {}
+extension TravelDocumentReader.ChipAccessControl : Swift.RawRepresentable {}
+extension TravelDocumentReader.EstablishmentMethod : Swift.Equatable {}
+extension TravelDocumentReader.EstablishmentMethod : Swift.Hashable {}
+@available(iOS 13, macOS 10.15, *)
+extension TravelDocumentReader.CertificateType : Swift.Equatable {}
+@available(iOS 13, macOS 10.15, *)
+extension TravelDocumentReader.CertificateType : Swift.Hashable {}
+@available(iOS 13, macOS 10.15, *)
+extension TravelDocumentReader.CertificateItem : Swift.Equatable {}
+@available(iOS 13, macOS 10.15, *)
+extension TravelDocumentReader.CertificateItem : Swift.Hashable {}
+@available(iOS 13, macOS 10.15, *)
+extension TravelDocumentReader.CertificateItem : Swift.RawRepresentable {}
+extension TravelDocumentReader.KeyAgreementAlgorithm : Swift.Equatable {}
+extension TravelDocumentReader.KeyAgreementAlgorithm : Swift.Hashable {}
+extension TravelDocumentReader.KeyAgreementAlgorithm : Swift.RawRepresentable {}
+extension TravelDocumentReader.CipherAlgorithm : Swift.Equatable {}
+extension TravelDocumentReader.CipherAlgorithm : Swift.Hashable {}
+extension TravelDocumentReader.CipherAlgorithm : Swift.RawRepresentable {}
+extension TravelDocumentReader.DigestAlgorithm : Swift.Equatable {}
+extension TravelDocumentReader.DigestAlgorithm : Swift.Hashable {}
+extension TravelDocumentReader.DigestAlgorithm : Swift.RawRepresentable {}
+extension TravelDocumentReader.ElementaryFile : Swift.Equatable {}
+extension TravelDocumentReader.ElementaryFile : Swift.Hashable {}
+extension TravelDocumentReader.ElementaryFile : Swift.RawRepresentable {}
+extension TravelDocumentReader.ElementaryFileTag : Swift.Equatable {}
+extension TravelDocumentReader.ElementaryFileTag : Swift.Hashable {}
+extension TravelDocumentReader.ElementaryFileTag : Swift.RawRepresentable {}
+extension TravelDocumentReader.ReadBinaryError : Swift.Equatable {}
+extension TravelDocumentReader.ReadBinaryError : Swift.Hashable {}
+extension TravelDocumentReader.SecurityInfoError : Swift.Equatable {}
+extension TravelDocumentReader.SecurityInfoError : Swift.Hashable {}
