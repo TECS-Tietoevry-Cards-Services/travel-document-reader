@@ -17,7 +17,7 @@ let package = Package(
         // Targets can depend on other targets in this package and products from dependencies.
         .binaryTarget(
             name: "TravelDocumentReader",
-            url: "https://git.tecs.no/itd-mo/travel-doc-reader/raw/master/Framework/TravelDocumentReader.xcframework.zip",
+            url: "https://github.com/TECS-Tietoevry-Cards-Services/travel-document-reader/raw/master/Framework/TravelDocumentReader.xcframework.zip",
             checksum: "791fa5758f397284b29b2d4223060a3cd5feb15e0f0ffcfe680190bb2df646e5"
         )
     ]
