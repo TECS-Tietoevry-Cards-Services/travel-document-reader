@@ -1,5 +1,5 @@
 // swift-interface-format-version: 1.0
-// swift-compiler-version: Apple Swift version 5.8.1 (swiftlang-5.8.0.124.5 clang-1403.0.22.11.100)
+// swift-compiler-version: Apple Swift version 5.9 (swiftlang-5.9.0.128.108 clang-1500.0.40.1)
 // swift-module-flags: -target arm64-apple-ios14.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name TravelDocumentReader
 // swift-module-flags-ignorable: -enable-bare-slash-regex
 import CommonCrypto
@@ -12,6 +12,7 @@ import OpenSSL
 import Swift
 import _Concurrency
 import _StringProcessing
+import _SwiftConcurrencyShims
 public enum DER {
 }
 extension TravelDocumentReader.DER {
@@ -1897,7 +1898,11 @@ public struct PACEKey : TravelDocumentReader.AccessKey {
   public init(documentNumber: Swift.String, dateOfBirth: Swift.String, dateOfExpiry: Swift.String)
 }
 public protocol PassportServiceDelegate : AnyObject {
+  func passportServiceAuthenticating(_ service: TravelDocumentReader.PassportService, using chipAccessControl: TravelDocumentReader.ChipAccessControl, progress: Swift.Float)
+  func passportServiceDidFailAuthentication(_ service: TravelDocumentReader.PassportService, using chipAccessControl: TravelDocumentReader.ChipAccessControl, withError error: any Swift.Error)
+  func passportServiceDidAuthenticate(_ service: TravelDocumentReader.PassportService, using chipAccessControl: TravelDocumentReader.ChipAccessControl)
   func passportService(_ service: TravelDocumentReader.PassportService, willRead file: TravelDocumentReader.ElementaryFile)
+  func passportService(_ service: TravelDocumentReader.PassportService, didFailReading files: [TravelDocumentReader.ElementaryFile], withError error: any Swift.Error)
   func passportService(_ service: TravelDocumentReader.PassportService, didFailReading file: TravelDocumentReader.ElementaryFile, withError error: any Swift.Error)
   func passportService(_ service: TravelDocumentReader.PassportService, didRead file: TravelDocumentReader.ElementaryFile, withValue value: Foundation.Data)
   func passportService(_ service: TravelDocumentReader.PassportService, willRead files: [TravelDocumentReader.ElementaryFile], withTotalLengthOf length: Swift.UInt64)
@@ -2033,7 +2038,7 @@ public class PassportService {
   public func readCardAccess() async -> TravelDocumentReader.CardAccessFile?
   #endif
   #if compiler(>=5.3) && $AsyncAwait
-  public func doBAC(withAccessKey accessKey: any TravelDocumentReader.AccessKey) async
+  public func doBAC(withAccessKey accessKey: any TravelDocumentReader.AccessKey) async throws
   #endif
   #if compiler(>=5.3) && $AsyncAwait
   public func doPACE(withAccessKey accessKey: any TravelDocumentReader.AccessKey, paceInfo: TravelDocumentReader.PACEInfo) async throws
@@ -2054,7 +2059,12 @@ extension TravelDocumentReader.PassportService {
   #endif
 }
 public enum PassportServiceError : Swift.Error {
-  case paceError(_: Swift.String? = nil), tagEerror(_: Swift.String), chipAuthenticationNotSupported, paceNotSupported, fileSystemNotInitialized, readError(_: Swift.String)
+  case paceError(_: Swift.String? = nil), bacError(_: Swift.String? = nil), tagEerror(_: Swift.String), chipAuthenticationNotSupported, paceNotSupported, fileSystemNotInitialized, readError(_: Swift.String)
+}
+extension TravelDocumentReader.PassportServiceError : Foundation.LocalizedError {
+  public var errorDescription: Swift.String? {
+    get
+  }
 }
 public struct DG14File {
   public let securityInfos: Swift.Set<TravelDocumentReader.SecurityInfo>

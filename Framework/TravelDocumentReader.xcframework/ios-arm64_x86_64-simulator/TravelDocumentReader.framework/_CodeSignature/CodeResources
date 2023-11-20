@@ -6,51 +6,51 @@
 	<dict>
 		<key>Headers/TravelDocumentReader-Swift.h</key>
 		<data>
-		p5u7y62XgJQCr7cfyxeU3MSDW74=
+		S940p5WFA2bqBmwwpEXBWPM2D/Y=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		kuAIOrvFlcbp8wgiWygpWvZadek=
+		JDyTy5qsIJAZCOf7RipjCHw1pUc=
 		</data>
 		<key>Modules/TravelDocumentReader.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
 		<data>
-		1jxEpHEMNBMy43sEDAQ/K4CFdNw=
+		00MzGaaMNG6VN9o720ttozqXi4M=
 		</data>
 		<key>Modules/TravelDocumentReader.swiftmodule/arm64-apple-ios-simulator.private.swiftinterface</key>
 		<data>
-		pzFDKgHHPj/+afRmwWsUPnoLs6o=
+		S6Vz0F7BoO9DR8Qfex13Whr3i8o=
 		</data>
 		<key>Modules/TravelDocumentReader.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		wn2yrR4Ir5wa84m39mrNIaqfDs4=
+		DAY60aBrBLdT+FDcuroEA05kp3c=
 		</data>
 		<key>Modules/TravelDocumentReader.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		pzFDKgHHPj/+afRmwWsUPnoLs6o=
+		S6Vz0F7BoO9DR8Qfex13Whr3i8o=
 		</data>
 		<key>Modules/TravelDocumentReader.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		7T0lgJnpd5B+ZK05yHN5xWzcuI0=
+		RxfbOmqZjsyXfsvkeAtLeSPY+1A=
 		</data>
 		<key>Modules/TravelDocumentReader.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
 		<data>
-		1jxEpHEMNBMy43sEDAQ/K4CFdNw=
+		00MzGaaMNG6VN9o720ttozqXi4M=
 		</data>
 		<key>Modules/TravelDocumentReader.swiftmodule/x86_64-apple-ios-simulator.private.swiftinterface</key>
 		<data>
-		TNIpuVor06/9m0jjs0NvZlSJlfM=
+		OztKxO6qb8Dk/pC9zagETX8CWeo=
 		</data>
 		<key>Modules/TravelDocumentReader.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		wTh+Mz8p03eOyhodumx91wccMLw=
+		0QLW2W1qbZX8ea34DYeZ7zqI/Gs=
 		</data>
 		<key>Modules/TravelDocumentReader.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		TNIpuVor06/9m0jjs0NvZlSJlfM=
+		OztKxO6qb8Dk/pC9zagETX8CWeo=
 		</data>
 		<key>Modules/TravelDocumentReader.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		RD938TvHRahMqTs6rJw9XqY/SjU=
+		zendX0K8waxefVjNHeK32kjNsV8=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -63,77 +63,77 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			LNFB2bKqbiL2bvgp6IQ8WEwMe1uXocxRLDjFtNrt5JU=
+			WvlCzcJbTVkJTh+e59yFO8z7PFz6cYLZKSzL3HUmMV0=
 			</data>
 		</dict>
 		<key>Modules/TravelDocumentReader.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			fJCD98H1RVpj4u4WeapNbXEmcXi3kLMahQD7kBj3kho=
+			6hxngYHUrjBaY00ORYHqCCvPbgpt65lUtRpZXrRBTP4=
 			</data>
 		</dict>
 		<key>Modules/TravelDocumentReader.swiftmodule/arm64-apple-ios-simulator.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Fq+MwdPeeYqlTtxak2qTK/5CaiXHIWy232Mx+1K/6eM=
+			dzsWi9/9zdjhg0Q9/j2iOiWbj+HaJOxmfX+kt53ufVs=
 			</data>
 		</dict>
 		<key>Modules/TravelDocumentReader.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			gcA0n4nziJMGcrOmnrEA6Zh3EfYOK6mIUvEPD8zWq1o=
+			94LDtDs+NbOEmN3hGO58Wt/5oPl13pi6FvewtwAHdBk=
 			</data>
 		</dict>
 		<key>Modules/TravelDocumentReader.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Fq+MwdPeeYqlTtxak2qTK/5CaiXHIWy232Mx+1K/6eM=
+			dzsWi9/9zdjhg0Q9/j2iOiWbj+HaJOxmfX+kt53ufVs=
 			</data>
 		</dict>
 		<key>Modules/TravelDocumentReader.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			WQyGEgzuLBKQZ5+7uYH6wQyyKFbg2dhlP50QdCUCmOM=
+			5dO8GdaVUbQjjhElijwfnocLnE5kv3GIoItM1qar4nI=
 			</data>
 		</dict>
 		<key>Modules/TravelDocumentReader.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			fJCD98H1RVpj4u4WeapNbXEmcXi3kLMahQD7kBj3kho=
+			6hxngYHUrjBaY00ORYHqCCvPbgpt65lUtRpZXrRBTP4=
 			</data>
 		</dict>
 		<key>Modules/TravelDocumentReader.swiftmodule/x86_64-apple-ios-simulator.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			CuxxYUJU9xRRpxxk/nWEzT07r+1v+9bjfdqrSjDynEc=
+			jIQ9UQjUWVh4BppN9SkqweDRLiraIC5b9fCUowTaPo8=
 			</data>
 		</dict>
 		<key>Modules/TravelDocumentReader.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			/8dK3qyq8KSJgauyuYRmeVKYRxen++moaSP5EO+Tnmc=
+			xtmfAzIoIkydOt4+x0B7/iRFqIhJr4zwLwPqEB3RnDI=
 			</data>
 		</dict>
 		<key>Modules/TravelDocumentReader.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			CuxxYUJU9xRRpxxk/nWEzT07r+1v+9bjfdqrSjDynEc=
+			jIQ9UQjUWVh4BppN9SkqweDRLiraIC5b9fCUowTaPo8=
 			</data>
 		</dict>
 		<key>Modules/TravelDocumentReader.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			uS0D95N5n38wOL9fAgSPvf6p8V93ynlXF0dJ3kz//+s=
+			eZNb3tVpmHhurqwNhqjzfvV7PM1642Vj7QIUVq5JT/M=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
