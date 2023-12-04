@@ -1901,6 +1901,7 @@ public protocol PassportServiceDelegate : AnyObject {
   func passportServiceAuthenticating(_ service: TravelDocumentReader.PassportService, using chipAccessControl: TravelDocumentReader.ChipAccessControl, progress: Swift.Float)
   func passportServiceDidFailAuthentication(_ service: TravelDocumentReader.PassportService, using chipAccessControl: TravelDocumentReader.ChipAccessControl, withError error: any Swift.Error)
   func passportServiceDidAuthenticate(_ service: TravelDocumentReader.PassportService, using chipAccessControl: TravelDocumentReader.ChipAccessControl)
+  func passportServiceDidPerformActiveAuthentication(_ service: TravelDocumentReader.PassportService, withChallenge challenge: Foundation.Data, response: Foundation.Data)
   func passportService(_ service: TravelDocumentReader.PassportService, willRead file: TravelDocumentReader.ElementaryFile)
   func passportService(_ service: TravelDocumentReader.PassportService, didFailReading files: [TravelDocumentReader.ElementaryFile], withError error: any Swift.Error)
   func passportService(_ service: TravelDocumentReader.PassportService, didFailReading file: TravelDocumentReader.ElementaryFile, withError error: any Swift.Error)
@@ -2052,6 +2053,12 @@ extension TravelDocumentReader.PassportService {
 }
 extension TravelDocumentReader.PassportService {
   #if compiler(>=5.3) && $AsyncAwait
+  public func doActiveAuthentication() async throws -> (challenge: Foundation.Data, response: Foundation.Data)
+  #endif
+  public func verifyActiveAuthentication(dg15File: TravelDocumentReader.DG15File, challenge: Foundation.Data, response: Foundation.Data)
+}
+extension TravelDocumentReader.PassportService {
+  #if compiler(>=5.3) && $AsyncAwait
   public func read(file: TravelDocumentReader.ElementaryFile) async throws -> Foundation.Data
   #endif
   #if compiler(>=5.3) && $AsyncAwait
@@ -2059,7 +2066,7 @@ extension TravelDocumentReader.PassportService {
   #endif
 }
 public enum PassportServiceError : Swift.Error {
-  case paceError(_: Swift.String? = nil), bacError(_: Swift.String? = nil), tagEerror(_: Swift.String), chipAuthenticationNotSupported, paceNotSupported, fileSystemNotInitialized, readError(_: Swift.String)
+  case paceError(_: Swift.String? = nil), bacError(_: Swift.String? = nil), tagEerror(_: Swift.String), chipAuthenticationNotSupported, activeAuthenticationNotSupported, activeAuthenticationError(_: Swift.String), paceNotSupported, fileSystemNotInitialized, readError(_: Swift.String)
 }
 extension TravelDocumentReader.PassportServiceError : Foundation.LocalizedError {
   public var errorDescription: Swift.String? {
@@ -2173,6 +2180,18 @@ public struct PEMDocument : Swift.Hashable, Swift.Sendable {
   public func hash(into hasher: inout Swift.Hasher)
   public static func == (a: TravelDocumentReader.PEMDocument, b: TravelDocumentReader.PEMDocument) -> Swift.Bool
   public var hashValue: Swift.Int {
+    get
+  }
+}
+public struct DG15File {
+  public let encryptionAlgorithm: TravelDocumentReader.AlgorithmIdentifier
+  public let encryptedData: TravelDocumentReader.ASN1BitString
+  public init(data: Foundation.Data) throws
+}
+extension TravelDocumentReader.DG15File : TravelDocumentReader.DERImplicitlyTaggable {
+  public func serialize(into coder: inout TravelDocumentReader.DER.Serializer, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws
+  public init(derEncoded: TravelDocumentReader.ASN1Node, withIdentifier identifier: TravelDocumentReader.ASN1Identifier) throws
+  public static var defaultIdentifier: TravelDocumentReader.ASN1Identifier {
     get
   }
 }

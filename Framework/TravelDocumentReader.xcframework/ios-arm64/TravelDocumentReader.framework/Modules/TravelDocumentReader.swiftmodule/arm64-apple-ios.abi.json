@@ -10800,6 +10800,16 @@
         ]
       },
       {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "TravelDocumentReader",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
         "kind": "TypeDecl",
         "name": "SubjectPublicKeyInfo",
         "printedName": "SubjectPublicKeyInfo",
@@ -17124,6 +17134,45 @@
           },
           {
             "kind": "Function",
+            "name": "passportServiceDidPerformActiveAuthentication",
+            "printedName": "passportServiceDidPerformActiveAuthentication(_:withChallenge:response:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "PassportService",
+                "printedName": "TravelDocumentReader.PassportService",
+                "usr": "s:20TravelDocumentReader15PassportServiceC"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Data",
+                "printedName": "Foundation.Data",
+                "usr": "s:10Foundation4DataV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Data",
+                "printedName": "Foundation.Data",
+                "usr": "s:10Foundation4DataV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:20TravelDocumentReader23PassportServiceDelegateP08passportE30DidPerformActiveAuthentication_13withChallenge8responseyAA0dE0C_10Foundation4DataVAKtF",
+            "mangledName": "$s20TravelDocumentReader23PassportServiceDelegateP08passportE30DidPerformActiveAuthentication_13withChallenge8responseyAA0dE0C_10Foundation4DataVAKtF",
+            "moduleName": "TravelDocumentReader",
+            "genericSig": "<τ_0_0 where τ_0_0 : TravelDocumentReader.PassportServiceDelegate>",
+            "sugared_genericSig": "<Self where Self : TravelDocumentReader.PassportServiceDelegate>",
+            "protocolReq": true,
+            "reqNewWitnessTableEntry": true,
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
             "name": "passportService",
             "printedName": "passportService(_:willRead:)",
             "children": [
@@ -20501,6 +20550,81 @@
           },
           {
             "kind": "Function",
+            "name": "doActiveAuthentication",
+            "printedName": "doActiveAuthentication()",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Tuple",
+                "printedName": "(challenge: Foundation.Data, response: Foundation.Data)",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Data",
+                    "printedName": "Foundation.Data",
+                    "usr": "s:10Foundation4DataV"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Data",
+                    "printedName": "Foundation.Data",
+                    "usr": "s:10Foundation4DataV"
+                  }
+                ]
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:20TravelDocumentReader15PassportServiceC22doActiveAuthentication10Foundation4DataV9challenge_AG8responsetyYaKF",
+            "mangledName": "$s20TravelDocumentReader15PassportServiceC22doActiveAuthentication10Foundation4DataV9challenge_AG8responsetyYaKF",
+            "moduleName": "TravelDocumentReader",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "isFromExtension": true,
+            "throwing": true,
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
+            "name": "verifyActiveAuthentication",
+            "printedName": "verifyActiveAuthentication(dg15File:challenge:response:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "DG15File",
+                "printedName": "TravelDocumentReader.DG15File",
+                "usr": "s:20TravelDocumentReader8DG15FileV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Data",
+                "printedName": "Foundation.Data",
+                "usr": "s:10Foundation4DataV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Data",
+                "printedName": "Foundation.Data",
+                "usr": "s:10Foundation4DataV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:20TravelDocumentReader15PassportServiceC26verifyActiveAuthentication8dg15File9challenge8responseyAA04DG15J0V_10Foundation4DataVALtF",
+            "mangledName": "$s20TravelDocumentReader15PassportServiceC26verifyActiveAuthentication8dg15File9challenge8responseyAA04DG15J0V_10Foundation4DataVALtF",
+            "moduleName": "TravelDocumentReader",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "isFromExtension": true,
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Function",
             "name": "read",
             "printedName": "read(file:)",
             "children": [
@@ -20787,6 +20911,93 @@
             "declKind": "EnumElement",
             "usr": "s:20TravelDocumentReader20PassportServiceErrorO30chipAuthenticationNotSupportedyA2CmF",
             "mangledName": "$s20TravelDocumentReader20PassportServiceErrorO30chipAuthenticationNotSupportedyA2CmF",
+            "moduleName": "TravelDocumentReader"
+          },
+          {
+            "kind": "Var",
+            "name": "activeAuthenticationNotSupported",
+            "printedName": "activeAuthenticationNotSupported",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(TravelDocumentReader.PassportServiceError.Type) -> TravelDocumentReader.PassportServiceError",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "PassportServiceError",
+                    "printedName": "TravelDocumentReader.PassportServiceError",
+                    "usr": "s:20TravelDocumentReader20PassportServiceErrorO"
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "TravelDocumentReader.PassportServiceError.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "PassportServiceError",
+                        "printedName": "TravelDocumentReader.PassportServiceError",
+                        "usr": "s:20TravelDocumentReader20PassportServiceErrorO"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "s:20TravelDocumentReader20PassportServiceErrorO32activeAuthenticationNotSupportedyA2CmF",
+            "mangledName": "$s20TravelDocumentReader20PassportServiceErrorO32activeAuthenticationNotSupportedyA2CmF",
+            "moduleName": "TravelDocumentReader"
+          },
+          {
+            "kind": "Var",
+            "name": "activeAuthenticationError",
+            "printedName": "activeAuthenticationError",
+            "children": [
+              {
+                "kind": "TypeFunc",
+                "name": "Function",
+                "printedName": "(TravelDocumentReader.PassportServiceError.Type) -> (Swift.String) -> TravelDocumentReader.PassportServiceError",
+                "children": [
+                  {
+                    "kind": "TypeFunc",
+                    "name": "Function",
+                    "printedName": "(Swift.String) -> TravelDocumentReader.PassportServiceError",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "PassportServiceError",
+                        "printedName": "TravelDocumentReader.PassportServiceError",
+                        "usr": "s:20TravelDocumentReader20PassportServiceErrorO"
+                      },
+                      {
+                        "kind": "TypeNominal",
+                        "name": "String",
+                        "printedName": "Swift.String",
+                        "usr": "s:SS"
+                      }
+                    ]
+                  },
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Metatype",
+                    "printedName": "TravelDocumentReader.PassportServiceError.Type",
+                    "children": [
+                      {
+                        "kind": "TypeNominal",
+                        "name": "PassportServiceError",
+                        "printedName": "TravelDocumentReader.PassportServiceError",
+                        "usr": "s:20TravelDocumentReader20PassportServiceErrorO"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "declKind": "EnumElement",
+            "usr": "s:20TravelDocumentReader20PassportServiceErrorO020activeAuthenticationF0yACSScACmF",
+            "mangledName": "$s20TravelDocumentReader20PassportServiceErrorO020activeAuthenticationF0yACSScACmF",
             "moduleName": "TravelDocumentReader"
           },
           {
@@ -22612,6 +22823,297 @@
             "printedName": "Equatable",
             "usr": "s:SQ",
             "mangledName": "$sSQ"
+          }
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "TravelDocumentReader",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "OpenSSL",
+        "printedName": "OpenSSL",
+        "declKind": "Import",
+        "moduleName": "TravelDocumentReader"
+      },
+      {
+        "kind": "Import",
+        "name": "CryptoTokenKit",
+        "printedName": "CryptoTokenKit",
+        "declKind": "Import",
+        "moduleName": "TravelDocumentReader"
+      },
+      {
+        "kind": "TypeDecl",
+        "name": "DG15File",
+        "printedName": "DG15File",
+        "children": [
+          {
+            "kind": "Var",
+            "name": "encryptionAlgorithm",
+            "printedName": "encryptionAlgorithm",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "AlgorithmIdentifier",
+                "printedName": "TravelDocumentReader.AlgorithmIdentifier",
+                "usr": "s:20TravelDocumentReader19AlgorithmIdentifierV"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:20TravelDocumentReader8DG15FileV19encryptionAlgorithmAA0G10IdentifierVvp",
+            "mangledName": "$s20TravelDocumentReader8DG15FileV19encryptionAlgorithmAA0G10IdentifierVvp",
+            "moduleName": "TravelDocumentReader",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "AlgorithmIdentifier",
+                    "printedName": "TravelDocumentReader.AlgorithmIdentifier",
+                    "usr": "s:20TravelDocumentReader19AlgorithmIdentifierV"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:20TravelDocumentReader8DG15FileV19encryptionAlgorithmAA0G10IdentifierVvg",
+                "mangledName": "$s20TravelDocumentReader8DG15FileV19encryptionAlgorithmAA0G10IdentifierVvg",
+                "moduleName": "TravelDocumentReader",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Var",
+            "name": "encryptedData",
+            "printedName": "encryptedData",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "ASN1BitString",
+                "printedName": "TravelDocumentReader.ASN1BitString",
+                "usr": "s:20TravelDocumentReader13ASN1BitStringV"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:20TravelDocumentReader8DG15FileV13encryptedDataAA13ASN1BitStringVvp",
+            "mangledName": "$s20TravelDocumentReader8DG15FileV13encryptedDataAA13ASN1BitStringVvp",
+            "moduleName": "TravelDocumentReader",
+            "declAttributes": [
+              "HasStorage",
+              "AccessControl"
+            ],
+            "isLet": true,
+            "hasStorage": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ASN1BitString",
+                    "printedName": "TravelDocumentReader.ASN1BitString",
+                    "usr": "s:20TravelDocumentReader13ASN1BitStringV"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:20TravelDocumentReader8DG15FileV13encryptedDataAA13ASN1BitStringVvg",
+                "mangledName": "$s20TravelDocumentReader8DG15FileV13encryptedDataAA13ASN1BitStringVvg",
+                "moduleName": "TravelDocumentReader",
+                "implicit": true,
+                "accessorKind": "get"
+              }
+            ]
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(data:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "DG15File",
+                "printedName": "TravelDocumentReader.DG15File",
+                "usr": "s:20TravelDocumentReader8DG15FileV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Data",
+                "printedName": "Foundation.Data",
+                "usr": "s:10Foundation4DataV"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:20TravelDocumentReader8DG15FileV4dataAC10Foundation4DataV_tKcfc",
+            "mangledName": "$s20TravelDocumentReader8DG15FileV4dataAC10Foundation4DataV_tKcfc",
+            "moduleName": "TravelDocumentReader",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "throwing": true,
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Function",
+            "name": "serialize",
+            "printedName": "serialize(into:withIdentifier:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "Void",
+                "printedName": "()"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "Serializer",
+                "printedName": "TravelDocumentReader.DER.Serializer",
+                "paramValueOwnership": "InOut",
+                "usr": "s:20TravelDocumentReader3DERO10SerializerV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "ASN1Identifier",
+                "printedName": "TravelDocumentReader.ASN1Identifier",
+                "usr": "s:20TravelDocumentReader14ASN1IdentifierV"
+              }
+            ],
+            "declKind": "Func",
+            "usr": "s:20TravelDocumentReader8DG15FileV9serialize4into14withIdentifieryAA3DERO10SerializerVz_AA04ASN1I0VtKF",
+            "mangledName": "$s20TravelDocumentReader8DG15FileV9serialize4into14withIdentifieryAA3DERO10SerializerVz_AA04ASN1I0VtKF",
+            "moduleName": "TravelDocumentReader",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "isFromExtension": true,
+            "throwing": true,
+            "funcSelfKind": "NonMutating"
+          },
+          {
+            "kind": "Constructor",
+            "name": "init",
+            "printedName": "init(derEncoded:withIdentifier:)",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "DG15File",
+                "printedName": "TravelDocumentReader.DG15File",
+                "usr": "s:20TravelDocumentReader8DG15FileV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "ASN1Node",
+                "printedName": "TravelDocumentReader.ASN1Node",
+                "usr": "s:20TravelDocumentReader8ASN1NodeV"
+              },
+              {
+                "kind": "TypeNominal",
+                "name": "ASN1Identifier",
+                "printedName": "TravelDocumentReader.ASN1Identifier",
+                "usr": "s:20TravelDocumentReader14ASN1IdentifierV"
+              }
+            ],
+            "declKind": "Constructor",
+            "usr": "s:20TravelDocumentReader8DG15FileV10derEncoded14withIdentifierAcA8ASN1NodeV_AA0jI0VtKcfc",
+            "mangledName": "$s20TravelDocumentReader8DG15FileV10derEncoded14withIdentifierAcA8ASN1NodeV_AA0jI0VtKcfc",
+            "moduleName": "TravelDocumentReader",
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "isFromExtension": true,
+            "throwing": true,
+            "init_kind": "Designated"
+          },
+          {
+            "kind": "Var",
+            "name": "defaultIdentifier",
+            "printedName": "defaultIdentifier",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "ASN1Identifier",
+                "printedName": "TravelDocumentReader.ASN1Identifier",
+                "usr": "s:20TravelDocumentReader14ASN1IdentifierV"
+              }
+            ],
+            "declKind": "Var",
+            "usr": "s:20TravelDocumentReader8DG15FileV17defaultIdentifierAA04ASN1G0VvpZ",
+            "mangledName": "$s20TravelDocumentReader8DG15FileV17defaultIdentifierAA04ASN1G0VvpZ",
+            "moduleName": "TravelDocumentReader",
+            "static": true,
+            "declAttributes": [
+              "AccessControl"
+            ],
+            "isFromExtension": true,
+            "accessors": [
+              {
+                "kind": "Accessor",
+                "name": "Get",
+                "printedName": "Get()",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "ASN1Identifier",
+                    "printedName": "TravelDocumentReader.ASN1Identifier",
+                    "usr": "s:20TravelDocumentReader14ASN1IdentifierV"
+                  }
+                ],
+                "declKind": "Accessor",
+                "usr": "s:20TravelDocumentReader8DG15FileV17defaultIdentifierAA04ASN1G0VvgZ",
+                "mangledName": "$s20TravelDocumentReader8DG15FileV17defaultIdentifierAA04ASN1G0VvgZ",
+                "moduleName": "TravelDocumentReader",
+                "static": true,
+                "isFromExtension": true,
+                "accessorKind": "get"
+              }
+            ]
+          }
+        ],
+        "declKind": "Struct",
+        "usr": "s:20TravelDocumentReader8DG15FileV",
+        "mangledName": "$s20TravelDocumentReader8DG15FileV",
+        "moduleName": "TravelDocumentReader",
+        "declAttributes": [
+          "AccessControl"
+        ],
+        "conformances": [
+          {
+            "kind": "Conformance",
+            "name": "DERImplicitlyTaggable",
+            "printedName": "DERImplicitlyTaggable",
+            "usr": "s:20TravelDocumentReader21DERImplicitlyTaggableP",
+            "mangledName": "$s20TravelDocumentReader21DERImplicitlyTaggableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "DERParseable",
+            "printedName": "DERParseable",
+            "usr": "s:20TravelDocumentReader12DERParseableP",
+            "mangledName": "$s20TravelDocumentReader12DERParseableP"
+          },
+          {
+            "kind": "Conformance",
+            "name": "DERSerializable",
+            "printedName": "DERSerializable",
+            "usr": "s:20TravelDocumentReader15DERSerializableP",
+            "mangledName": "$s20TravelDocumentReader15DERSerializableP"
           }
         ]
       },
@@ -26541,6 +27043,30 @@
             "mangledName": "$ss23CustomStringConvertibleP"
           }
         ]
+      },
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "TravelDocumentReader",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "OSLog",
+        "printedName": "OSLog",
+        "declKind": "Import",
+        "moduleName": "TravelDocumentReader"
+      },
+      {
+        "kind": "Import",
+        "name": "CoreNFC",
+        "printedName": "CoreNFC",
+        "declKind": "Import",
+        "moduleName": "TravelDocumentReader"
       },
       {
         "kind": "Import",
@@ -45895,23 +46421,30 @@
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/DefaultFileSystem.swift",
       "kind": "IntegerLiteral",
-      "offset": 363,
+      "offset": 378,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/DefaultFileSystem.swift",
       "kind": "IntegerLiteral",
-      "offset": 823,
+      "offset": 838,
       "length": 4,
       "value": "0x6A"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/DefaultFileSystem.swift",
       "kind": "IntegerLiteral",
-      "offset": 857,
+      "offset": 872,
       "length": 4,
       "value": "0x82"
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/DefaultFileSystem.swift",
+      "kind": "IntegerLiteral",
+      "offset": 1116,
+      "length": 4,
+      "value": "0x6B"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/Libraries\/ASN1\/Types\/ASN1Identifier.swift",
@@ -47043,1981 +47576,2037 @@
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 1076,
+      "offset": 1179,
       "length": 21,
       "value": "\"Reading Card Access\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 1254,
+      "offset": 1357,
       "length": 42,
       "value": "\"Error while trying to select Master File\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 1522,
+      "offset": 1625,
       "length": 42,
       "value": "\"Error while trying to select Card Access\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 1831,
+      "offset": 1934,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 1850,
+      "offset": 1953,
       "length": 1,
       "value": "4"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 2254,
+      "offset": 2357,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 2289,
+      "offset": 2392,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 2329,
+      "offset": 2432,
       "length": 10,
       "value": "0x00000080"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 2344,
+      "offset": 2447,
       "length": 10,
       "value": "0x00000080"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 2414,
+      "offset": 2517,
       "length": 1,
       "value": "2"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 2485,
+      "offset": 2588,
       "length": 10,
       "value": "0x0000007F"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 2521,
+      "offset": 2624,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 2586,
+      "offset": 2689,
       "length": 1,
       "value": "8"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 2660,
+      "offset": 2763,
       "length": 1,
       "value": "4"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 2999,
+      "offset": 3102,
       "length": 1,
       "value": "4"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 3292,
+      "offset": 3395,
       "length": 36,
       "value": "\"Successfully read Card Access File\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 3352,
+      "offset": 3455,
       "length": 21,
       "value": "\"\t\tSecurity Infos:\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 3464,
+      "offset": 3567,
       "length": 43,
       "value": "\"\t\t\t\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 3506,
+      "offset": 3609,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 3610,
+      "offset": 3713,
       "length": 63,
       "value": "\"Unable to read card access file: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 3672,
+      "offset": 3775,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "Array",
-      "offset": 3834,
+      "offset": 3937,
       "length": 42,
       "value": "[0xA0, 0x00, 0x00, 0x02, 0x47, 0x10, 0x01]"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 4019,
+      "offset": 4122,
       "length": 16,
       "value": "\"Performing BAC\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 4114,
+      "offset": 4217,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 4427,
+      "offset": 4530,
       "length": 46,
       "value": "\"Unable to compute Document Basic Access Keys\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 4529,
+      "offset": 4632,
       "length": 46,
       "value": "\"Unable to compute Document Basic Access Keys\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 4904,
+      "offset": 5007,
       "length": 71,
       "value": "\"Unable to request a challenge from IC (\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 4973,
+      "offset": 5076,
       "length": 1,
       "value": "\")\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 5031,
+      "offset": 5134,
       "length": 71,
       "value": "\"Unable to request a challenge from IC (\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 5100,
+      "offset": 5203,
       "length": 1,
       "value": "\")\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "FloatLiteral",
-      "offset": 5320,
+      "offset": 5423,
       "length": 4,
       "value": "0.50"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 5509,
+      "offset": 5612,
       "length": 1,
       "value": "8"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 5563,
+      "offset": 5666,
       "length": 2,
       "value": "16"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 5604,
+      "offset": 5707,
       "length": 62,
       "value": "\"Unable to generate a nonce RNF.IFD and keying material K.IFD\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 5722,
+      "offset": 5825,
       "length": 62,
       "value": "\"Unable to generate a nonce RNF.IFD and keying material K.IFD\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 6204,
+      "offset": 6307,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 6249,
+      "offset": 6352,
       "length": 60,
       "value": "\"Authentication response does not contain any valid payload\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 6353,
+      "offset": 6456,
       "length": 82,
       "value": "\"Error when trying to send authentication command (\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 6433,
+      "offset": 6536,
       "length": 1,
       "value": "\")\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 6491,
+      "offset": 6594,
       "length": 71,
       "value": "\"Unable to send authentication command (\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 6560,
+      "offset": 6663,
       "length": 1,
       "value": "\")\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 6739,
+      "offset": 6842,
       "length": 2,
       "value": "16"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 6786,
+      "offset": 6889,
       "length": 2,
       "value": "16"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 6807,
+      "offset": 6910,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 6860,
+      "offset": 6963,
       "length": 4,
       "value": "0xFF"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 6878,
+      "offset": 6981,
       "length": 4,
       "value": "0xFF"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 7124,
+      "offset": 7227,
       "length": 50,
       "value": "\"Unable to dervive session keys KS.ENC and KS.MAC\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 7230,
+      "offset": 7333,
       "length": 50,
       "value": "\"Unable to dervive session keys KS.ENC and KS.MAC\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 7463,
+      "offset": 7566,
       "length": 4,
       "value": "0x00"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 7485,
+      "offset": 7588,
       "length": 1,
       "value": "4"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 7489,
+      "offset": 7592,
       "length": 1,
       "value": "8"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 7529,
+      "offset": 7632,
       "length": 1,
       "value": "8"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 7585,
+      "offset": 7688,
       "length": 10,
       "value": "0x000000FF"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 7625,
+      "offset": 7728,
       "length": 1,
       "value": "4"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 7629,
+      "offset": 7732,
       "length": 1,
       "value": "8"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 7669,
+      "offset": 7772,
       "length": 1,
       "value": "8"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 7726,
+      "offset": 7829,
       "length": 10,
       "value": "0x000000FF"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 8183,
+      "offset": 8286,
       "length": 64,
       "value": "\"Performing PACE with pace info \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 8246,
+      "offset": 8349,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 8284,
+      "offset": 8387,
       "length": 1,
       "value": "6"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 8373,
+      "offset": 8476,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 8539,
+      "offset": 8642,
       "length": 70,
       "value": "\"Unable to send Mutual Authentication (\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 8607,
+      "offset": 8710,
       "length": 1,
       "value": "\")\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 8934,
+      "offset": 9037,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 9130,
+      "offset": 9233,
       "length": 53,
       "value": "\"Unable to determine Cipher Algorithm and Key Length\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 9240,
+      "offset": 9343,
       "length": 53,
       "value": "\"Unable to determine Cipher Algorithm and Key Length\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 9452,
+      "offset": 9555,
       "length": 57,
       "value": "\"CipherAlgorithm: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 9508,
+      "offset": 9611,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 9528,
+      "offset": 9631,
       "length": 46,
       "value": "\"Key Length: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 9573,
+      "offset": 9676,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 9782,
+      "offset": 9885,
       "length": 51,
       "value": "\"Unable to create decrypted nonce from PACE step 1\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 10053,
+      "offset": 10156,
       "length": 1,
       "value": "2"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 10253,
+      "offset": 10356,
       "length": 52,
       "value": "\"Unable to create ephemeral params from PACE step 2\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 10525,
+      "offset": 10628,
       "length": 1,
       "value": "3"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 10760,
+      "offset": 10863,
       "length": 1,
       "value": "4"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 11272,
+      "offset": 11375,
       "length": 44,
       "value": "\"Unable to derive mac and\/or encryption key\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 11439,
+      "offset": 11542,
       "length": 75,
       "value": "\"Unable to derive mac and\/or encryption key: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 11513,
+      "offset": 11616,
       "length": 3,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 11566,
+      "offset": 11669,
       "length": 75,
       "value": "\"Unable to derive mac and\/or encryption key: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 11640,
+      "offset": 11743,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 11680,
+      "offset": 11783,
       "length": 24,
       "value": "\"MAC Key: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 11703,
+      "offset": 11806,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 11724,
+      "offset": 11827,
       "length": 24,
       "value": "\"ENC Key: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 11747,
+      "offset": 11850,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 12039,
+      "offset": 12142,
       "length": 1,
       "value": "5"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 12109,
+      "offset": 12212,
       "length": 4,
       "value": "0x00"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 12410,
+      "offset": 12513,
       "length": 49,
       "value": "\"PACE completed and secure messaging initialized\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 12478,
+      "offset": 12581,
       "length": 26,
       "value": "\"Re-selecting ICAO applet\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 12781,
+      "offset": 12884,
       "length": 24,
       "value": "\"Performing PACE step 1\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 12935,
+      "offset": 13038,
       "length": 3,
       "value": "256"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "BooleanLiteral",
-      "offset": 12948,
+      "offset": 13051,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 13041,
+      "offset": 13144,
       "length": 4,
       "value": "0x80"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 13223,
+      "offset": 13326,
       "length": 4,
       "value": "0x00"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 13251,
+      "offset": 13354,
       "length": 26,
       "value": "\"PACE Key: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 13276,
+      "offset": 13379,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 13396,
+      "offset": 13499,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 13406,
+      "offset": 13509,
       "length": 1,
       "value": "8"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 13580,
+      "offset": 13683,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 13590,
+      "offset": 13693,
       "length": 2,
       "value": "16"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 13742,
+      "offset": 13845,
       "length": 45,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 13755,
+      "offset": 13858,
       "length": 1,
       "value": "\" - Unsupported cipher algorithm\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 13897,
+      "offset": 14000,
       "length": 42,
       "value": "\"Error performing PACE step 1: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 13938,
+      "offset": 14041,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 14026,
+      "offset": 14129,
       "length": 42,
       "value": "\"Error performing PACE step 1: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 14067,
+      "offset": 14170,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 14110,
+      "offset": 14213,
       "length": 40,
       "value": "\"Error performing PACE step 1: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 14149,
+      "offset": 14252,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 14328,
+      "offset": 14431,
       "length": 24,
       "value": "\"Performing PACE step 2\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 14705,
+      "offset": 14808,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 14775,
+      "offset": 14878,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 14845,
+      "offset": 14948,
       "length": 1,
       "value": "2"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 15623,
+      "offset": 15726,
       "length": 4,
       "value": "0x81"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 15662,
+      "offset": 15765,
       "length": 32,
       "value": "\"Unable to generate step 2 data\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 15887,
+      "offset": 15990,
       "length": 3,
       "value": "256"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "BooleanLiteral",
-      "offset": 15900,
+      "offset": 16003,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 16010,
+      "offset": 16113,
       "length": 4,
       "value": "0x82"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 16621,
+      "offset": 16724,
       "length": 40,
       "value": "\"Unable to perform PACE step 2 \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 16660,
+      "offset": 16763,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 16845,
+      "offset": 16948,
       "length": 24,
       "value": "\"Performing PACE step 3\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 17247,
+      "offset": 17350,
       "length": 37,
       "value": "\"Unable to create ephemeral key pair\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 17335,
+      "offset": 17438,
       "length": 37,
       "value": "\"Unable to create ephemeral key pair\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 17624,
+      "offset": 17727,
       "length": 31,
       "value": "\"Unable to get public key data\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 17706,
+      "offset": 17809,
       "length": 31,
       "value": "\"Unable to get public key data\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 17835,
+      "offset": 17938,
       "length": 4,
       "value": "0x83"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 17946,
+      "offset": 18049,
       "length": 3,
       "value": "256"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "BooleanLiteral",
-      "offset": 17959,
+      "offset": 18062,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 18058,
+      "offset": 18161,
       "length": 4,
       "value": "0x84"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 18242,
+      "offset": 18345,
       "length": 29,
       "value": "\"Unable to decode public key\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 18322,
+      "offset": 18425,
       "length": 29,
       "value": "\"Unable to decode public key\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 18665,
+      "offset": 18768,
       "length": 24,
       "value": "\"Performing PACE step 4\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 18880,
+      "offset": 18983,
       "length": 41,
       "value": "\"Unable to generate Authentication token\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 18972,
+      "offset": 19075,
       "length": 41,
       "value": "\"Unable to generate Authentication token\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 19052,
+      "offset": 19155,
       "length": 43,
       "value": "\"Authentication Token: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 19094,
+      "offset": 19197,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 19162,
+      "offset": 19265,
       "length": 4,
       "value": "0x85"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 19273,
+      "offset": 19376,
       "length": 3,
       "value": "256"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "BooleanLiteral",
-      "offset": 19286,
+      "offset": 19389,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 19464,
+      "offset": 19567,
       "length": 15,
       "value": "\"No TLV Record\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 19530,
+      "offset": 19633,
       "length": 15,
       "value": "\"No TLV Record\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 19585,
+      "offset": 19688,
       "length": 4,
       "value": "0x86"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 19614,
+      "offset": 19717,
       "length": 43,
       "value": "\"Expected tag 0x86, found \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 19656,
+      "offset": 19759,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 19996,
+      "offset": 20099,
       "length": 115,
       "value": "\"Error PICC Token mismatch!\npicToken - \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 20048,
+      "offset": 20151,
       "length": 1,
       "value": "\"\nexpectedPICCToken - \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 20110,
+      "offset": 20213,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 20162,
+      "offset": 20265,
       "length": 115,
       "value": "\"Error PICC Token mismatch!\npicToken - \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 20214,
+      "offset": 20317,
       "length": 1,
       "value": "\"\nexpectedPICCToken - \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 20276,
+      "offset": 20379,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 20501,
+      "offset": 20604,
       "length": 33,
       "value": "\"Generating Authentication Token\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 20554,
+      "offset": 20657,
       "length": 62,
       "value": "\"\t\tCipher Algorithm: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 20615,
+      "offset": 20718,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 20636,
+      "offset": 20739,
       "length": 50,
       "value": "\"\t\tPublic Key: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 20685,
+      "offset": 20788,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 20706,
+      "offset": 20809,
       "length": 44,
       "value": "\"\t\tMac Key: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 20749,
+      "offset": 20852,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 20770,
+      "offset": 20873,
       "length": 51,
       "value": "\"\t\tObject Identifier: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 20820,
+      "offset": 20923,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 20938,
+      "offset": 21041,
       "length": 58,
       "value": "\"\t\tEncoded Public Key Data: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 20995,
+      "offset": 21098,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 21183,
+      "offset": 21286,
       "length": 1,
       "value": "8"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 21408,
+      "offset": 21511,
       "length": 1,
       "value": "8"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 21695,
+      "offset": 21798,
       "length": 31,
       "value": "\"Unable to get public key data\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 21777,
+      "offset": 21880,
       "length": 31,
       "value": "\"Unable to get public key data\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 21838,
+      "offset": 21941,
       "length": 36,
       "value": "\"Public Key Data: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 21873,
+      "offset": 21976,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 22040,
+      "offset": 22143,
       "length": 4,
       "value": "0x84"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 22080,
+      "offset": 22183,
       "length": 4,
       "value": "0x86"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 22185,
+      "offset": 22288,
       "length": 29,
       "value": "\"Unable to create TLV record\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 22265,
+      "offset": 22368,
       "length": 29,
       "value": "\"Unable to create TLV record\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 22426,
+      "offset": 22529,
       "length": 6,
       "value": "0x7F49"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 23350,
+      "offset": 23453,
       "length": 33,
       "value": "\"Unable to create DH mapping key\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 23434,
+      "offset": 23537,
       "length": 33,
       "value": "\"Unable to create DH mapping key\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 23744,
+      "offset": 23847,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 24590,
+      "offset": 24693,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 24621,
+      "offset": 24724,
       "length": 41,
       "value": "\"Unable to peform modular exponentiation\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 24713,
+      "offset": 24816,
       "length": 41,
       "value": "\"Unable to peform modular exponentiation\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 24833,
+      "offset": 24936,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 24864,
+      "offset": 24967,
       "length": 41,
       "value": "\"Unable to peform modular multiplication\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 24956,
+      "offset": 25059,
       "length": 41,
       "value": "\"Unable to peform modular multiplication\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 25098,
+      "offset": 25201,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 25129,
+      "offset": 25232,
       "length": 47,
       "value": "\"Unable to initialize A DH key exchange object\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 25227,
+      "offset": 25330,
       "length": 47,
       "value": "\"Unable to initialize A DH key exchange object\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 25415,
+      "offset": 25518,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 25489,
+      "offset": 25592,
       "length": 24,
       "value": "\"Unable to set key pair\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 25564,
+      "offset": 25667,
       "length": 24,
       "value": "\"Unable to set key pair\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 26187,
+      "offset": 26290,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 26218,
+      "offset": 26321,
       "length": 53,
       "value": "\"Unable to get the order of the elliptic curve group\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 26322,
+      "offset": 26425,
       "length": 53,
       "value": "\"Unable to get the order of the elliptic curve group\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 26457,
+      "offset": 26560,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 26488,
+      "offset": 26591,
       "length": 56,
       "value": "\"Unable to get the cofactor of the elliptic curve group\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 26595,
+      "offset": 26698,
       "length": 56,
       "value": "\"Unable to get the cofactor of the elliptic curve group\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 26828,
+      "offset": 26931,
       "length": 42,
       "value": "\"Unable to compute ecdh mapping key point\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 26921,
+      "offset": 27024,
       "length": 42,
       "value": "\"Unable to compute ecdh mapping key point\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 27406,
+      "offset": 27509,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 27437,
+      "offset": 27540,
       "length": 62,
       "value": "\"Unable to perform point multiplication on the elliptic curve\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 27550,
+      "offset": 27653,
       "length": 62,
       "value": "\"Unable to perform point multiplication on the elliptic curve\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 27972,
+      "offset": 28075,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 28053,
+      "offset": 28156,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 28100,
+      "offset": 28203,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 28159,
+      "offset": 28262,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 28233,
+      "offset": 28336,
       "length": 40,
       "value": "\"Unable to configure elliptic curve key\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 28324,
+      "offset": 28427,
       "length": 40,
       "value": "\"Unable to configure elliptic curve key\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 29073,
+      "offset": 29176,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 29680,
+      "offset": 29783,
       "length": 4,
       "value": "0xDF"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 29687,
+      "offset": 29790,
       "length": 4,
       "value": "0xDF"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 30438,
+      "offset": 30549,
       "length": 4,
       "value": "0xDF"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 30445,
+      "offset": 30556,
       "length": 4,
       "value": "0xDF"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "Dictionary",
-      "offset": 31101,
+      "offset": 31332,
       "length": 3,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "Array",
-      "offset": 31187,
+      "offset": 31418,
       "length": 2,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 31400,
+      "offset": 31631,
       "length": 4,
       "value": "0x00"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 31813,
+      "offset": 32044,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 31846,
+      "offset": 32077,
       "length": 38,
       "value": "\"Chip Authentication is not supported\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 31992,
+      "offset": 32223,
       "length": 32,
       "value": "\"Performing Chip Authentication\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 32043,
+      "offset": 32274,
       "length": 66,
       "value": "\"\t\tPublic keys found: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 32108,
+      "offset": 32339,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 32238,
+      "offset": 32469,
       "length": 4,
       "value": "0x00"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 33503,
+      "offset": 33734,
       "length": 35,
       "value": "\"Public key could not be generated\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "BooleanLiteral",
-      "offset": 33559,
+      "offset": 33790,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 33930,
+      "offset": 34161,
       "length": 58,
       "value": "\"Cipher Algorithm: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 33987,
+      "offset": 34218,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 34094,
+      "offset": 34325,
       "length": 47,
       "value": "\"Key Data: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 34140,
+      "offset": 34371,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "BooleanLiteral",
-      "offset": 34226,
+      "offset": 34457,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 34476,
+      "offset": 34707,
       "length": 4,
       "value": "0x80"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 34538,
+      "offset": 34769,
       "length": 3,
       "value": "223"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 34582,
+      "offset": 34813,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 34785,
+      "offset": 35016,
       "length": 33,
       "value": "\"Segment Size: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 34817,
+      "offset": 35048,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 35033,
+      "offset": 35264,
       "length": 25,
       "value": "\"Segment: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 35057,
+      "offset": 35288,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 35090,
+      "offset": 35321,
       "length": 24,
       "value": "\"\t\tIs Last: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 35113,
+      "offset": 35344,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 35399,
+      "offset": 35630,
       "length": 37,
       "value": "\"Failed to send general authenticate\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "BooleanLiteral",
-      "offset": 35461,
+      "offset": 35692,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "BooleanLiteral",
-      "offset": 35530,
+      "offset": 35761,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 35740,
+      "offset": 35971,
       "length": 29,
       "value": "\"Restarting Secure Messaging\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "BooleanLiteral",
-      "offset": 35865,
+      "offset": 36096,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "BooleanLiteral",
-      "offset": 36049,
+      "offset": 36280,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "BooleanLiteral",
-      "offset": 36233,
+      "offset": 36464,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 36300,
+      "offset": 36531,
       "length": 4,
       "value": "0x00"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 36600,
+      "offset": 36831,
       "length": 56,
       "value": "\"Restarted Secure Messaging and initialized file system\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "BooleanLiteral",
-      "offset": 36673,
+      "offset": 36904,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 37519,
+      "offset": 37626,
+      "length": 33,
+      "value": "\"Performing Active Auhentication\""
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
+      "kind": "IntegerLiteral",
+      "offset": 37757,
+      "length": 1,
+      "value": "8"
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
+      "kind": "StringLiteral",
+      "offset": 37789,
+      "length": 30,
+      "value": "\"Unable to generate challenge\""
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
+      "kind": "StringLiteral",
+      "offset": 38772,
+      "length": 54,
+      "value": "\"Decrypted Signature: \""
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
+      "kind": "StringLiteral",
+      "offset": 38825,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
+      "kind": "StringLiteral",
+      "offset": 38868,
+      "length": 50,
+      "value": "\"Could not verify Active Authentication: \""
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
+      "kind": "StringLiteral",
+      "offset": 38917,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
+      "kind": "StringLiteral",
+      "offset": 39226,
       "length": 37,
       "value": "\"Filesystem has not been initialized\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 37835,
+      "offset": 39542,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 37846,
+      "offset": 39553,
       "length": 1,
       "value": "4"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 37964,
+      "offset": 39671,
       "length": 45,
       "value": "\"Unable to read binary data from file system\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 38061,
+      "offset": 39768,
       "length": 45,
       "value": "\"Unable to read binary data from file system\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 38323,
+      "offset": 40030,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 38354,
+      "offset": 40061,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 38378,
+      "offset": 40085,
       "length": 10,
       "value": "0x00000080"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 38393,
+      "offset": 40100,
       "length": 10,
       "value": "0x00000080"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 38455,
+      "offset": 40162,
       "length": 1,
       "value": "2"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 38518,
+      "offset": 40225,
       "length": 10,
       "value": "0x0000007F"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 38550,
+      "offset": 40257,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 38611,
+      "offset": 40318,
       "length": 1,
       "value": "8"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 38681,
+      "offset": 40388,
       "length": 1,
       "value": "4"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 38923,
+      "offset": 40630,
       "length": 1,
       "value": "4"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 39488,
+      "offset": 41195,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 39521,
+      "offset": 41228,
       "length": 33,
       "value": "\"Trying to read empty files list\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 39665,
+      "offset": 41372,
       "length": 18,
       "value": "\"No files to read\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "Array",
-      "offset": 39704,
+      "offset": 41411,
       "length": 2,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 39838,
+      "offset": 41545,
       "length": 29,
       "value": "\"File system not initialized\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "Array",
-      "offset": 40013,
+      "offset": 41720,
       "length": 2,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 40182,
+      "offset": 41889,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 40214,
+      "offset": 41921,
       "length": 32,
       "value": "\"Failed to read length of files\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 40357,
+      "offset": 42064,
       "length": 33,
       "value": "\"Unabled to read length of files\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "Array",
-      "offset": 40412,
+      "offset": 42119,
       "length": 2,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "Array",
-      "offset": 40592,
+      "offset": 42299,
       "length": 2,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "Array",
-      "offset": 40948,
+      "offset": 42655,
       "length": 2,
       "value": "[]"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 41335,
+      "offset": 43042,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 41346,
+      "offset": 43053,
       "length": 1,
       "value": "4"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 41591,
+      "offset": 43298,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 41622,
+      "offset": 43329,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 41654,
+      "offset": 43361,
       "length": 10,
       "value": "0x00000080"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 41669,
+      "offset": 43376,
       "length": 10,
       "value": "0x00000080"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 41731,
+      "offset": 43438,
       "length": 1,
       "value": "2"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 41794,
+      "offset": 43501,
       "length": 10,
       "value": "0x0000007F"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 41826,
+      "offset": 43533,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 41887,
+      "offset": 43594,
       "length": 1,
       "value": "8"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "IntegerLiteral",
-      "offset": 41957,
+      "offset": 43664,
       "length": 1,
       "value": "4"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 43195,
+      "offset": 44994,
       "length": 38,
       "value": "\"Chip Authentication is not supported\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 43285,
+      "offset": 45100,
+      "length": 40,
+      "value": "\"Active Authentication is not supported\""
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
+      "kind": "StringLiteral",
+      "offset": 45281,
       "length": 23,
       "value": "\"PACE is not supported\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/PassportService.swift",
       "kind": "StringLiteral",
-      "offset": 43368,
+      "offset": 45364,
       "length": 38,
       "value": "\"File system has not been initialized\""
     },
@@ -49899,602 +50488,623 @@
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 1976,
-      "length": 4,
-      "value": "0x88"
-    },
-    {
-      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
-      "kind": "IntegerLiteral",
-      "offset": 2042,
+      "offset": 1952,
       "length": 3,
       "value": "256"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 2048,
+      "offset": 1958,
       "length": 4,
       "value": "0x00"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 2118,
+      "offset": 2028,
       "length": 4,
       "value": "0x97"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 2186,
+      "offset": 2096,
       "length": 6,
       "value": "0xFF00"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 2197,
+      "offset": 2107,
       "length": 1,
       "value": "8"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 2212,
+      "offset": 2122,
       "length": 4,
       "value": "0xFF"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 2239,
+      "offset": 2149,
       "length": 4,
       "value": "0x97"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "StringLiteral",
-      "offset": 2296,
+      "offset": 2206,
       "length": 20,
       "value": "\"DO'97: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "StringLiteral",
-      "offset": 2315,
+      "offset": 2225,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 2387,
+      "offset": 2297,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 2665,
+      "offset": 2575,
       "length": 4,
       "value": "0x00"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 2678,
+      "offset": 2588,
       "length": 1,
       "value": "8"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 2940,
+      "offset": 2850,
       "length": 4,
       "value": "0x85"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 2947,
+      "offset": 2857,
       "length": 4,
       "value": "0x87"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 3032,
+      "offset": 2942,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 3036,
+      "offset": 2946,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 3097,
+      "offset": 3007,
       "length": 4,
       "value": "0x01"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "StringLiteral",
-      "offset": 3184,
+      "offset": 3094,
       "length": 24,
       "value": "\"DO'8587: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "StringLiteral",
-      "offset": 3207,
+      "offset": 3117,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "StringLiteral",
-      "offset": 3485,
+      "offset": 3395,
       "length": 13,
       "value": "\"N: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "StringLiteral",
-      "offset": 3497,
+      "offset": 3407,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "StringLiteral",
-      "offset": 3598,
+      "offset": 3508,
       "length": 15,
       "value": "\"CC: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "StringLiteral",
-      "offset": 3612,
+      "offset": 3522,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 3679,
+      "offset": 3589,
       "length": 1,
       "value": "8"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 3706,
+      "offset": 3616,
       "length": 1,
       "value": "8"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "Array",
-      "offset": 3751,
+      "offset": 3661,
       "length": 6,
       "value": "[0x8E]"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "StringLiteral",
-      "offset": 3912,
+      "offset": 3822,
       "length": 20,
       "value": "\"DO'8E: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "StringLiteral",
-      "offset": 3931,
+      "offset": 3841,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "StringLiteral",
-      "offset": 4045,
+      "offset": 3955,
       "length": 33,
       "value": "\"Expected Response Length: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "StringLiteral",
-      "offset": 4077,
+      "offset": 3987,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "StringLiteral",
-      "offset": 4098,
+      "offset": 4008,
       "length": 25,
       "value": "\"Data length: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "StringLiteral",
-      "offset": 4122,
+      "offset": 4032,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "StringLiteral",
-      "offset": 4143,
+      "offset": 4053,
       "length": 16,
       "value": "\"Data: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "StringLiteral",
-      "offset": 4158,
+      "offset": 4068,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 4216,
+      "offset": 4126,
       "length": 1,
       "value": "4"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "Array",
-      "offset": 4339,
+      "offset": 4249,
       "length": 6,
       "value": "[0x00]"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "StringLiteral",
-      "offset": 4365,
+      "offset": 4275,
       "length": 34,
       "value": "\"Wrapped APDU: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "StringLiteral",
-      "offset": 4398,
+      "offset": 4308,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
+      "kind": "StringLiteral",
+      "offset": 4460,
+      "length": 42,
+      "value": "\"Unwrapping Response: \""
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
+      "kind": "StringLiteral",
+      "offset": 4501,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 4552,
+      "offset": 4524,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 4628,
+      "offset": 4600,
       "length": 1,
       "value": "2"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "StringLiteral",
-      "offset": 4654,
+      "offset": 4626,
       "length": 42,
       "value": "\"No valid payload found during unwrapping\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 4819,
+      "offset": 4744,
+      "length": 1,
+      "value": "8"
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
+      "kind": "IntegerLiteral",
+      "offset": 4769,
+      "length": 6,
+      "value": "0x9000"
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
+      "kind": "IntegerLiteral",
+      "offset": 4900,
       "length": 6,
       "value": "0x0000"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "BooleanLiteral",
-      "offset": 4984,
+      "offset": 5065,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 5120,
+      "offset": 5201,
       "length": 4,
       "value": "0x87"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "BooleanLiteral",
-      "offset": 5187,
+      "offset": 5268,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 5211,
+      "offset": 5292,
       "length": 4,
       "value": "0x85"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "BooleanLiteral",
-      "offset": 5278,
+      "offset": 5359,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 5301,
+      "offset": 5382,
       "length": 4,
       "value": "0x99"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 5373,
+      "offset": 5454,
       "length": 4,
       "value": "0x8E"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "BooleanLiteral",
-      "offset": 5457,
+      "offset": 5538,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "StringLiteral",
-      "offset": 5505,
+      "offset": 5586,
       "length": 16,
       "value": "\"Unexpected tag\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 5686,
+      "offset": 5768,
       "length": 6,
       "value": "0xFF00"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 5711,
+      "offset": 5779,
+      "length": 1,
+      "value": "8"
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5800,
       "length": 6,
       "value": "0x00FF"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
+      "kind": "IntegerLiteral",
+      "offset": 5811,
+      "length": 1,
+      "value": "8"
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "BooleanLiteral",
-      "offset": 5824,
+      "offset": 5919,
       "length": 4,
       "value": "true"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 5957,
+      "offset": 6052,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 6028,
+      "offset": 6123,
       "length": 10,
       "value": "0x00000080"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 6043,
+      "offset": 6138,
       "length": 10,
       "value": "0x00000080"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 6147,
+      "offset": 6242,
       "length": 10,
       "value": "0x0000007F"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 6179,
+      "offset": 6274,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 6240,
+      "offset": 6335,
       "length": 1,
       "value": "8"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 6412,
+      "offset": 6507,
       "length": 4,
       "value": "0x01"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 6473,
+      "offset": 6568,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 6757,
+      "offset": 6852,
       "length": 4,
       "value": "0x00"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 6770,
+      "offset": 6865,
       "length": 1,
       "value": "8"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 6835,
+      "offset": 6930,
       "length": 4,
       "value": "0x00"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 6848,
+      "offset": 6943,
       "length": 1,
       "value": "8"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 7294,
+      "offset": 7389,
       "length": 1,
       "value": "2"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "StringLiteral",
-      "offset": 7316,
+      "offset": 7411,
       "length": 20,
       "value": "\"DO'99 wrong length\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 7357,
+      "offset": 7452,
       "length": 4,
       "value": "0x00"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 7513,
-      "length": 10,
-      "value": "0x000000FF"
-    },
-    {
-      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
-      "kind": "IntegerLiteral",
-      "offset": 7528,
+      "offset": 7617,
       "length": 1,
       "value": "8"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 7547,
-      "length": 10,
-      "value": "0x000000FF"
-    },
-    {
-      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
-      "kind": "IntegerLiteral",
-      "offset": 7722,
+      "offset": 7795,
       "length": 1,
       "value": "8"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "StringLiteral",
-      "offset": 7744,
+      "offset": 7817,
       "length": 20,
       "value": "\"DO'8E wrong length\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 7866,
+      "offset": 7939,
       "length": 1,
       "value": "8"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 7992,
+      "offset": 8065,
       "length": 4,
       "value": "0x80"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 8106,
+      "offset": 8179,
       "length": 3,
       "value": "256"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 8137,
+      "offset": 8210,
       "length": 4,
       "value": "0x80"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 8183,
+      "offset": 8256,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 8227,
+      "offset": 8300,
       "length": 1,
       "value": "8"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 8248,
+      "offset": 8321,
       "length": 1,
       "value": "1"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 8299,
+      "offset": 8372,
       "length": 4,
       "value": "0xFF"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 8448,
+      "offset": 8521,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 8496,
+      "offset": 8569,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/SecureMessagingWrapper.swift",
       "kind": "IntegerLiteral",
-      "offset": 8557,
+      "offset": 8630,
       "length": 1,
       "value": "1"
     },
@@ -50592,42 +51202,56 @@
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/TagService.swift",
       "kind": "StringLiteral",
-      "offset": 1858,
-      "length": 65,
-      "value": "\"Failed to transmit command (\""
+      "offset": 1731,
+      "length": 30,
+      "value": "\"Status word indicate success\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/TagService.swift",
       "kind": "StringLiteral",
-      "offset": 1921,
-      "length": 1,
-      "value": "\")\""
+      "offset": 1810,
+      "length": 72,
+      "value": "\"Status word indicate incomplete data transfer. More data to be fetched\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/TagService.swift",
       "kind": "StringLiteral",
-      "offset": 2004,
-      "length": 22,
-      "value": "\"No information given\""
+      "offset": 1946,
+      "length": 67,
+      "value": "\"Status word indicate failure: (\""
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/TagService.swift",
+      "kind": "StringLiteral",
+      "offset": 2012,
+      "length": 2,
+      "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/TagService.swift",
       "kind": "IntegerLiteral",
-      "offset": 2226,
+      "offset": 2324,
       "length": 1,
       "value": "8"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/TagService.swift",
       "kind": "IntegerLiteral",
-      "offset": 2276,
+      "offset": 2374,
       "length": 6,
       "value": "0x9000"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/TagService.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2444,
+      "length": 4,
+      "value": "0x61"
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/TagService.swift",
       "kind": "Dictionary",
-      "offset": 2484,
+      "offset": 2653,
       "length": 2027,
       "value": "[(0x6200, \"No information given\"), (0x6281, \"Part of returned data may be corrupted\"), (0x6282, \"End of file\/record reached before reading Le bytes\"), (0x6283, \"Selected file invalidated\"), (0x6284, \"FCI not formatted according to ISO7816-4 section 5.1.5\"), (0x6300, \"No information given\"), (0x6381, \"File filled up by the last write\"), (0x6382, \"Card Key not supported\"), (0x6383, \"Reader Key not supported\"), (0x6384, \"Plain transmission not supported\"), (0x6385, \"Secured Transmission not supported\"), (0x6386, \"Volatile memory not available\"), (0x6387, \"Non Volatile memory not available\"), (0x6388, \"Key number not valid\"), (0x6389, \"Key length is not correct\"), (0x63C, \"Counter provided by X (valued from 0 to 15) (exact meaning depending on the command)\"), (0x6500, \"No information given\"), (0x6581, \"Memory failure\"), (0x6700, \"Wrong length\"), (0x6800, \"No information given\"), (0x6881, \"Logical channel not supported\"), (0x6882, \"Secure messaging not supported\"), (0x6900, \"No information given\"), (0x6981, \"Command incompatible with file structure\"), (0x6982, \"Security status not satisfied\"), (0x6983, \"Authentication method blocked\"), (0x6984, \"Referenced data invalidated\"), (0x6985, \"Conditions of use not satisfied\"), (0x6986, \"Command not allowed (no current EF)\"), (0x6987, \"Expected SM data objects missing\"), (0x6988, \"SM data objects incorrect\"), (0x6A00, \"No information given\"), (0x6A80, \"Incorrect parameters in the data field\"), (0x6A81, \"Function not supported\"), (0x6A82, \"File not found\"), (0x6A83, \"Record not found\"), (0x6A84, \"Not enough memory space in the file\"), (0x6A85, \"Lc inconsistent with TLV structure\"), (0x6A86, \"Incorrect parameters P1-P2\"), (0x6A87, \"Lc inconsistent with P1-P2\"), (0x6A88, \"Referenced data not found\"), (0x6B00, \"Wrong parameter(s) P1-P2]\"), (0x6D00, \"Instruction code not supported or invalid\"), (0x6E00, \"Class not supported\"), (0x6F00, \"No precise diagnosis\")]"
     },
@@ -52256,6 +52880,174 @@
       "value": "0x7F"
     },
     {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/AAAPDUSender.swift",
+      "kind": "StringLiteral",
+      "offset": 597,
+      "length": 28,
+      "value": "\"Send INTERNAL AUTHENTICATE\""
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/AAAPDUSender.swift",
+      "kind": "StringLiteral",
+      "offset": 644,
+      "length": 38,
+      "value": "\"\t\tWith Challenge: \""
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/AAAPDUSender.swift",
+      "kind": "StringLiteral",
+      "offset": 681,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/AAAPDUSender.swift",
+      "kind": "IntegerLiteral",
+      "offset": 744,
+      "length": 4,
+      "value": "0x00"
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/AAAPDUSender.swift",
+      "kind": "IntegerLiteral",
+      "offset": 767,
+      "length": 4,
+      "value": "0x88"
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/AAAPDUSender.swift",
+      "kind": "IntegerLiteral",
+      "offset": 786,
+      "length": 4,
+      "value": "0x00"
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/AAAPDUSender.swift",
+      "kind": "IntegerLiteral",
+      "offset": 805,
+      "length": 4,
+      "value": "0x00"
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/AAAPDUSender.swift",
+      "kind": "IntegerLiteral",
+      "offset": 852,
+      "length": 3,
+      "value": "256"
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/AAAPDUSender.swift",
+      "kind": "IntegerLiteral",
+      "offset": 1007,
+      "length": 4,
+      "value": "0x90"
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/AAAPDUSender.swift",
+      "kind": "IntegerLiteral",
+      "offset": 1076,
+      "length": 4,
+      "value": "0x61"
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/AAAPDUSender.swift",
+      "kind": "StringLiteral",
+      "offset": 1168,
+      "length": 73,
+      "value": "\"Failed INTERNAL AUTHENTICATE with normal length. Trying extended length\""
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/AAAPDUSender.swift",
+      "kind": "IntegerLiteral",
+      "offset": 1294,
+      "length": 4,
+      "value": "0x00"
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/AAAPDUSender.swift",
+      "kind": "IntegerLiteral",
+      "offset": 1317,
+      "length": 4,
+      "value": "0x88"
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/AAAPDUSender.swift",
+      "kind": "IntegerLiteral",
+      "offset": 1336,
+      "length": 4,
+      "value": "0x00"
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/AAAPDUSender.swift",
+      "kind": "IntegerLiteral",
+      "offset": 1355,
+      "length": 4,
+      "value": "0x00"
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/AAAPDUSender.swift",
+      "kind": "IntegerLiteral",
+      "offset": 1402,
+      "length": 5,
+      "value": "65536"
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/AAAPDUSender.swift",
+      "kind": "IntegerLiteral",
+      "offset": 1655,
+      "length": 1,
+      "value": "2"
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/AAAPDUSender.swift",
+      "kind": "IntegerLiteral",
+      "offset": 1699,
+      "length": 1,
+      "value": "2"
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/AAAPDUSender.swift",
+      "kind": "StringLiteral",
+      "offset": 1772,
+      "length": 30,
+      "value": "\"INTERNAL AUTHENTICATE failed\""
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/AAAPDUSender.swift",
+      "kind": "IntegerLiteral",
+      "offset": 1870,
+      "length": 1,
+      "value": "2"
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/AAAPDUSender.swift",
+      "kind": "IntegerLiteral",
+      "offset": 1914,
+      "length": 1,
+      "value": "2"
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/AAAPDUSender.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2028,
+      "length": 1,
+      "value": "2"
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/AAAPDUSender.swift",
+      "kind": "IntegerLiteral",
+      "offset": 2072,
+      "length": 1,
+      "value": "2"
+    },
+    {
+      "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/AAAPDUSender.swift",
+      "kind": "StringLiteral",
+      "offset": 2447,
+      "length": 30,
+      "value": "\"INTERNAL AUTHENTICATE failed\""
+    },
+    {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/LogicalDataStructure\/DG11File.swift",
       "kind": "IntegerLiteral",
       "offset": 211,
@@ -52643,14 +53435,14 @@
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/TagError.swift",
       "kind": "StringLiteral",
-      "offset": 455,
+      "offset": 405,
       "length": 31,
       "value": "\"Connection to the tag is lost\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/TagError.swift",
       "kind": "StringLiteral",
-      "offset": 543,
+      "offset": 493,
       "length": 36,
       "value": "\"Session is invalidated by the user\""
     },
@@ -53581,70 +54373,70 @@
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/ReadBinaryAPDUSender.swift",
       "kind": "StringLiteral",
-      "offset": 2041,
+      "offset": 2044,
       "length": 82,
       "value": "\"Sending Read Binary with offset \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/ReadBinaryAPDUSender.swift",
       "kind": "StringLiteral",
-      "offset": 2083,
+      "offset": 2086,
       "length": 3,
       "value": "\" and expected length: \""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/ReadBinaryAPDUSender.swift",
       "kind": "StringLiteral",
-      "offset": 2122,
+      "offset": 2125,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/ReadBinaryAPDUSender.swift",
       "kind": "IntegerLiteral",
-      "offset": 2157,
+      "offset": 2160,
       "length": 1,
       "value": "0"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/ReadBinaryAPDUSender.swift",
       "kind": "StringLiteral",
-      "offset": 2188,
+      "offset": 2191,
       "length": 42,
       "value": "\"Expected length should not be equal to 0\""
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/ReadBinaryAPDUSender.swift",
       "kind": "IntegerLiteral",
-      "offset": 2347,
+      "offset": 2350,
       "length": 6,
       "value": "0xFF00"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/ReadBinaryAPDUSender.swift",
       "kind": "IntegerLiteral",
-      "offset": 2358,
+      "offset": 2361,
       "length": 1,
       "value": "8"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/ReadBinaryAPDUSender.swift",
       "kind": "IntegerLiteral",
-      "offset": 2400,
+      "offset": 2403,
       "length": 4,
       "value": "0xFF"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/ReadBinaryAPDUSender.swift",
       "kind": "IntegerLiteral",
-      "offset": 2470,
+      "offset": 2473,
       "length": 4,
       "value": "0x00"
     },
     {
       "filePath": "\/Users\/leifyndestad\/Developer\/Leif\/Projects\/sec-travel-doc-reader-ios\/TravelDocumentReader\/AccessControl\/ReadBinaryAPDUSender.swift",
       "kind": "IntegerLiteral",
-      "offset": 2493,
+      "offset": 2496,
       "length": 4,
       "value": "0xB0"
     },
