@@ -2053,7 +2053,7 @@ extension TravelDocumentReader.PassportService {
 }
 extension TravelDocumentReader.PassportService {
   #if compiler(>=5.3) && $AsyncAwait
-  public func doActiveAuthentication() async throws -> (challenge: Foundation.Data, response: Foundation.Data)
+  public func doActiveAuthentication(withChallenge challenge: Foundation.Data) async throws -> (challenge: Foundation.Data, response: Foundation.Data)
   #endif
   public func verifyActiveAuthentication(dg15File: TravelDocumentReader.DG15File, challenge: Foundation.Data, response: Foundation.Data)
 }

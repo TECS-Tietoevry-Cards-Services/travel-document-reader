@@ -14,11 +14,11 @@
 		</data>
 		<key>Modules/TravelDocumentReader.swiftmodule/arm64-apple-ios.abi.json</key>
 		<data>
-		TcuoqdBtXM4hElsQenMquXtIUIE=
+		/gkvLZRo90Y6onxvDPw9gwnXLeQ=
 		</data>
 		<key>Modules/TravelDocumentReader.swiftmodule/arm64-apple-ios.private.swiftinterface</key>
 		<data>
-		KSkOh8TZvK/j4O0C2EqrJd7hMgk=
+		z6uQFmWkgTl560ag3du5Qz+Tl+U=
 		</data>
 		<key>Modules/TravelDocumentReader.swiftmodule/arm64-apple-ios.swiftdoc</key>
 		<data>
@@ -26,11 +26,11 @@
 		</data>
 		<key>Modules/TravelDocumentReader.swiftmodule/arm64-apple-ios.swiftinterface</key>
 		<data>
-		KSkOh8TZvK/j4O0C2EqrJd7hMgk=
+		z6uQFmWkgTl560ag3du5Qz+Tl+U=
 		</data>
 		<key>Modules/TravelDocumentReader.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<data>
-		NKChZTLuEQKKTLqH3Ks3mj+F44M=
+		4b055a7dXyO/tzAVrgR3oBlkv0o=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -50,14 +50,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			9zLAu2WVhYdRMOun+jD/alFnnRnI6TaxCnxsgdh2TgU=
+			rMV3Guk4lIJYb1HL7n+qznsBfYFQTxV1m/lruAbkkuQ=
 			</data>
 		</dict>
 		<key>Modules/TravelDocumentReader.swiftmodule/arm64-apple-ios.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			gW4kH9bjYzLL3M4KJ39Rg8Vn4OORCHuZz6sU5X9H8fk=
+			vsMvuzQqfDAL9aPDSIKuRQLZUgTgtmvhTtzJ4hAS4Hc=
 			</data>
 		</dict>
 		<key>Modules/TravelDocumentReader.swiftmodule/arm64-apple-ios.swiftdoc</key>
@@ -71,14 +71,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			gW4kH9bjYzLL3M4KJ39Rg8Vn4OORCHuZz6sU5X9H8fk=
+			vsMvuzQqfDAL9aPDSIKuRQLZUgTgtmvhTtzJ4hAS4Hc=
 			</data>
 		</dict>
 		<key>Modules/TravelDocumentReader.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			KtYvNW+zRAxf9eX9TWNHbk/B7BmW5kXHaTaKL28c6i0=
+			/BYDUfhbv42FfaFYeFrrxDTeWLDC64Sh8/csYBqJn14=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
